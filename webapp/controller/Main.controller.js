@@ -4,6 +4,6 @@ sap.ui.define([
 	"use strict";
 
 	return Controller.extend("safetysuitezclaimemployee.controller.Main", {
-
+		//test
 	});
 });
