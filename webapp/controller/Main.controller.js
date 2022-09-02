@@ -4,6 +4,10 @@ sap.ui.define([
 	"use strict";
 
 	return Controller.extend("safetysuitezclaimemployee.controller.Main", {
+<<<<<<< main
 		//run
+=======
+		//test
+>>>>>>> 1850d8d uddhav - commit
 	});
 });
