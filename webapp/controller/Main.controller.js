@@ -5,6 +5,6 @@ sap.ui.define([
 
 	return Controller.extend("safetysuitezclaimemployee.controller.Main", {
 		//run
-		//test
+		//test1
 	});
 });
