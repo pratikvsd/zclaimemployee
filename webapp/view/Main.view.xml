@@ -4,7 +4,7 @@
 		<pages>
 			<Page title="{i18n>title}">
 				<content>
-					<Button text="hi!!! dfkdlkfmsflksdmfldskfd" />
+					<Button text="dfkdlkfmsflksdmfldskfd" />
 				</content>
 			</Page>
 		</pages>
