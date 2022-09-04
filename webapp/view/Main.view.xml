@@ -4,7 +4,7 @@
 		<pages>
 			<Page title="{i18n>title}">
 				<content>
-					<Button text="tanya!!" />
+					<Button text="tanyashroff!!" />
 				</content>
 			</Page>
 		</pages>
