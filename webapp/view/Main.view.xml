@@ -4,7 +4,7 @@
 		<pages>
 			<Page title="{i18n>title}">
 				<content>
-					<Button text=" dfsff dfkdlkfmsflksdmfldskfd" />
+					<Button text="GIT DEMO" />
 				</content>
 			</Page>
 		</pages>
