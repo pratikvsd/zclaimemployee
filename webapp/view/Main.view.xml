@@ -4,8 +4,14 @@
 		<pages>
 			<Page title="{i18n>title}">
 				<content>
-					<Button text="GIT DEMO" />
+					<Text class="sapUiLargeMargin" text="{i18n>Paragraph}"></Text>
 				</content>
+				<footer>
+					<OverflowToolbar>
+						<ToolbarSpacer/>
+					<Button icon="sap-icon://add" text="Create" type="Emphasized" />
+					</OverflowToolbar>
+				</footer>
 			</Page>
 		</pages>
 	</App>
