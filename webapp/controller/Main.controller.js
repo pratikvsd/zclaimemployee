@@ -5,21 +5,42 @@ sap.ui.define([
 
 	return Controller.extend("safetysuitezclaimemployee.controller.Main", {
 		
-		init: function(){},
+		//All the methods have been written the flow of the application.
+		
+		init: function(){
+			this.WizardTitle = ""; // This is important flag which is used below to close the dialogs
+		},
+		
+		openInjuryTab: function(){
+				if(!this.InjuryTabDialog){
+				this.InjuryTabDialog = sap.ui.xmlfragment("safetysuitezclaimemployee.fragment.InjuryTable",this);
+				this.getView().addDependent(this.InjuryTabDialog);
+				
+			}
+			this.WizardTitle = "InjuryTab";
+			this.InjuryTabDialog.open();
+		}, // To open the initial injury Table dialog
+		
+		openPrivacyStatementTab : function(){
+				if(!this.PrivacyStatementDialog){
+				this.PrivacyStatementDialog = sap.ui.xmlfragment("safetysuitezclaimemployee.fragment.PrivacyStatement",this);
+				this.getView().addDependent(this.PrivacyStatementDialog);
+				
+			}
+			this.PrivacyStatementDialog.open();
+		}, // To open the privacy statement dialog
 		
 		openClaimWizard:function(oEvent){
+			
 			if(!this.claimWizardDialog){
 				this.claimWizardDialog = sap.ui.xmlfragment("safetysuitezclaimemployee.fragment.claimWizard",this);
 				this.getView().addDependent(this.claimWizardDialog);
+				
 			}
+			this.WizardTitle = "StartClaim";
 			this.claimWizardDialog.open();
-		},
-		
-		handleNavigationChange: function (oEvent) {
-			this._oSelectedStep = oEvent.getParameter("step");
-			this._iSelectedStepIndex = this._oWizard.getSteps().indexOf(this._oSelectedStep);
-			this.handleButtonsVisibility();
-		},
+			this.PrivacyStatementDialog.close();
+		}, // To open the main wizard dialog
 		
 		onDialogNextButton: function () {
 			this._oWizard = sap.ui.getCore().byId("claimFormWizard");
@@ -51,7 +72,14 @@ sap.ui.define([
 		},
 		
 		handleWizardCancel: function(oEvent){
-			this.claimWizardDialog.close();
+			if(this.WizardTitle === "StartClaim"){
+				this.claimWizardDialog.close();
+				this.WizardTitle = "InjuryTab";
+			}
+			else if(this.WizardTitle === "InjuryTab"){
+				this.InjuryTabDialog.close();
+			}
+			
 		}
 
 

@@ -1,0 +1,64 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:f="sap.f" xmlns:form="sap.ui.layout.form" xmlns:core="sap.ui.core">
+	<Dialog showHeader="false" verticalScrolling="false" contentHeight="90%" contentWidth="90%">
+		<content>
+			<f:DynamicPage stickySubheaderProvider="claimFormWizard" toggleHeaderOnTitleClick="false" class="sapUiNoContentPadding" showFooter="true">
+			<f:content>
+			<VBox>
+			<HBox>
+				<form:SimpleForm id="SimpleFormDisplay354" editable="true" layout="ResponsiveGridLayout" labelSpanXL="3" labelSpanL="3" labelSpanM="3"
+					labelSpanS="12" adjustLabelSpan="false" emptySpanXL="4" emptySpanL="4" emptySpanM="4" emptySpanS="0" columnsXL="1" columnsL="1" columnsM="1"
+					singleContainerFullSize="false">
+					<form:content>
+						<HBox>
+							<VBox class="sapUiResponsiveContentPadding">
+								<Label text="{i18n>InjuryInputEmployee}"/>
+								<Input type="Text"/>
+							</VBox>
+							<VBox class="sapUiResponsiveContentPadding">
+							<Label text="{i18n>InjuryInputRegulatoryAuthority}"/>
+							<Select>
+								<items>
+									<core:Item/>
+									<core:Item/>
+									<core:Item/>
+								</items>
+							</Select>
+							</VBox>
+						</HBox>
+					</form:content>
+				</form:SimpleForm>
+			</HBox>
+			<Table class="sapUiResponsiveContentPadding">
+				<columns>
+					<Column>
+						<Text text="{i18n>InjuryTableColumnInjuryDescription}"/>
+					</Column>
+					<Column>
+						<Text text="{i18n>InjuryTableColumnDate}"/>
+					</Column>
+					<Column>
+						<Text text="{i18n>InjuryTableColumnBodyPart}"/>
+					</Column>
+					<Column>
+						<Text text="{i18n>InjuryTableColumnSide}"/>
+					</Column>
+					<Column>
+						<Text text="{i18n>InjuryTableColumnInjuryType}"/>
+					</Column>
+				</columns>
+			</Table>
+			</VBox>
+			</f:content>
+			<f:footer>
+				<OverflowToolbar>
+					<Button text="{i18n>WizardFooterCancelBtn}" type="Reject" press="handleWizardCancel"/>
+					<ToolbarSpacer/>
+					<Button text="{i18n>CreateIncident}"/>
+					<Button text="{i18n>StartClaim}" type="Emphasized" press="openPrivacyStatementTab"/>
+				</OverflowToolbar>
+			</f:footer>
+			</f:DynamicPage>
+		</content>
+	
+	</Dialog>
+</core:FragmentDefinition>

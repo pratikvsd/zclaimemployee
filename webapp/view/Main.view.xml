@@ -9,7 +9,7 @@
 				<footer>
 					<OverflowToolbar>
 						<ToolbarSpacer/>
-						<Button icon="sap-icon://add" text="{i18n>initialCreateButtonText}" press="openClaimWizard" type="Emphasized"/>
+						<Button icon="sap-icon://add" text="{i18n>initialCreateButtonText}" press="openInjuryTab" type="Emphasized"/>
 					</OverflowToolbar>
 				</footer>
 			</Page>
