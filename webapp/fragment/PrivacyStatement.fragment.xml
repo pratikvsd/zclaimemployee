@@ -8,9 +8,9 @@
 			</f:content>
 			<f:footer>
 				<OverflowToolbar>
-					<Button text="{i18n>WizardFooterCancelBtn}" type="Reject" press="handleWizardCancel"/>
+					<Button text="{i18n>WizardFooterCancelBtn}" icon="sap-icon://sys-cancel-2" type="Reject" press="handleWizardCancel"/>
 					<ToolbarSpacer/>
-					<Button text="{i18n>PrivacyStatementAcceptBtn}" type="Accept"  press="openClaimWizard"/>
+					<Button text="{i18n>PrivacyStatementAcceptBtn}" icon="sap-icon://accept" type="Accept"  press="openClaimWizard"/>
 				</OverflowToolbar>
 			</f:footer>
 		</f:DynamicPage>

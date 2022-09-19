@@ -1,1 +1,5 @@
 /* Enter your custom styles here */
+.sapUiFormResGrid>div {
+    padding: 1rem 1.6rem;
+    box-sizing: border-box;
+}

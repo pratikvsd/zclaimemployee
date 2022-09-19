@@ -6,11 +6,11 @@
 				<f:content>
 					<Wizard id="claimFormWizard" showNextButton="false" class="sapUiResponsivePadding--header sapUiResponsivePadding--content">
 						<WizardStep id="personalDetailStep" title="{i18n>claimFormWizardPersonalDetails}">
-							<VBox class="sapUiSmallMargin">
-								<form:SimpleForm id="personalDetailsForm" editable="true" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="3" labelSpanM="4"
-									labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="4" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="1" columnsM="1"
-									singleContainerFullSize="false">
+								<form:SimpleForm id="personalDetailsForm" editable="true" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="4"
+							labelSpanM="4" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="3"
+							columnsL="2" columnsM="2" singleContainerFullSize="false">
 									<form:content>
+										<core:Title text="{i18n>WizardFormPrimaryDetails}"  level="H5"/>
 										<Label text="{i18n>WizardPersonalDetailFormLabel_Title}"/>
 										<Input/>
 										<Label text="{i18n>WizardPersonalDetailFormLabel_FamilyName}"/>
@@ -27,8 +27,7 @@
 												<core:Item text="Other"/>
 											</items>
 										</Select>
-										<Label text="{i18n>WizardOtherknownorpreviouslegalnamesegMaidenname}"/>
-										<Input/>
+										
 										<Label text="{i18n>WizardPersonalDetailFormLabel_Address}"/>
 										<Input type="Text"/>
 										<Label text="{i18n>WizardPersonalDetailFormLabel_Suburb}"/>
@@ -42,10 +41,12 @@
 											</items>
 										</Select>
 										<Label text="{i18n>WizardPersonalDetailFormLabel_PAFC}"/>
-										<Input type="Text"/>
+										<TextArea/>
 										<Label text="{i18n>WizardPersonalDetailFormLabel_Postcode}"/>
 										<Input type="Text"/>
-										<core:Title text="{i18n>WizardPersonalDetailFormContactDetails}" level="H5"/>
+										<core:Title text="{i18n>WizardFormSecondaryDetails}"  level="H5"/>
+										<Label text="{i18n>WizardOtherknownorpreviouslegalnamesegMaidenname}"/>
+										<TextArea/>
 										<Label text="{i18n>WizardPersonalDetailFormLabel_Mobile}"/>
 										<Input type="Number"/>
 										<Label text="{i18n>WizardPersonalDetailFormLabel_Work}"/>
@@ -55,7 +56,7 @@
 										<Label text="{i18n>WizardPersonalDetailFormLabel_Email}"/>
 										<Input type="Text"/>
 										<Label text="{i18n>WizardPersonalDetailFormLabel_question1}"/>
-										<Input type="Text"/>
+										<TextArea/>
 										<Label text="{i18n>WizardPersonalDetailFormLabel_question2}"/>
 										<Select>
 											<items>
@@ -74,14 +75,15 @@
 										</Select>
 									</form:content>
 								</form:SimpleForm>
-							</VBox>
+							
 						</WizardStep>
 						<WizardStep id="injuryDetailStep" title="{i18n>claimFormWizardInjuryDetails}">
 							<VBox class="sapUiSmallMargin">
-								<form:SimpleForm id="injuryDetailsForm" editable="true" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="3" labelSpanM="4"
-									labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="4" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="1" columnsM="1"
-									singleContainerFullSize="false">
+								<form:SimpleForm id="injuryDetailsForm" editable="true" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="4"
+							labelSpanM="4" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="3"
+							columnsL="2" columnsM="2" singleContainerFullSize="false">
 									<form:content>
+										<core:Title text="{i18n>WizardFormPrimaryDetails}"  level="H5"/>
 										<Label text="{i18n>WizardInjuryDetailsFormLabel_InjuryBodyPart}"/>
 										<Input/>
 										<Label text="{i18n>WizardInjuryDetailsFormLabel_InjuryType}"/>
@@ -106,6 +108,15 @@
 										</Select>
 										<Label text="{i18n>WizardInjuryDetailsFormLabel_Postcode}"/>
 										<Input type="Text"/>
+										<Label text="{i18n>WizardInjuryDetailsFormLabel_InjuryDateTime}"/>
+										<DatePicker/>
+										<Label text="{i18n>WizardInjuryDetailsFormLabel_FirstNoticeInjuryCondition}"/>
+										<DatePicker/>
+										<Label text="{i18n>WizardInjuryDetailsFormLabel_StoppedWorkDateTime}"/>
+										<DatePicker/>
+										<Label text="{i18n>WizardInjuryDetailsFormLabel_ReportInjuryToEmployee}"/>
+										<DatePicker/>
+										<core:Title text="{i18n>WizardFormSecondaryDetails}"  level="H5"/>
 										<Label text="{i18n>WizardInjuryDetailsFormLabel_ResposibleManAtWorkplace}"/>
 										<Input type="Text"/>
 										<Label text="{i18n>WizardInjuryDetailsFormLabel_ActivityonTimeofInjury}"/>
@@ -130,14 +141,7 @@
 										</Select>
 										<Label text="{i18n>WizardInjuryDetailsFormLabel_question1}"/>
 										<Textarea/>
-										<Label text="{i18n>WizardInjuryDetailsFormLabel_InjuryDateTime}"/>
-										<DatePicker/>
-										<Label text="{i18n>WizardInjuryDetailsFormLabel_FirstNoticeInjuryCondition}"/>
-										<DatePicker/>
-										<Label text="{i18n>WizardInjuryDetailsFormLabel_StoppedWorkDateTime}"/>
-										<DatePicker/>
-										<Label text="{i18n>WizardInjuryDetailsFormLabel_ReportInjuryToEmployee}"/>
-										<DatePicker/>
+										
 										<Label text="{i18n>WizardInjuryDetailsFormLabel_question2}"/>
 										<Textarea/>
 										<Label text="{i18n>WizardInjuryDetailsFormLabel_question3}"/>
@@ -150,12 +154,14 @@
 								</form:SimpleForm>
 							</VBox>
 						</WizardStep>
+						
 						<WizardStep id="employmentDetailStep" title="{i18n>claimFormWizardEmploymentDetails}">
 							<VBox class="sapUiSmallMargin">
-								<form:SimpleForm id="employementDetailsForm" editable="true" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="3" labelSpanM="4"
-									labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="4" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="1" columnsM="1"
-									singleContainerFullSize="false">
+								<form:SimpleForm id="employementDetailsForm" editable="true" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="4"
+							labelSpanM="4" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="3"
+							columnsL="2" columnsM="2" singleContainerFullSize="false">
 									<form:content>
+										<core:Title text="{i18n>WizardFormPrimaryDetails}" level="H5"/>
 										<Label text="{i18n>WizardEmployementDetailsFormLabel_NameofOrg}"/>
 										<Input/>
 										<Label text="{i18n>WizardEmployementDetailsFormLabel_AddressOfUsualWorkplace}"/>
@@ -173,7 +179,7 @@
 										<Label text="{i18n>WizardEmployementDetailsFormLabel_Postcode}"/>
 										<Input type="Text"/>
 										<Label text="{i18n>WizardEmployementDetailsFormLabel_NameandContactofEmployer}"/>
-										<Input type="Text"/>
+										<Textarea/>
 										<Label text="{i18n>WizardEmployementDetailsFormLabel_UsualOccupation}"/>
 										<Input type="Text"/>
 										<Label text="{i18n>WizardEmployementDetailsFormLabel_FollowingAppiesToYou}"/>
@@ -203,7 +209,7 @@
 												<core:Item text=""/>
 											</items>
 										</Select>
-										<Label text="{i18n>WizardEmployementDetailsFormLabel_ASaleTrader}"/>
+										<Label text="{i18n>WizardEmployementDetailsFormLabel_ASoleTrader}"/>
 										<Select>
 											<items>
 												<core:Item text=""/>
@@ -323,7 +329,7 @@
 				</f:content>
 				<f:footer>
 					<OverflowToolbar>
-						<Button text="{i18n>WizardFooterCancelBtn}" type="Reject" press="handleWizardCancel"/>
+						<Button text="{i18n>WizardFooterCancelBtn}" icon="sap-icon://sys-cancel-2" type="Reject" press="handleWizardCancel"/>
 						<ToolbarSpacer/>
 						<Button text="{i18n>WizardFooterPreviousBtn}" icon="sap-icon://navigation-left-arrow" type="Emphasized" visible="{/backButtonVisible}"
 							press="onDialogBackButton"/>
