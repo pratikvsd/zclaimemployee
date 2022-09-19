@@ -5,7 +5,7 @@ sap.ui.define([
 
 	return Controller.extend("safetysuitezclaimemployee.controller.Main", {
 		
-		//All the methods have been written the flow of the application.
+		//All the methods have been written in the flow of the application.
 		
 		init: function(){
 			this.WizardTitle = ""; // This is important flag which is used below to close the dialogs
@@ -27,10 +27,11 @@ sap.ui.define([
 				this.getView().addDependent(this.PrivacyStatementDialog);
 				
 			}
+			this.WizardTitle = "PrivacyDialog";
 			this.PrivacyStatementDialog.open();
 		}, // To open the privacy statement dialog
 		
-		openClaimWizard:function(oEvent){
+		openClaimWizard: function(oEvent){
 			
 			if(!this.claimWizardDialog){
 				this.claimWizardDialog = sap.ui.xmlfragment("safetysuitezclaimemployee.fragment.claimWizard",this);
@@ -42,6 +43,16 @@ sap.ui.define([
 			this.PrivacyStatementDialog.close();
 		}, // To open the main wizard dialog
 		
+		onOpenUploadAttachment: function(oEvent){
+			if(!this.AttachmentDialog){
+				this.AttachmentDialog = sap.ui.xmlfragment("safetysuitezclaimemployee.fragment.AttchmentUpload",this);
+				this.getView().addDependent(this.AttachmentDialog);
+				
+			}
+			this.WizardTitle = "Attachment";
+			this.AttachmentDialog.open();
+		},
+		
 		onDialogNextButton: function () {
 			this._oWizard = sap.ui.getCore().byId("claimFormWizard");
 			this._iSelectedStepIndex = this._oWizard.getCurrentStep();
@@ -49,8 +60,10 @@ sap.ui.define([
 
 			if (this._oSelectedStep && !this._oSelectedStep.bLast) {
 				this._oWizard.goToStep(oNextStep, true);
+				
 			} else {
 				this._oWizard.nextStep();
+			
 			}
 
 			this._iSelectedStepIndex++;
@@ -79,8 +92,17 @@ sap.ui.define([
 			else if(this.WizardTitle === "InjuryTab"){
 				this.InjuryTabDialog.close();
 			}
+			else if(this.WizardTitle === "PrivacyDialog"){
+				this.PrivacyStatementDialog.close();
+			}
+			else if(this.WizardTitle === "Attachment"){
+				this.AttachmentDialog.close();
+				this.WizardTitle = "StartClaim";
+			}
 			
 		}
+		
+		
 
 
 		
