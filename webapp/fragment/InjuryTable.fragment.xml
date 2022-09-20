@@ -1,57 +1,79 @@
 <core:FragmentDefinition xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:f="sap.f" xmlns:form="sap.ui.layout.form" xmlns:core="sap.ui.core">
 	<Dialog showHeader="false" verticalScrolling="false" contentHeight="90%" contentWidth="90%">
 		<content>
-			<f:DynamicPage stickySubheaderProvider="claimFormWizard" toggleHeaderOnTitleClick="false" class="sapUiNoContentPadding" showFooter="true">
-				<f:content>
+			<Page showHeader="false">
+				<content>
 					<VBox>
-						<form:SimpleForm class="sapUiResponsiveContentPadding" id="InjuryInputForm" editable="true" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="4"
-							labelSpanM="4" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="3"
-							columnsL="2" columnsM="2" singleContainerFullSize="false">
+						<form:SimpleForm class="sapUiResponsiveContentPadding" id="InjuryInputForm" editable="true" layout="ResponsiveGridLayout" labelSpanXL="4"
+							labelSpanL="4" labelSpanM="4" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0"
+							columnsXL="3" columnsL="2" columnsM="2" singleContainerFullSize="false">
 							<form:content>
 								<core:Title text="{i18n>InjuryInputEmployee}"/>
 								<!--<Label text="{i18n>InjuryInputEmployee}"/>-->
 								<Input type="Text"></Input>
-
 								<core:Title text="{i18n>InjuryInputRegulatoryAuthority}"/>
-											<Select>
-												<items>
-													<core:Item/>
-													<core:Item/>
-													<core:Item/>
-												</items>
-											</Select>
+								<Select>
+									<items>
+										<core:Item/>
+										<core:Item/>
+										<core:Item/>
+									</items>
+								</Select>
 							</form:content>
 						</form:SimpleForm>
-						<Table class="sapUiResponsiveContentPadding">
+						<Table class="sapUiResponsiveContentPadding" items="{/InjuryDetails}"  mode="SingleSelectMaster"  selectionChange="onRowSelect">
 							<columns>
 								<Column>
 									<Text text="{i18n>InjuryTableColumnInjuryDescription}"/>
 								</Column>
-								<Column>
+								<Column demandPopin="true" minScreenWidth="Desktop">
 									<Text text="{i18n>InjuryTableColumnDate}"/>
 								</Column>
-								<Column>
+								<Column demandPopin="true" minScreenWidth="Desktop">
 									<Text text="{i18n>InjuryTableColumnBodyPart}"/>
 								</Column>
-								<Column>
+								<Column demandPopin="true" minScreenWidth="Desktop">
 									<Text text="{i18n>InjuryTableColumnSide}"/>
 								</Column>
-								<Column>
+								<Column demandPopin="true" minScreenWidth="Desktop">
 									<Text text="{i18n>InjuryTableColumnInjuryType}"/>
 								</Column>
 							</columns>
+							<items>
+								<ColumnListItem vAlign="Middle">
+									<cells>
+										<Text text="{InjDesc}"/>
+										<Text text="{Date}"/>
+										<Text text="{Body_Part}"/>
+										<Text text="{Side}"/>
+										<Text text="{InjurtType}"/>
+									</cells>
+								</ColumnListItem>
+							</items>
 						</Table>
 					</VBox>
-				</f:content>
-				<f:footer>
-					<OverflowToolbar>
-						<Button text="{i18n>WizardFooterCancelBtn}" icon="sap-icon://sys-cancel-2" type="Reject" press="handleWizardCancel"/>
+				</content>
+				<footer>
+					<Toolbar>
+						<Button id="injuryTabCancelBtn" text="{i18n>WizardFooterCancelBtn}" icon="sap-icon://sys-cancel-2" type="Reject" press="handleWizardCancel">
+							<layoutData>
+								<ToolbarLayoutData shrinkable="true"/>
+							</layoutData>
+						</Button>
 						<ToolbarSpacer/>
-						<Button text="{i18n>CreateIncident}" icon="sap-icon://create-entry-time"/>
-						<Button text="{i18n>StartClaim}" icon="sap-icon://create-form" type="Emphasized" press="openPrivacyStatementTab"/>
-					</OverflowToolbar>
-				</f:footer>
-			</f:DynamicPage>
+						<Button id="injuryTabCreateIncBtn" text="{i18n>CreateIncident}" icon="sap-icon://create-entry-time" enabled="false">
+							<layoutData>
+								<ToolbarLayoutData shrinkable="true"/>
+							</layoutData>
+						</Button>
+						<Button id="injuryTabStartBtn" text="{i18n>StartClaim}" enabled="false" icon="sap-icon://create-form" type="Emphasized" press="openPrivacyStatementTab">
+							<layoutData>
+								<ToolbarLayoutData shrinkable="true"/>
+							</layoutData>
+						</Button>
+					</Toolbar>
+				</footer>
+			</Page>
 		</content>
 	</Dialog>
 </core:FragmentDefinition>

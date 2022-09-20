@@ -2,18 +2,18 @@
 	xmlns:layout="sap.ui.layout">
 	<Dialog id="PrivacyDialog" showHeader="false" verticalScrolling="false" contentHeight="90%" contentWidth="90%">
 		<content>
-		<f:DynamicPage stickySubheaderProvider="claimFormWizard" toggleHeaderOnTitleClick="false" class="sapUiNoContentPadding" showFooter="true">
-			<f:content>
+		<Page showHeader="false">
+			<content>
 				<Text class="sapUiLargeMargin" text="{i18n>PrivacyStatement}"/>
-			</f:content>
-			<f:footer>
-				<OverflowToolbar>
+			</content>
+			<footer>
+				<Toolbar>
 					<Button text="{i18n>WizardFooterCancelBtn}" icon="sap-icon://sys-cancel-2" type="Reject" press="handleWizardCancel"/>
 					<ToolbarSpacer/>
 					<Button text="{i18n>PrivacyStatementAcceptBtn}" icon="sap-icon://accept" type="Accept"  press="openClaimWizard"/>
-				</OverflowToolbar>
-			</f:footer>
-		</f:DynamicPage>
+				</Toolbar>
+			</footer>
+		</Page>
 		</content>
 	</Dialog>
 </core:FragmentDefinition>

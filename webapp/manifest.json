@@ -61,6 +61,10 @@
 				"settings": {
 					"bundleName": "safetysuitezclaimemployee.i18n.i18n"
 				}
+			},
+			"":{
+				"type":"sap.ui.model.json.JSONModel",
+				"uri" : "model/mockData.json"
 			}
 		},
 		"resources": {

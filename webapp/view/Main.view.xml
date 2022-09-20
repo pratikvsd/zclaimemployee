@@ -7,10 +7,10 @@
 					<Text class="sapUiLargeMargin" text="{i18n>Paragraph}"></Text>
 				</content>
 				<footer>
-					<OverflowToolbar>
+					<Toolbar>
 						<ToolbarSpacer/>
 						<Button icon="sap-icon://add" text="{i18n>initialCreateButtonText}" press="openInjuryTab" type="Emphasized"/>
-					</OverflowToolbar>
+					</Toolbar>
 				</footer>
 			</Page>
 		</pages>
