@@ -3,3 +3,7 @@
     padding: 1rem 1.6rem;
     box-sizing: border-box;
 }
+.sapMListTblHeader>.sapMTableTH {
+    background: #cfd7d6a6;
+    border-bottom: 1px solid #cfd7d6a6;
+}

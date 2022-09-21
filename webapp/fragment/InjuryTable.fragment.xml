@@ -10,33 +10,34 @@
 							<form:content>
 								<core:Title text="{i18n>InjuryInputEmployee}"/>
 								<!--<Label text="{i18n>InjuryInputEmployee}"/>-->
-								<Input type="Text"></Input>
+								<Input type="Text" enabled="false" value="Employee 1"></Input>
 								<core:Title text="{i18n>InjuryInputRegulatoryAuthority}"/>
 								<Select>
 									<items>
-										<core:Item/>
-										<core:Item/>
-										<core:Item/>
+										<core:Item text="Authority 1"/>
+										<core:Item text = "Authority 2"/>
+										<core:Item text="Authority 3"/>
 									</items>
 								</Select>
 							</form:content>
 						</form:SimpleForm>
-						<Table class="sapUiResponsiveContentPadding" items="{/InjuryDetails}"  mode="SingleSelectMaster"  selectionChange="onRowSelect">
+						<Table id="injuryDetailsTable" class="sapUiResponsiveContentPadding" items="{/InjuryDetails}" mode="SingleSelectMaster"
+							selectionChange="onInjuryTableRowSelect">
 							<columns>
 								<Column>
-									<Text text="{i18n>InjuryTableColumnInjuryDescription}"/>
+									<Label design="Bold" text="{i18n>InjuryTableColumnInjuryDescription}"/>
 								</Column>
 								<Column demandPopin="true" minScreenWidth="Desktop">
-									<Text text="{i18n>InjuryTableColumnDate}"/>
+									<Label design="Bold" text="{i18n>InjuryTableColumnDate}"/>
 								</Column>
 								<Column demandPopin="true" minScreenWidth="Desktop">
-									<Text text="{i18n>InjuryTableColumnBodyPart}"/>
+									<Label design="Bold" text="{i18n>InjuryTableColumnBodyPart}"/>
 								</Column>
 								<Column demandPopin="true" minScreenWidth="Desktop">
-									<Text text="{i18n>InjuryTableColumnSide}"/>
+									<Label design="Bold" text="{i18n>InjuryTableColumnSide}"/>
 								</Column>
 								<Column demandPopin="true" minScreenWidth="Desktop">
-									<Text text="{i18n>InjuryTableColumnInjuryType}"/>
+									<Label design="Bold" text="{i18n>InjuryTableColumnInjuryType}"/>
 								</Column>
 							</columns>
 							<items>
@@ -66,7 +67,8 @@
 								<ToolbarLayoutData shrinkable="true"/>
 							</layoutData>
 						</Button>
-						<Button id="injuryTabStartBtn" text="{i18n>StartClaim}" enabled="false" icon="sap-icon://create-form" type="Emphasized" press="openPrivacyStatementTab">
+						<Button id="injuryTabStartBtn" text="{i18n>StartClaim}" enabled="false" icon="sap-icon://create-form" type="Emphasized"
+							press="openPrivacyStatementTab">
 							<layoutData>
 								<ToolbarLayoutData shrinkable="true"/>
 							</layoutData>

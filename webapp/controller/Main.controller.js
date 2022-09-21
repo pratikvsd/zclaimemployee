@@ -1,7 +1,7 @@
 sap.ui.define([
 	"sap/ui/core/mvc/Controller",
-	"sap/ui/Device"
-], function(Controller, Device) {
+	"sap/m/UploadCollectionParameter"
+], function(Controller, UploadCollectionParameter) {
 	"use strict";
 
 	return Controller.extend("safetysuitezclaimemployee.controller.Main", {
@@ -21,7 +21,7 @@ sap.ui.define([
 			this.WizardTitle = "InjuryTab";
 			this.InjuryTabDialog.open();
 
-		}, // To open the initial injury Table dialog
+		}, // To open the initial injury Table dialog.
 
 		openPrivacyStatementTab: function() {
 			if (!this.PrivacyStatementDialog) {
@@ -31,7 +31,7 @@ sap.ui.define([
 			}
 			this.WizardTitle = "PrivacyDialog";
 			this.PrivacyStatementDialog.open();
-		}, // To open the privacy statement dialog
+		}, // To open the privacy statement dialog.
 
 		openClaimWizard: function(oEvent) {
 
@@ -43,17 +43,11 @@ sap.ui.define([
 			this.WizardTitle = "StartClaim";
 			this.claimWizardDialog.open();
 			this.PrivacyStatementDialog.close();
-		}, // To open the main wizard dialog
-
-		onOpenUploadAttachment: function(oEvent) {
-			if (!this.AttachmentDialog) {
-				this.AttachmentDialog = sap.ui.xmlfragment("safetysuitezclaimemployee.fragment.AttchmentUpload", this);
-				this.getView().addDependent(this.AttachmentDialog);
-
-			}
-			this.WizardTitle = "Attachment";
-			this.AttachmentDialog.open();
-		},
+			this.InjuryTabDialog.close();
+			sap.ui.getCore().byId("injuryDetailsTable").removeSelections();
+			sap.ui.getCore().byId("injuryTabStartBtn").setEnabled(false);
+			sap.ui.getCore().byId("injuryTabCreateIncBtn").setEnabled(false);
+		}, // To open the main wizard dialog.
 
 		onDialogNextButton: function() {
 			this._oWizard = sap.ui.getCore().byId("claimFormWizard");
@@ -77,7 +71,7 @@ sap.ui.define([
 				sap.ui.getCore().byId("claimWizardNextBtn").setVisible(true);
 				sap.ui.getCore().byId("claimWizardPrevBtn").setVisible(true);
 			}
-		},
+		}, // Code for next button in the main claim wizard control.
 
 		onDialogBackButton: function() {
 			this._iSelectedStepIndex = this._oWizard.getCurrentStep();
@@ -99,7 +93,7 @@ sap.ui.define([
 
 			this._iSelectedStepIndex--;
 			this._oSelectedStep = oPreviousStep;
-		},
+		}, // Code for previous button in the main claim wizard control.
 
 		handleWizardCancel: function(oEvent) {
 			if (this.WizardTitle === "StartClaim") {
@@ -107,19 +101,92 @@ sap.ui.define([
 				this.WizardTitle = "InjuryTab";
 			} else if (this.WizardTitle === "InjuryTab") {
 				this.InjuryTabDialog.close();
+				sap.ui.getCore().byId("injuryDetailsTable").removeSelections();
+				sap.ui.getCore().byId("injuryTabStartBtn").setEnabled(false);
+				sap.ui.getCore().byId("injuryTabCreateIncBtn").setEnabled(false);
+
 			} else if (this.WizardTitle === "PrivacyDialog") {
 				this.PrivacyStatementDialog.close();
-			} else if (this.WizardTitle === "Attachment") {
-				this.AttachmentDialog.close();
-				this.WizardTitle = "StartClaim";
 			}
 
-		},
-		
-		onRowSelect: function(oiEvent){
+		}, // General method for closing the popup dialogs. 
+
+		onInjuryTableRowSelect: function(oiEvent) {
 			sap.ui.getCore().byId("injuryTabStartBtn").setEnabled(true);
 			sap.ui.getCore().byId("injuryTabCreateIncBtn").setEnabled(true);
-		}
+		}, // To enable the the button in Injury table on click on row.
+
+		onChange: function(oEvent) {
+			var oUploadCollection = oEvent.getSource();
+			// Header Token
+			var oCustomerHeaderToken = new UploadCollectionParameter({
+				name: "x-csrf-token",
+				value: "securityTokenFromModel"
+			});
+			oUploadCollection.addHeaderParameter(oCustomerHeaderToken);
+		}, // Mandotory event to set the header parameter for upload collection.
+		
+		onUploadComplete: function(oEvent) {
+			var oUploadCollection = sap.ui.getCore().byId("UploadCollection");
+			var oData = oUploadCollection.getModel().getData();
+			var url = sap.ui.require.toUrl("safetysuitezclaimemployee/Attachment_Sample_Files/IdentityProof.png");
+			oData.items.unshift({
+				"documentId": jQuery.now().toString(), // generate Id,
+				"fileName": oEvent.getParameter("files")[0].fileName,
+				"mimeType": "",
+				"thumbnailUrl": "",
+				"url": url,
+				"attributes": [{
+					"title": "Uploaded By",
+					"text": "You",
+					"active": false
+				}, {
+					"title": "Uploaded On",
+					"text": new Date(jQuery.now()).toLocaleDateString(),
+					"active": false
+				}, {
+					"title": "File Size",
+					"text": "505000",
+					"active": false
+				}]
+			});
+			this.getView().getModel().refresh();
+
+			// Sets the text to the label
+			var aItems = sap.ui.getCore().byId("UploadCollection").getItems();
+			sap.ui.getCore().byId("UploadCollection").setNumberOfAttachmentsText("Employee Attachments("+ aItems.length +")");
+
+			// delay the success message for to notice onChange message
+			setTimeout(function() {
+				sap.m.MessageToast.show("UploadComplete event triggered.");
+			}, 4000);
+		}, // For file upload process.
+
+		onBeforeUploadStarts: function(oEvent) {
+			// Header Slug
+			var oCustomerHeaderSlug = new UploadCollectionParameter({
+				name: "slug",
+				value: oEvent.getParameter("fileName")
+			});
+			oEvent.getParameters().addHeaderParameter(oCustomerHeaderSlug);
+			//sap.m.MessageToast.show("BeforeUploadStarts event triggered.");
+		}, //Madotory event for before file upload.
+		
+		deleteAttachmentListItems: function(oEvent) {
+			var sItemToDeleteId = oEvent.getParameter("documentId");
+			var oData = sap.ui.getCore().byId("UploadCollection").getModel().getData();
+			var aItems = jQuery.extend(true, {}, oData).items;
+			jQuery.each(aItems, function(index) {
+				if (aItems[index] && aItems[index].documentId === sItemToDeleteId) {
+					aItems.splice(index, 1);
+				}
+			});
+			sap.ui.getCore().byId("UploadCollection").getModel().setData({
+				"items": aItems
+			});
+			var Items = sap.ui.getCore().byId("UploadCollection").getItems();
+			sap.ui.getCore().byId("UploadCollection").setNumberOfAttachmentsText("Employee Attachments("+ Items.length +")");
+		} // To delete the files from the attchment list.
 
 	});
 });
