@@ -12,15 +12,15 @@
 								<form:content>
 									<core:Title text="" level="H5"/>
 									<Label text="{i18n>WizardPersonalDetailFormLabel_Title}"/>
-									<Input/>
+									<Input enabled="false" value="Mr."/>
 									<Label text="{i18n>WizardPersonalDetailFormLabel_FamilyName}"/>
-									<Input type="Text"/>
+									<Input type="Text" enabled="false" value="Family Name 1"/>
 									<Label text="{i18n>WizardPersonalDetailFormLabel_GivenName}"/>
-									<Input type="Text"/>
+									<Input type="Text" enabled="false" value="Given Name 1"/>
 									<Label text="{i18n>WizardPersonalDetailFormLabel_DOB}"/>
-									<DatePicker id="claimFormBirthDate"/>
+									<DatePicker id="claimFormBirthDate" enabled="false" value="12.03.2000"/>
 									<Label text="{i18n>WizardPersonalDetailFormLabel_Gender}"/>
-									<Select>
+									<Select enabled="false">
 										<items>
 											<core:Item text="Male"/>
 											<core:Item text="Female"/>
@@ -28,11 +28,11 @@
 										</items>
 									</Select>
 									<Label text="{i18n>WizardPersonalDetailFormLabel_Address}"/>
-									<Input type="Text"/>
+									<Input type="Text" enabled="False" value="Address 1"/>
 									<Label text="{i18n>WizardPersonalDetailFormLabel_Suburb}"/>
-									<Input type="Text"/>
+									<Input type="Text" enabled="False" value="Suburb 1"/>
 									<Label text="{i18n>WizardPersonalDetailFormLabel_State}"/>
-									<Select>
+									<Select enabled="false">
 										<items>
 											<core:Item text="State 1"/>
 											<core:Item text="State 2"/>
@@ -40,24 +40,24 @@
 										</items>
 									</Select>
 									<Label text="{i18n>WizardPersonalDetailFormLabel_PAFC}"/>
-									<TextArea/>
+									<TextArea enabled="false" value="Postal Address 1"/>
 									<Label text="{i18n>WizardPersonalDetailFormLabel_Postcode}"/>
-									<Input type="Text"/>
+									<Input type="Text" enabled="false" value="Postcode 1"/>
 									<core:Title text="{i18n>WizardPersonalDetailFormContactDetails}" level="H5"/>
 									<Label text="{i18n>WizardOtherknownorpreviouslegalnamesegMaidenname}"/>
-									<TextArea/>
+									<TextArea enabled="false" value="Maiden Nmae 1"/>
 									<Label text="{i18n>WizardPersonalDetailFormLabel_Mobile}"/>
-									<Input type="Number"/>
+									<Input type="Number" enabled="false" value="123456789"/>
 									<Label text="{i18n>WizardPersonalDetailFormLabel_Work}"/>
-									<Input type="Number"/>
+									<Input type="Number" enabled="false" value="123456789"/>
 									<Label text="{i18n>WizardPersonalDetailFormLabel_Home}"/>
-									<Input type="Number"/>
+									<Input type="Number" enabled="false" value="123456789"/>
 									<Label text="{i18n>WizardPersonalDetailFormLabel_Email}"/>
-									<Input type="Text"/>
+									<Input type="Text"  enabled="false" value="abc@mail.com"/>
 									<Label text="{i18n>WizardPersonalDetailFormLabel_question1}"/>
-									<TextArea/>
+									<TextArea  enabled="false" value="Answer 1"/>
 									<Label text="{i18n>WizardPersonalDetailFormLabel_question2}"/>
-									<Select>
+									<Select enabled="false">
 										<items>
 											<core:Item text="Answer 1"/>
 											<core:Item text="Answer 2"/>
@@ -65,7 +65,7 @@
 										</items>
 									</Select>
 									<Label text="{i18n>WizardPersonalDetailFormLabel_question3}"/>
-									<Select>
+									<Select enabled="false">
 										<items>
 											<core:Item text="Answer 1"/>
 											<core:Item text="Answer 2"/>
@@ -82,7 +82,7 @@
 								<form:content>
 									<core:Title text="" level="H5"/>
 									<Label text="{i18n>WizardInjuryDetailsFormLabel_InjuryBodyPart}"/>
-									<Input/>
+									<Input />
 									<Label text="{i18n>WizardInjuryDetailsFormLabel_InjuryType}"/>
 									<Input type="Text"/>
 									<Label text="{i18n>WizardInjuryDetailsFormLabel_HowInjured}"/>
@@ -131,9 +131,9 @@
 									<Label text="{i18n>WizardInjuryDetailsFormLabel_State}"/>
 									<Select>
 										<items>
-											<core:Item text=""/>
-											<core:Item text=""/>
-											<core:Item text=""/>
+											<core:Item text="State 1"/>
+											<core:Item text="State 2"/>
+											<core:Item text="State 3"/>
 										</items>
 									</Select>
 									<Label text="{i18n>WizardInjuryDetailsFormLabel_question1}"/>
@@ -164,9 +164,9 @@
 									<Label text="{i18n>WizardEmployementDetailsFormLabel_State}"/>
 									<Select>
 										<items>
-											<core:Item text=""/>
-											<core:Item text=""/>
-											<core:Item text=""/>
+											<core:Item text="State 1"/>
+											<core:Item text="State 2"/>
+											<core:Item text="State 3"/>
 										</items>
 									</Select>
 									<Label text="{i18n>WizardEmployementDetailsFormLabel_Postcode}"/>
@@ -189,33 +189,33 @@
 									<Label text="{i18n>WizardEmployementDetailsFormLabel_ADirectorofMyEmployersCompany}"/>
 									<Select>
 										<items>
-											<core:Item text=""/>
-											<core:Item text=""/>
-											<core:Item text=""/>
+											<core:Item text="Director 1"/>
+											<core:Item text="Director 2"/>
+											<core:Item text="Director 3"/>
 										</items>
 									</Select>
 									<Label text="{i18n>WizardEmployementDetailsFormLabel_APartnerofMyEmployerCompany}"/>
 									<Select>
 										<items>
-											<core:Item text=""/>
-											<core:Item text=""/>
-											<core:Item text=""/>
+											<core:Item text="Partner 1"/>
+											<core:Item text="Partner 2"/>
+											<core:Item text="Partner 3"/>
 										</items>
 									</Select>
 									<Label text="{i18n>WizardEmployementDetailsFormLabel_ASoleTrader}"/>
 									<Select>
 										<items>
-											<core:Item text=""/>
-											<core:Item text=""/>
-											<core:Item text=""/>
+											<core:Item text="Sole Trader 1"/>
+											<core:Item text="Sole Trader 2"/>
+											<core:Item text="Sole Trader 3"/>
 										</items>
 									</Select>
 									<Label text="{i18n>WizardEmployementDetailsFormLabel_ARelativeofMyEmployer}"/>
 									<Select>
 										<items>
-											<core:Item text=""/>
-											<core:Item text=""/>
-											<core:Item text=""/>
+											<core:Item text="Relative 1"/>
+											<core:Item text="Relative 2"/>
+											<core:Item text="Relative 3"/>
 										</items>
 									</Select>
 									<Label text="{i18n>WizardEmployementDetailsFormLabel_question1}"/>
@@ -256,9 +256,9 @@
 									<Label text="{i18n>WizardreturntoWorkFormLabel_question2}"/>
 									<Select>
 										<items>
-											<core:Item text=""/>
-											<core:Item text=""/>
-											<core:Item text=""/>
+											<core:Item text="Answer 1"/>
+											<core:Item text="Answer 2"/>
+											<core:Item text="Answer 3"/>
 										</items>
 									</Select>
 									<Label text="{i18n>WizardreturntoWorkFormLabel_question3}"/>
@@ -270,9 +270,9 @@
 									<Label text="{i18n>WizardreturntoWorkFormLabel_question5}"/>
 									<Select>
 										<items>
-											<core:Item text=""/>
-											<core:Item text=""/>
-											<core:Item text=""/>
+											<core:Item text="Answer 1"/>
+											<core:Item text="Answer 2"/>
+											<core:Item text="Answer 3"/>
 										</items>
 									</Select>
 									<Label text="{i18n>WizardreturntoWorkFormLabel_MedicalCertificateSubmissionDate}"/>
@@ -341,7 +341,7 @@ and skills acquired through the scholarship program." class="sapUiSmallMargin"/>
 						<MenuButton type="Accept" text="{i18n>WizardFooterSaveBtn}" icon="sap-icon://save">
 							<menu>
 								<Menu>
-									<MenuItem text="{i18n>WizardFooterSubmitBtn}" icon="sap-icon://accept" press="onPress"/>
+									<MenuItem text="{i18n>WizardFooterSubmitBtn}" icon="sap-icon://accept" press="onPressSubmitButton"/>
 									<MenuItem text="{i18n>WizardFooterSaveasdraftBtn}" icon="sap-icon://open-folder" press="onPress"/>
 								</Menu>
 							</menu>

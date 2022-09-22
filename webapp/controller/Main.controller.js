@@ -186,7 +186,40 @@ sap.ui.define([
 			});
 			var Items = sap.ui.getCore().byId("UploadCollection").getItems();
 			sap.ui.getCore().byId("UploadCollection").setNumberOfAttachmentsText("Employee Attachments("+ Items.length +")");
-		} // To delete the files from the attchment list.
+		}, // To delete the files from the attchment list.
+		
+		onPressSubmitButton : function(){
+			if (!this.oApproveDialog) {
+				this.oApproveDialog = new sap.m.Dialog({
+					type: sap.m.DialogType.Message,
+					title: "Confirm",
+					content: new sap.m.Text({ text: "Do you want to submit this claim?" }),
+					beginButton: new sap.m.Button({
+						type: sap.m.ButtonType.Emphasized,
+						text: "Submit",
+						press: function () {
+							var sSource = sap.ui.require.toUrl("safetysuitezclaimemployee/Attachment_Sample_Files/2056106_E_20220914.pdf");
+							this.oApproveDialog.close();
+							this.claimWizardDialog.close();
+							this._pdfViewer = new sap.m.PDFViewer();
+							this.getView().addDependent(this._pdfViewer);
+							this._pdfViewer.setSource(sSource);
+							this._pdfViewer.setTitle("Details of Claim Form");
+							this._pdfViewer.open();
+						}.bind(this)
+					}),
+					endButton: new sap.m.Button({
+						text: "Cancel",
+						press: function () {
+							this.oApproveDialog.close();
+						}.bind(this)
+					})
+				});
+			}
+
+			this.oApproveDialog.open();
+			
+		}
 
 	});
 });
