@@ -53,9 +53,9 @@
 									<Label text="{i18n>WizardPersonalDetailFormLabel_Home}"/>
 									<Input type="Number" enabled="false" value="123456789"/>
 									<Label text="{i18n>WizardPersonalDetailFormLabel_Email}"/>
-									<Input type="Text"  enabled="false" value="abc@mail.com"/>
+									<Input type="Text" enabled="false" value="abc@mail.com"/>
 									<Label text="{i18n>WizardPersonalDetailFormLabel_question1}"/>
-									<TextArea  enabled="false" value="Answer 1"/>
+									<TextArea enabled="false" value="Answer 1"/>
 									<Label text="{i18n>WizardPersonalDetailFormLabel_question2}"/>
 									<Select enabled="false">
 										<items>
@@ -82,7 +82,7 @@
 								<form:content>
 									<core:Title text="" level="H5"/>
 									<Label text="{i18n>WizardInjuryDetailsFormLabel_InjuryBodyPart}"/>
-									<Input />
+									<Input/>
 									<Label text="{i18n>WizardInjuryDetailsFormLabel_InjuryType}"/>
 									<Input type="Text"/>
 									<Label text="{i18n>WizardInjuryDetailsFormLabel_HowInjured}"/>
@@ -228,7 +228,6 @@
 								labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="3" columnsL="2" columnsM="2"
 								singleContainerFullSize="false">
 								<form:content>
-									
 									<Label text="{i18n>WizardworkerEarningFormLabel_question1}"/>
 									<Input/>
 									<Label text="{i18n>WizardworkerEarningFormLabel_question2}"/>
@@ -281,14 +280,12 @@
 							</form:SimpleForm>
 						</WizardStep>
 						<WizardStep id="workerDecStep" title="{i18n>claimFormWizardWorkerdeclaration}">
-							<Text text="I certify that the information I have written on the application form and the documents I have submitted to be
-true and accurate. I understand and agree that any false or misleading information will justify a denial of admission into the
-university, revocation of the scholarship, and/or dismissal from the university. I certify that I have carefully read the General Information and Application Guidelines sections on the IMF
-Website and I understand all requirements and restrictions for the scholarship. I, if selected, intend to return to my sponsoring agency upon completion of the JISPA to utilize the knowledge
-and skills acquired through the scholarship program." class="sapUiSmallMargin"/>
-							<form:SimpleForm id="workerDecForm" editable="true" layout="ResponsiveGridLayout" labelSpanXL="4"
-							labelSpanL="4" labelSpanM="4" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0"
-							columnsXL="3" columnsL="2" columnsM="2" singleContainerFullSize="false">
+							<Text
+								text="I certify that the information I have written on the application form and the documents I have submitted to be true and accurate. I understand and agree that any false or misleading information will justify a denial of admission into the university, revocation of the scholarship, and/or dismissal from the university. I certify that I have carefully read the General Information and Application Guidelines sections on the IMF Website and I understand all requirements and restrictions for the scholarship. I, if selected, intend to return to my sponsoring agency upon completion of the JISPA to utilize the knowledge and skills acquired through the scholarship program."
+								class="sapUiSmallMargin"/>
+							<form:SimpleForm id="workerDecForm" editable="true" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="4"
+								labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="3" columnsL="2" columnsM="2"
+								singleContainerFullSize="false">
 								<form:content>
 									<core:Title text="{i18n>WizardworkerDecFormmLabel_WorkerSignature}"/>
 									<Input/>
@@ -299,12 +296,12 @@ and skills acquired through the scholarship program." class="sapUiSmallMargin"/>
 						</WizardStep>
 						<WizardStep id="attachmentStep" title="{i18n>claimFormWizardAttachments}">
 							<UploadCollection id="UploadCollection" multiple="false" change="onChange" fileDeleted="deleteAttachmentListItems"
-								 typeMissmatch="onTypeMissmatch" uploadComplete="onUploadComplete" 	beforeUploadStarts="onBeforeUploadStarts" uploadTerminated="onUploadTerminated" items="{ path: '/items', templateShareable: false }"
+								typeMissmatch="onTypeMissmatch" uploadComplete="onUploadComplete" beforeUploadStarts="onBeforeUploadStarts"
+								uploadTerminated="onUploadTerminated" items="{ path: '/items', templateShareable: false }"
 								numberOfAttachmentsText="{i18n>WizardAttachmentsListTitle}(1)" uploadEnabled="true">
 								<items>
 									<UploadCollectionItem documentId="{documentId}" fileName="{fileName}" mimeType="{mimeType}" thumbnailUrl="{thumbnailUrl}" url="{url}"
-										enableEdit="true" enableDelete="true" visibleDelete="true"
-										visibleEdit="true" attributes="{path : 'attributes', templateShareable : false}"
+										enableEdit="true" enableDelete="true" visibleDelete="true" visibleEdit="true" attributes="{path : 'attributes', templateShareable : false}"
 										statuses="{path : 'statuses', templateShareable : false}" selected="{selected}">
 										<attributes>
 											<ObjectAttribute title="{title}" text="{path : 'text', formatter : '.formatAttribute'}" active="{active}" press="onAttributePress"/>
@@ -319,23 +316,23 @@ and skills acquired through the scholarship program." class="sapUiSmallMargin"/>
 					</Wizard>
 				</content>
 				<footer>
-					<Toolbar>
+					<OverflowToolbar>
 						<Button text="{i18n>WizardFooterCancelBtn}" icon="sap-icon://sys-cancel-2" type="Reject" press="handleWizardCancel">
 							<layoutData>
-								<ToolbarLayoutData shrinkable="true"/>
+								<OverflowToolbarLayoutData priority="NeverOverflow"/>
 							</layoutData>
 						</Button>
 						<ToolbarSpacer/>
 						<Button id="claimWizardPrevBtn" text="{i18n>WizardFooterPreviousBtn}" icon="sap-icon://navigation-left-arrow" type="Emphasized"
 							visible="false" press="onDialogBackButton">
 							<layoutData>
-								<ToolbarLayoutData shrinkable="true"/>
+								<OverflowToolbarLayoutData priority="NeverOverflow"/>
 							</layoutData>
 						</Button>
 						<Button id="claimWizardNextBtn" text="{i18n>WizardFooterNextBtn}" icon="sap-icon://navigation-right-arrow" type="Emphasized"
 							press="onDialogNextButton">
 							<layoutData>
-								<ToolbarLayoutData shrinkable="true"/>
+								<OverflowToolbarLayoutData priority="NeverOverflow"/>
 							</layoutData>
 						</Button>
 						<MenuButton type="Accept" text="{i18n>WizardFooterSaveBtn}" icon="sap-icon://save">
@@ -345,11 +342,8 @@ and skills acquired through the scholarship program." class="sapUiSmallMargin"/>
 									<MenuItem text="{i18n>WizardFooterSaveasdraftBtn}" icon="sap-icon://open-folder" press="onPress"/>
 								</Menu>
 							</menu>
-							<layoutData>
-								<ToolbarLayoutData shrinkable="true"/>
-							</layoutData>
 						</MenuButton>
-					</Toolbar>
+					</OverflowToolbar>
 				</footer>
 			</Page>
 		</content>

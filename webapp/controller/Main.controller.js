@@ -22,6 +22,10 @@ sap.ui.define([
 			this.InjuryTabDialog.open();
 
 		}, // To open the initial injury Table dialog.
+		
+		onCreateIncidentPress: function(oEvent){
+			window.open( "https://sapsdev.c-net.com.au/sap/bc/ui5_ui5/ui2/ushell/shells/abap/FioriLaunchpad.html#CNet-MyIncidents","_blank");
+		},
 
 		openPrivacyStatementTab: function() {
 			if (!this.PrivacyStatementDialog) {

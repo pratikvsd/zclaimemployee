@@ -15,7 +15,7 @@
 								<Select>
 									<items>
 										<core:Item text="Authority 1"/>
-										<core:Item text = "Authority 2"/>
+										<core:Item text="Authority 2"/>
 										<core:Item text="Authority 3"/>
 									</items>
 								</Select>
@@ -27,7 +27,7 @@
 								<Column>
 									<Label design="Bold" text="{i18n>InjuryTableColumnInjuryDescription}"/>
 								</Column>
-								<Column demandPopin="true" minScreenWidth="Desktop">
+								<Column>
 									<Label design="Bold" text="{i18n>InjuryTableColumnDate}"/>
 								</Column>
 								<Column demandPopin="true" minScreenWidth="Desktop">
@@ -55,25 +55,19 @@
 					</VBox>
 				</content>
 				<footer>
-					<Toolbar>
-						<Button id="injuryTabCancelBtn" text="{i18n>WizardFooterCancelBtn}" icon="sap-icon://sys-cancel-2" type="Reject" press="handleWizardCancel">
-							<layoutData>
-								<ToolbarLayoutData shrinkable="true"/>
-							</layoutData>
-						</Button>
+					<OverflowToolbar>
+						<Button id="injuryTabCancelBtn" text="{i18n>WizardFooterCancelBtn}" icon="sap-icon://sys-cancel-2" type="Reject" press="handleWizardCancel"></Button>
 						<ToolbarSpacer/>
-						<Button id="injuryTabCreateIncBtn" text="{i18n>CreateIncident}" icon="sap-icon://create-entry-time" enabled="false">
-							<layoutData>
-								<ToolbarLayoutData shrinkable="true"/>
-							</layoutData>
+						<Button id="injuryTabCreateIncBtn" press="onCreateIncidentPress" text="{i18n>CreateIncident}" icon="sap-icon://create-entry-time"
+							enabled="false">
 						</Button>
 						<Button id="injuryTabStartBtn" text="{i18n>StartClaim}" enabled="false" icon="sap-icon://create-form" type="Emphasized"
 							press="openPrivacyStatementTab">
 							<layoutData>
-								<ToolbarLayoutData shrinkable="true"/>
+								<OverflowToolbarLayoutData priority="NeverOverflow"/>
 							</layoutData>
 						</Button>
-					</Toolbar>
+					</OverflowToolbar>
 				</footer>
 			</Page>
 		</content>
