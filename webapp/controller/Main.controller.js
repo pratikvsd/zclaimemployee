@@ -46,6 +46,9 @@ sap.ui.define([
 			}
 			this.WizardTitle = "StartClaim";
 			this.claimWizardDialog.open();
+			if(sap.ui.getCore().byId("claimFormWizard").getCurrentStep() === "personalDetailStep"){
+				sap.ui.getCore().byId("claimWizardPrevBtn").setVisible(false);
+			}
 			this.PrivacyStatementDialog.close();
 			this.InjuryTabDialog.close();
 			sap.ui.getCore().byId("injuryDetailsTable").removeSelections();
@@ -102,6 +105,7 @@ sap.ui.define([
 		handleWizardCancel: function(oEvent) {
 			if (this.WizardTitle === "StartClaim") {
 				this.claimWizardDialog.close();
+				this._oWizard.setCurrentStep("personalDetailStep");
 				this.WizardTitle = "InjuryTab";
 			} else if (this.WizardTitle === "InjuryTab") {
 				this.InjuryTabDialog.close();
@@ -205,6 +209,7 @@ sap.ui.define([
 							var sSource = sap.ui.require.toUrl("safetysuitezclaimemployee/Attachment_Sample_Files/2056106_E_20220914.pdf");
 							this.oApproveDialog.close();
 							this.claimWizardDialog.close();
+							this._oWizard.setCurrentStep("personalDetailStep");
 							this._pdfViewer = new sap.m.PDFViewer();
 							this.getView().addDependent(this._pdfViewer);
 							this._pdfViewer.setSource(sSource);
