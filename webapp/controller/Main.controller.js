@@ -25,7 +25,7 @@ sap.ui.define([
 		
 		onCreateIncidentPress: function(oEvent){
 			window.open( "https://sapsdev.c-net.com.au/sap/bc/ui5_ui5/ui2/ushell/shells/abap/FioriLaunchpad.html#CNet-MyIncidents","_blank");
-		},
+		}, //To open create incident app in new window.
 
 		openPrivacyStatementTab: function() {
 			if (!this.PrivacyStatementDialog) {
@@ -223,7 +223,13 @@ sap.ui.define([
 
 			this.oApproveDialog.open();
 			
-		}
+		}, // Submit button functionality
+		
+		onPressSaveDraftButton: function(){
+			sap.m.MessageToast.show("Claim has been saved as draft");
+			this.claimWizardDialog.close();
+			this._oWizard.setCurrentStep("personalDetailStep");
+		} // Save as draft button functionality
 
 	});
 });

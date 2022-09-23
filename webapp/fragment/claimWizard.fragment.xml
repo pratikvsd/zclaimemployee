@@ -339,7 +339,7 @@
 							<menu>
 								<Menu>
 									<MenuItem text="{i18n>WizardFooterSubmitBtn}" icon="sap-icon://accept" press="onPressSubmitButton"/>
-									<MenuItem text="{i18n>WizardFooterSaveasdraftBtn}" icon="sap-icon://open-folder" press="onPress"/>
+									<MenuItem text="{i18n>WizardFooterSaveasdraftBtn}" icon="sap-icon://open-folder" press="onPressSaveDraftButton"/>
 								</Menu>
 							</menu>
 						</MenuButton>
