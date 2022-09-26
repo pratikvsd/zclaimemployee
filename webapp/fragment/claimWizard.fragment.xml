@@ -281,7 +281,7 @@
 										<Text text="{i18n>SignatureInfoText}"/>
 										<HBox>
 											<Button id="SignatureBtn" text="Sign" press="onSign" class="sapUiTinyMarginEnd"/>
-											<Button id="Save" text="Save" press="onSaveImage" class="sapUiTinyMarginEnd"></Button>
+											<!--<Button id="Save" text="Save" press="onSaveImage" class="sapUiTinyMarginEnd"></Button>-->
 											<Button id="clear" text="Clear" press="clearButton"></Button>
 										</HBox>
 									</VBox>
