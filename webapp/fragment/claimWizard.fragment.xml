@@ -18,21 +18,15 @@
 									<Label text="{i18n>WizardPersonalDetailFormLabel_GivenName}"/>
 									<Input type="Text" enabled="false" value="Given Name 1"/>
 									<Label text="{i18n>WizardPersonalDetailFormLabel_DOB}"/>
-									<DatePicker id="claimFormBirthDate" enabled="false" value="12.03.2000"/>
+									<Input enabled="false" value="12.03.2000"/>
 									<Label text="{i18n>WizardPersonalDetailFormLabel_Gender}"/>
-									<Select enabled="false">
-										<items>
-											<core:Item text="Male"/>
-											<core:Item text="Female"/>
-											<core:Item text="Other"/>
-										</items>
-									</Select>
+									<Input enabled="false" value="Male"/>
 									<Label text="{i18n>WizardPersonalDetailFormLabel_Address}"/>
-									<Input type="Text" enabled="False" value="Address 1"/>
+									<Input type="Text" value="Address 1"/>
 									<Label text="{i18n>WizardPersonalDetailFormLabel_Suburb}"/>
-									<Input type="Text" enabled="False" value="Suburb 1"/>
+									<Input type="Text" value="Suburb 1"/>
 									<Label text="{i18n>WizardPersonalDetailFormLabel_State}"/>
-									<Select enabled="false">
+									<Select>
 										<items>
 											<core:Item text="State 1"/>
 											<core:Item text="State 2"/>
@@ -40,38 +34,26 @@
 										</items>
 									</Select>
 									<Label text="{i18n>WizardPersonalDetailFormLabel_PAFC}"/>
-									<TextArea enabled="false" value="Postal Address 1"/>
+									<TextArea value="Postal Address 1"/>
 									<Label text="{i18n>WizardPersonalDetailFormLabel_Postcode}"/>
-									<Input type="Text" enabled="false" value="Postcode 1"/>
+									<Input type="Text" value="Postcode 1"/>
 									<core:Title text="{i18n>WizardPersonalDetailFormContactDetails}" level="H5"/>
 									<Label text="{i18n>WizardOtherknownorpreviouslegalnamesegMaidenname}"/>
-									<TextArea enabled="false" value="Maiden Nmae 1"/>
+									<TextArea value="Maiden Nmae 1"/>
 									<Label text="{i18n>WizardPersonalDetailFormLabel_Mobile}"/>
-									<Input type="Number" enabled="false" value="123456789"/>
+									<Input type="Number" value="123456789"/>
 									<Label text="{i18n>WizardPersonalDetailFormLabel_Work}"/>
-									<Input type="Number" enabled="false" value="123456789"/>
+									<Input type="Number" value="123456789"/>
 									<Label text="{i18n>WizardPersonalDetailFormLabel_Home}"/>
-									<Input type="Number" enabled="false" value="123456789"/>
+									<Input type="Number" value="123456789"/>
 									<Label text="{i18n>WizardPersonalDetailFormLabel_Email}"/>
-									<Input type="Text" enabled="false" value="abc@mail.com"/>
+									<Input type="Text" value="abc@mail.com"/>
 									<Label text="{i18n>WizardPersonalDetailFormLabel_question1}"/>
-									<TextArea enabled="false" value="Answer 1"/>
+									<TextArea value="Answer 1"/>
 									<Label text="{i18n>WizardPersonalDetailFormLabel_question2}"/>
-									<Select enabled="false">
-										<items>
-											<core:Item text="Answer 1"/>
-											<core:Item text="Answer 2"/>
-											<core:Item text="Answer 3"/>
-										</items>
-									</Select>
+									<Input type="Text" value="Answer"/>
 									<Label text="{i18n>WizardPersonalDetailFormLabel_question3}"/>
-									<Select enabled="false">
-										<items>
-											<core:Item text="Answer 1"/>
-											<core:Item text="Answer 2"/>
-											<core:Item text="Answer 3"/>
-										</items>
-									</Select>
+									<Input type="Text" value="Answer"/>
 								</form:content>
 							</form:SimpleForm>
 						</WizardStep>
@@ -82,9 +64,9 @@
 								<form:content>
 									<core:Title text="" level="H5"/>
 									<Label text="{i18n>WizardInjuryDetailsFormLabel_InjuryBodyPart}"/>
-									<Input/>
+									<Input enabled="false" value="Hand"/>
 									<Label text="{i18n>WizardInjuryDetailsFormLabel_InjuryType}"/>
-									<Input type="Text"/>
+									<Input type="Text" enabled="false" value="Electrical Injury"/>
 									<Label text="{i18n>WizardInjuryDetailsFormLabel_HowInjured}"/>
 									<Textarea/>
 									<Label text="{i18n>WizardInjuryDetailsFormLabel_TaskWhenInjured}"/>
@@ -175,14 +157,6 @@
 									<Textarea/>
 									<Label text="{i18n>WizardEmployementDetailsFormLabel_UsualOccupation}"/>
 									<Input type="Text"/>
-									<Label text="{i18n>WizardEmployementDetailsFormLabel_FollowingAppiesToYou}"/>
-									<Select>
-										<items>
-											<core:Item text="Condition 1"/>
-											<core:Item text="Condition 2"/>
-											<core:Item text="Condition 3"/>
-										</items>
-									</Select>
 									<Label text="{i18n>WizardEmployementDetailsFormLabel_WhenStartWorkingForEmployer}"/>
 									<DatePicker/>
 									<core:Title text="{i18n>WizardEmployementDetailsSecTitle_PleaseSelectAny}" level="H5"/>
@@ -220,6 +194,22 @@
 									</Select>
 									<Label text="{i18n>WizardEmployementDetailsFormLabel_question1}"/>
 									<Textarea/>
+									<Label text="{i18n>WizardEmployementDetailsFormLabel_FollowingAppiesToYou}"/>
+									<Select>
+										<core:Item text="Full-time"/>
+										<core:Item text="Part-time"/>
+										<core:Item text="Student"/>
+										<core:Item text="Apprentice"/>
+										<core:Item text="Volunteer"/>
+										<core:Item text="Jockey"/>
+										<core:Item text="Contractor"/>
+										<core:Item text="Parmanent"/>
+										<core:Item text="Temporary"/>
+										<core:Item text="Contract"/>
+										<core:Item text="Trainee"/>
+										<core:Item text="Seasonal"/>
+										<core:Item text="Agency Worker"/>
+									</Select>
 								</form:content>
 							</form:SimpleForm>
 						</WizardStep>
@@ -255,9 +245,8 @@
 									<Label text="{i18n>WizardreturntoWorkFormLabel_question2}"/>
 									<Select>
 										<items>
-											<core:Item text="Answer 1"/>
-											<core:Item text="Answer 2"/>
-											<core:Item text="Answer 3"/>
+											<core:Item text="Full"/>
+											<core:Item text="Suitable/Modified"/>
 										</items>
 									</Select>
 									<Label text="{i18n>WizardreturntoWorkFormLabel_question3}"/>
@@ -269,9 +258,8 @@
 									<Label text="{i18n>WizardreturntoWorkFormLabel_question5}"/>
 									<Select>
 										<items>
-											<core:Item text="Answer 1"/>
-											<core:Item text="Answer 2"/>
-											<core:Item text="Answer 3"/>
+											<core:Item text="Hand Delivery"/>
+											<core:Item text="By Post"/>
 										</items>
 									</Select>
 									<Label text="{i18n>WizardreturntoWorkFormLabel_MedicalCertificateSubmissionDate}"/>
@@ -280,15 +268,23 @@
 							</form:SimpleForm>
 						</WizardStep>
 						<WizardStep id="workerDecStep" title="{i18n>claimFormWizardWorkerdeclaration}">
-							<Text
-								text="I certify that the information I have written on the application form and the documents I have submitted to be true and accurate. I understand and agree that any false or misleading information will justify a denial of admission into the university, revocation of the scholarship, and/or dismissal from the university. I certify that I have carefully read the General Information and Application Guidelines sections on the IMF Website and I understand all requirements and restrictions for the scholarship. I, if selected, intend to return to my sponsoring agency upon completion of the JISPA to utilize the knowledge and skills acquired through the scholarship program."
-								class="sapUiSmallMargin"/>
+							<Text text="{i18n>workerDeclarationParagraph1}" class="sapUiSmallMargin"/>
+							<Text text="{i18n>workerDeclarationParagraph2}" class="sapUiSmallMargin"/>
+							<Text text="{i18n>workerDeclarationParagraph3}" class="sapUiSmallMargin"/>
 							<form:SimpleForm id="workerDecForm" editable="true" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="4"
 								labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="3" columnsL="2" columnsM="2"
 								singleContainerFullSize="false">
 								<form:content>
 									<core:Title text="{i18n>WizardworkerDecFormmLabel_WorkerSignature}"/>
-									<Input/>
+									<VBox>
+										<core:HTML id="html"></core:HTML>
+										<Text text="{i18n>SignatureInfoText}"/>
+										<HBox>
+											<Button id="SignatureBtn" text="Sign" press="onSign" class="sapUiTinyMarginEnd"/>
+											<Button id="Save" text="Save" press="onSaveImage" class="sapUiTinyMarginEnd"></Button>
+											<Button id="clear" text="Clear" press="clearButton"></Button>
+										</HBox>
+									</VBox>
 									<core:Title text="{i18n>WizardworkerDecFormmLabel_Date}"/>
 									<DatePicker/>
 								</form:content>

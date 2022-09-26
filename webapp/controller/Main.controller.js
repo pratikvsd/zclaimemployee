@@ -22,9 +22,9 @@ sap.ui.define([
 			this.InjuryTabDialog.open();
 
 		}, // To open the initial injury Table dialog.
-		
-		onCreateIncidentPress: function(oEvent){
-			window.open( "https://sapsdev.c-net.com.au/sap/bc/ui5_ui5/ui2/ushell/shells/abap/FioriLaunchpad.html#CNet-MyIncidents","_blank");
+
+		onCreateIncidentPress: function(oEvent) {
+			window.open("https://sapsdev.c-net.com.au/sap/bc/ui5_ui5/ui2/ushell/shells/abap/FioriLaunchpad.html#CNet-MyIncidents", "_blank");
 		}, //To open create incident app in new window.
 
 		openPrivacyStatementTab: function() {
@@ -46,7 +46,9 @@ sap.ui.define([
 			}
 			this.WizardTitle = "StartClaim";
 			this.claimWizardDialog.open();
-			if(sap.ui.getCore().byId("claimFormWizard").getCurrentStep() === "personalDetailStep"){
+
+			sap.ui.getCore().byId("html").setContent("<canvas id='signature-pad' width='200px' height='200px' class='signature-pad'></canvas>");
+			if (sap.ui.getCore().byId("claimFormWizard").getCurrentStep() === "personalDetailStep") {
 				sap.ui.getCore().byId("claimWizardPrevBtn").setVisible(false);
 			}
 			this.PrivacyStatementDialog.close();
@@ -133,7 +135,7 @@ sap.ui.define([
 			});
 			oUploadCollection.addHeaderParameter(oCustomerHeaderToken);
 		}, // Mandotory event to set the header parameter for upload collection.
-		
+
 		onUploadComplete: function(oEvent) {
 			var oUploadCollection = sap.ui.getCore().byId("UploadCollection");
 			var oData = oUploadCollection.getModel().getData();
@@ -162,7 +164,7 @@ sap.ui.define([
 
 			// Sets the text to the label
 			var aItems = sap.ui.getCore().byId("UploadCollection").getItems();
-			sap.ui.getCore().byId("UploadCollection").setNumberOfAttachmentsText("Employee Attachments("+ aItems.length +")");
+			sap.ui.getCore().byId("UploadCollection").setNumberOfAttachmentsText("Employee Attachments(" + aItems.length + ")");
 
 			// delay the success message for to notice onChange message
 			setTimeout(function() {
@@ -179,7 +181,7 @@ sap.ui.define([
 			oEvent.getParameters().addHeaderParameter(oCustomerHeaderSlug);
 			//sap.m.MessageToast.show("BeforeUploadStarts event triggered.");
 		}, //Madotory event for before file upload.
-		
+
 		deleteAttachmentListItems: function(oEvent) {
 			var sItemToDeleteId = oEvent.getParameter("documentId");
 			var oData = sap.ui.getCore().byId("UploadCollection").getModel().getData();
@@ -193,19 +195,21 @@ sap.ui.define([
 				"items": aItems
 			});
 			var Items = sap.ui.getCore().byId("UploadCollection").getItems();
-			sap.ui.getCore().byId("UploadCollection").setNumberOfAttachmentsText("Employee Attachments("+ Items.length +")");
+			sap.ui.getCore().byId("UploadCollection").setNumberOfAttachmentsText("Employee Attachments(" + Items.length + ")");
 		}, // To delete the files from the attchment list.
-		
-		onPressSubmitButton : function(){
+
+		onPressSubmitButton: function() {
 			if (!this.oApproveDialog) {
 				this.oApproveDialog = new sap.m.Dialog({
 					type: sap.m.DialogType.Message,
 					title: "Confirm",
-					content: new sap.m.Text({ text: "Do you want to submit this claim?" }),
+					content: new sap.m.Text({
+						text: "Do you want to submit this claim?"
+					}),
 					beginButton: new sap.m.Button({
 						type: sap.m.ButtonType.Emphasized,
 						text: "Submit",
-						press: function () {
+						press: function() {
 							var sSource = sap.ui.require.toUrl("safetysuitezclaimemployee/Attachment_Sample_Files/2056106_E_20220914.pdf");
 							this.oApproveDialog.close();
 							this.claimWizardDialog.close();
@@ -219,7 +223,7 @@ sap.ui.define([
 					}),
 					endButton: new sap.m.Button({
 						text: "Cancel",
-						press: function () {
+						press: function() {
 							this.oApproveDialog.close();
 						}.bind(this)
 					})
@@ -227,14 +231,151 @@ sap.ui.define([
 			}
 
 			this.oApproveDialog.open();
-			
+
 		}, // Submit button functionality
-		
-		onPressSaveDraftButton: function(){
+
+		onPressSaveDraftButton: function() {
 			sap.m.MessageToast.show("Claim has been saved as draft");
 			this.claimWizardDialog.close();
 			this._oWizard.setCurrentStep("personalDetailStep");
-		} // Save as draft button functionality
+		}, // Save as draft button functionality
+
+		onSign: function() {
+			var canvas = document.getElementById("signature-pad");
+			var context = canvas.getContext("2d");
+			canvas.width = 200;
+			canvas.height = 200;
+			context.fillStyle = "#fff";
+			context.strokeStyle = "#444";
+			context.lineWidth = 1.5;
+			context.lineCap = "round";
+			context.fillRect(0, 0, canvas.width, canvas.height);
+			var disableSave = true;
+			var pixels = [];
+			var cpixels = [];
+			var xyLast = {};
+			var xyAddLast = {};
+			var calculate = false; { //functions
+				function remove_event_listeners() {
+					canvas.removeEventListener('mousemove', on_mousemove, false);
+					canvas.removeEventListener('mouseup', on_mouseup, false);
+					canvas.removeEventListener('touchmove', on_mousemove, false);
+					canvas.removeEventListener('touchend', on_mouseup, false);
+
+					document.body.removeEventListener('mouseup', on_mouseup, false);
+					document.body.removeEventListener('touchend', on_mouseup, false);
+				}
+
+				function get_coords(e) {
+					var x, y;
+
+					if (e.changedTouches && e.changedTouches[0]) {
+						var canvasArea = canvas.getBoundingClientRect();
+						var offsety = canvasArea.top || 0;
+						var offsetx = canvasArea.left || 0;
+
+						x = e.changedTouches[0].pageX - offsetx;
+						y = e.changedTouches[0].pageY - offsety;
+					} else if (e.layerX || 0 == e.layerX) {
+						x = e.layerX;
+						y = e.layerY;
+					} else if (e.offsetX || 0 == e.offsetX) {
+						x = e.offsetX;
+						y = e.offsetY;
+					}
+
+					return {
+						x: x,
+						y: y
+					};
+				};
+
+				function on_mousedown(e) {
+					e.preventDefault();
+					e.stopPropagation();
+
+					canvas.addEventListener('mouseup', on_mouseup, false);
+					canvas.addEventListener('mousemove', on_mousemove, false);
+					canvas.addEventListener('touchend', on_mouseup, false);
+					canvas.addEventListener('touchmove', on_mousemove, false);
+					document.body.addEventListener('mouseup', on_mouseup, false);
+					document.body.addEventListener('touchend', on_mouseup, false);
+
+					var empty = false;
+					var xy = get_coords(e);
+					context.beginPath();
+					pixels.push('moveStart');
+					context.moveTo(xy.x, xy.y);
+					pixels.push(xy.x, xy.y);
+					xyLast = xy;
+				};
+
+				function on_mousemove(e, finish) {
+					e.preventDefault();
+					e.stopPropagation();
+
+					var xy = get_coords(e);
+					var xyAdd = {
+						x: (xyLast.x + xy.x) / 2,
+						y: (xyLast.y + xy.y) / 2
+					};
+
+					if (calculate) {
+						var xLast = (xyAddLast.x + xyLast.x + xyAdd.x) / 3;
+						var yLast = (xyAddLast.y + xyLast.y + xyAdd.y) / 3;
+						pixels.push(xLast, yLast);
+					} else {
+						calculate = true;
+					}
+
+					context.quadraticCurveTo(xyLast.x, xyLast.y, xyAdd.x, xyAdd.y);
+					pixels.push(xyAdd.x, xyAdd.y);
+					context.stroke();
+					context.beginPath();
+					context.moveTo(xyAdd.x, xyAdd.y);
+					xyAddLast = xyAdd;
+					xyLast = xy;
+
+				};
+
+				function on_mouseup(e) {
+					remove_event_listeners();
+					disableSave = false;
+					context.stroke();
+					pixels.push('e');
+					calculate = false;
+				};
+				canvas.addEventListener('touchstart', on_mousedown, false);
+				canvas.addEventListener('mousedown', on_mousedown, false);
+			}
+
+		},
+
+		onSaveImage: function(oEvent) {
+			var canvas = document.getElementById("signature-pad");
+			// roughString variable is used for storing the string of blank signature box and its used below for validation.
+			var roughString = "ZGF0YTppbWFnZS9qcGVnO2Jhc2U2NCwvOWovNEFBUVNrWkpSZ0FCQVFBQUFRQUJBQUQvNGdJb1NVTkRYMUJTVDBaSlRFVUFBUUVBQUFJWUFBQUFBQVF3QUFCdGJuUnlVa2RDSUZoWldpQUFBQUFBQUFBQUFBQUFBQUJoWTNOd0FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFRQUE5dFlBQVFBQUFBRFRMUUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBbGtaWE5qQUFBQThBQUFBSFJ5V0ZsYUFBQUJaQUFBQUJSbldGbGFBQUFCZUFBQUFCUmlXRmxhQUFBQmpBQUFBQlJ5VkZKREFBQUJvQUFBQUNoblZGSkRBQUFCb0FBQUFDaGlWRkpEQUFBQm9BQUFBQ2gzZEhCMEFBQUJ5QUFBQUJSamNISjBBQUFCM0FBQUFEeHRiSFZqQUFBQUFBQUFBQUVBQUFBTVpXNVZVd0FBQUZnQUFBQWNBSE1BVWdCSEFFSUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFGaFpXaUFBQUFBQUFBQnZvZ0FBT1BVQUFBT1FXRmxhSUFBQUFBQUFBR0taQUFDM2hRQUFHTnBZV1ZvZ0FBQUFBQUFBSktBQUFBK0VBQUMyejNCaGNtRUFBQUFBQUFRQUFBQUNabVlBQVBLbkFBQU5XUUFBRTlBQUFBcGJBQUFBQUFBQUFBQllXVm9nQUFBQUFBQUE5dFlBQVFBQUFBRFRMVzFzZFdNQUFBQUFBQUFBQVFBQUFBeGxibFZUQUFBQUlBQUFBQndBUndCdkFHOEFad0JzQUdVQUlBQkpBRzRBWXdBdUFDQUFNZ0F3QURFQU52L2JBRU1BQXdJQ0FnSUNBd0lDQWdNREF3TUVCZ1FFQkFRRUNBWUdCUVlKQ0FvS0NRZ0pDUW9NRHd3S0N3NExDUWtORVEwT0R4QVFFUkFLREJJVEVoQVREeEFRRVAvYkFFTUJBd01EQkFNRUNBUUVDQkFMQ1FzUUVCQVFFQkFRRUJBUUVCQVFFQkFRRUJBUUVCQVFFQkFRRUJBUUVCQVFFQkFRRUJBUUVCQVFFQkFRRUJBUUVCQVFFUC9BQUJFSUFNZ0F5QU1CSWdBQ0VRRURFUUgveEFBVkFBRUJBQUFBQUFBQUFBQUFBQUFBQUFBQUNmL0VBQlFRQVFBQUFBQUFBQUFBQUFBQUFBQUFBQUQveEFBVUFRRUFBQUFBQUFBQUFBQUFBQUFBQUFBQS84UUFGQkVCQUFBQUFBQUFBQUFBQUFBQUFBQUFBUC9hQUF3REFRQUNFUU1SQUQ4QWxVQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUQvOWs9";
+			this.signString = btoa(encodeURI(canvas.toDataURL('image/jpeg').replace("data:image/jpeg:base64,", "")));
+			if(roughString === this.signString){
+				sap.m.MessageBox.information("Please fill the box with signature");
+			}
+			else{
+				console.log(this.signString);
+				sap.m.MessageToast.show("Signature saved successfully");
+			}
+		},
+
+		clearButton: function(oEvent) {
+			var canvas = document.getElementById("signature-pad");
+			var context = canvas.getContext("2d");
+			context.clearRect(0, 0, canvas.width, canvas.height);
+
+			/*var signaturePad = new SignaturePad(document.getElementById('signature-pad'), {
+				  backgroundColor: '#ffffff',
+				  penColor: 'rgb(0, 0, 0)',
+				  penWidth : '1'
+			})*/
+		}
 
 	});
 });

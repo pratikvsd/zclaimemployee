@@ -12,13 +12,7 @@
 								<!--<Label text="{i18n>InjuryInputEmployee}"/>-->
 								<Input type="Text" enabled="false" value="Employee 1"></Input>
 								<core:Title text="{i18n>InjuryInputRegulatoryAuthority}"/>
-								<Select>
-									<items>
-										<core:Item text="Authority 1"/>
-										<core:Item text="Authority 2"/>
-										<core:Item text="Authority 3"/>
-									</items>
-								</Select>
+								<Input type="Text" enabled="false" value="Authority 1"></Input>
 							</form:content>
 						</form:SimpleForm>
 						<Table id="injuryDetailsTable" class="sapUiResponsiveContentPadding" items="{/InjuryDetails}" mode="SingleSelectMaster"
