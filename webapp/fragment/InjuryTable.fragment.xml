@@ -52,8 +52,7 @@
 					<OverflowToolbar>
 						<Button id="injuryTabCancelBtn" text="{i18n>WizardFooterCancelBtn}" icon="sap-icon://sys-cancel-2" type="Reject" press="handleWizardCancel"></Button>
 						<ToolbarSpacer/>
-						<Button id="injuryTabCreateIncBtn" press="onCreateIncidentPress" text="{i18n>CreateIncident}" icon="sap-icon://create-entry-time"
-							enabled="false">
+						<Button id="injuryTabCreateIncBtn" press="onCreateIncidentPress" text="{i18n>CreateIncident}" icon="sap-icon://create-entry-time">
 						</Button>
 						<Button id="injuryTabStartBtn" text="{i18n>StartClaim}" enabled="false" icon="sap-icon://create-form" type="Emphasized"
 							press="openPrivacyStatementTab">

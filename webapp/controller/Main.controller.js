@@ -24,7 +24,10 @@ sap.ui.define([
 		}, // To open the initial injury Table dialog.
 
 		onCreateIncidentPress: function(oEvent) {
-			window.open("https://sapsdev.c-net.com.au/sap/bc/ui5_ui5/ui2/ushell/shells/abap/FioriLaunchpad.html#CNet-MyIncidents", "_blank");
+			var urlString = document.location.href.split("/");
+			var host = urlString[3];
+			window.open("https://"+host+"/sap/bc/ui5_ui5/ui2/ushell/shells/abap/FioriLaunchpad.html#CNet-MyIncidents", "_blank");
+			//window.open("https://sapsdev.c-net.com.au/sap/bc/ui5_ui5/ui2/ushell/shells/abap/FioriLaunchpad.html#CNet-MyIncidents", "_blank");
 		}, //To open create incident app in new window.
 
 		openPrivacyStatementTab: function() {
@@ -46,6 +49,12 @@ sap.ui.define([
 			}
 			this.WizardTitle = "StartClaim";
 			this.claimWizardDialog.open();
+			/*$("").on('click', {
+				g: this
+			}, this.handleNavigationButton);
+			$("#injuryDetailsForm--Form").on('scroll', {
+				g: this
+			}, this.handleNavigationButton);*/
 
 			sap.ui.getCore().byId("html").setContent("<canvas id='signature-pad' width='200px' height='200px' class='signature-pad'></canvas>");
 			if (sap.ui.getCore().byId("claimFormWizard").getCurrentStep() === "personalDetailStep") {
@@ -362,10 +371,6 @@ sap.ui.define([
 
 		},
 
-		onSaveImage: function(oEvent) {
-
-		},
-
 		clearButton: function(oEvent) {
 			var canvas = document.getElementById("signature-pad");
 			var context = canvas.getContext("2d");
@@ -376,7 +381,24 @@ sap.ui.define([
 				  penColor: 'rgb(0, 0, 0)',
 				  penWidth : '1'
 			})*/
-		}
+		},
 
+		/*handleNavigationButton: function(oEvent) {
+			//var claimWizard = sap.ui.getCore().byId("claimFormWizard");
+			if (oEvent.type === "scroll") {
+				var str = oEvent.target.innerText;
+			} 
+			else {
+				if (oEvent.target.innerText === "Attachments") {
+					sap.ui.getCore().byId("claimWizardNextBtn").setVisible(false);
+				} else if (oEvent.target.innerText === "Personal Details") {
+					sap.ui.getCore().byId("claimWizardPrevBtn").setVisible(false);
+				} else {
+					sap.ui.getCore().byId("claimWizardNextBtn").setVisible(true);
+					sap.ui.getCore().byId("claimWizardPrevBtn").setVisible(true);
+				}
+			}
+
+		}*/
 	});
 });
