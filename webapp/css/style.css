@@ -10,3 +10,11 @@
 .signature-pad{
 	border: black 1px solid;
 }
+.sapMWizardProgressNavAnchor {
+    display: inline-block;
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    text-decoration: none;
+    cursor: default; 
+}

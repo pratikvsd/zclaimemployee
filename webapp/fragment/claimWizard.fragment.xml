@@ -5,7 +5,7 @@
 			<Page showHeader="false">
 				<content>
 					<Wizard  id="claimFormWizard" showNextButton="false" class="sapUiResponsivePadding--header sapUiResponsivePadding--content" >
-						<WizardStep id="personalDetailStep" title="{i18n>claimFormWizardPersonalDetails}">
+						<WizardStep complete="onComplete" id="personalDetailStep" title="{i18n>claimFormWizardPersonalDetails}">
 							<form:SimpleForm id="personalDetailsForm" editable="true" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="4"
 								labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="3" columnsL="2" columnsM="2"
 								singleContainerFullSize="false">
@@ -22,9 +22,9 @@
 									<Label text="{i18n>WizardPersonalDetailFormLabel_Gender}"/>
 									<Input enabled="false" value="Male"/>
 									<Label text="{i18n>WizardPersonalDetailFormLabel_Address}"/>
-									<Input type="Text" value="Address 1"/>
+									<Input type="Text" />
 									<Label text="{i18n>WizardPersonalDetailFormLabel_Suburb}"/>
-									<Input type="Text" value="Suburb 1"/>
+									<Input type="Text"/>
 									<Label text="{i18n>WizardPersonalDetailFormLabel_State}"/>
 									<Select>
 										<items>
@@ -34,26 +34,26 @@
 										</items>
 									</Select>
 									<Label text="{i18n>WizardPersonalDetailFormLabel_PAFC}"/>
-									<TextArea value="Postal Address 1"/>
+									<TextArea />
 									<Label text="{i18n>WizardPersonalDetailFormLabel_Postcode}"/>
-									<Input type="Text" value="Postcode 1"/>
+									<Input type="Text" />
 									<core:Title text="{i18n>WizardPersonalDetailFormContactDetails}" level="H5"/>
 									<Label text="{i18n>WizardOtherknownorpreviouslegalnamesegMaidenname}"/>
-									<TextArea value="Maiden Nmae 1"/>
+									<TextArea />
 									<Label text="{i18n>WizardPersonalDetailFormLabel_Mobile}"/>
-									<Input type="Number" value="123456789"/>
+									<Input type="Number" />
 									<Label text="{i18n>WizardPersonalDetailFormLabel_Work}"/>
-									<Input type="Number" value="123456789"/>
+									<Input type="Number" />
 									<Label text="{i18n>WizardPersonalDetailFormLabel_Home}"/>
-									<Input type="Number" value="123456789"/>
+									<Input type="Number" />
 									<Label text="{i18n>WizardPersonalDetailFormLabel_Email}"/>
-									<Input type="Text" value="abc@mail.com"/>
+									<Input type="Text" />
 									<Label text="{i18n>WizardPersonalDetailFormLabel_question1}"/>
-									<TextArea value="Answer 1"/>
+									<TextArea />
 									<Label text="{i18n>WizardPersonalDetailFormLabel_question2}"/>
-									<Input type="Text" value="Answer"/>
+									<Input type="Text" />
 									<Label text="{i18n>WizardPersonalDetailFormLabel_question3}"/>
-									<Input type="Text" value="Answer"/>
+									<Input type="Text"/>
 								</form:content>
 							</form:SimpleForm>
 						</WizardStep>
@@ -330,7 +330,7 @@
 						<MenuButton type="Accept" text="{i18n>WizardFooterSaveBtn}" icon="sap-icon://save">
 							<menu>
 								<Menu>
-									<MenuItem text="{i18n>WizardFooterSubmitBtn}" icon="sap-icon://accept" press="onPressSubmitButton"/>
+									<MenuItem id="claimSubmitBtn" enabled="false" text="{i18n>WizardFooterSubmitBtn}" icon="sap-icon://accept" press="onPressSubmitButton"/>
 									<MenuItem text="{i18n>WizardFooterSaveasdraftBtn}" icon="sap-icon://open-folder" press="onPressSaveDraftButton"/>
 								</Menu>
 							</menu>

@@ -1,7 +1,11 @@
 sap.ui.define([
 	"sap/ui/core/mvc/Controller",
-	"sap/m/UploadCollectionParameter"
-], function(Controller, UploadCollectionParameter) {
+	"sap/m/UploadCollectionParameter",
+	"sap/m/Wizard-dbg",
+	"sap/ui/Device",
+	"sap/m/WizardProgressNavigator",
+	"sap/m/WizardRenderer"
+], function(Controller, UploadCollectionParameter,Device) {
 	"use strict";
 
 	return Controller.extend("safetysuitezclaimemployee.controller.Main", {
@@ -25,7 +29,7 @@ sap.ui.define([
 
 		onCreateIncidentPress: function(oEvent) {
 			var urlString = document.location.href.split("/");
-			var host = urlString[3];
+			var host = urlString[2];
 			window.open("https://"+host+"/sap/bc/ui5_ui5/ui2/ushell/shells/abap/FioriLaunchpad.html#CNet-MyIncidents", "_blank");
 			//window.open("https://sapsdev.c-net.com.au/sap/bc/ui5_ui5/ui2/ushell/shells/abap/FioriLaunchpad.html#CNet-MyIncidents", "_blank");
 		}, //To open create incident app in new window.
@@ -49,12 +53,60 @@ sap.ui.define([
 			}
 			this.WizardTitle = "StartClaim";
 			this.claimWizardDialog.open();
-			/*$("").on('click', {
-				g: this
-			}, this.handleNavigationButton);
-			$("#injuryDetailsForm--Form").on('scroll', {
-				g: this
-			}, this.handleNavigationButton);*/
+			sap.ui.getCore().byId("claimFormWizard")._getProgressNavigator().ontap = function(){};
+			sap.ui.getCore().byId("claimFormWizard")._scrollHandler = function(){
+				if (this._scrollLocked) {
+				return;
+			}
+			if(Device.browser === undefined){
+					var scrollTop =  document.documentElement.querySelector(".sapMWizardStepContainer").scrollTop; 
+			}
+			else{
+				var scrollTop =  event.target.scrollTop;
+			}
+		
+				var progressNavigator = this._getProgressNavigator(),
+				currentStepDOM = this._stepPath[progressNavigator.getCurrentStep() - 1].getDomRef();
+
+			if (!currentStepDOM) {
+				return;
+			}else{
+				var wizardStep = currentStepDOM.dataset.sapUi;
+				if (wizardStep === "attachmentStep") {
+					sap.ui.getCore().byId("claimWizardNextBtn").setVisible(false);
+				} else if (wizardStep === "personalDetailStep") {
+					sap.ui.getCore().byId("claimWizardPrevBtn").setVisible(false);
+				} else {
+					sap.ui.getCore().byId("claimWizardNextBtn").setVisible(true);
+					sap.ui.getCore().byId("claimWizardPrevBtn").setVisible(true);
+				}
+			}
+
+			var stepHeight = currentStepDOM.clientHeight,
+				stepOffset = currentStepDOM.offsetTop,
+				stepChangeThreshold = 100;
+
+			if (scrollTop + stepChangeThreshold >= stepOffset + stepHeight && progressNavigator._isActiveStep(progressNavigator._currentStep + 1)) {
+				progressNavigator.nextStep();
+			}
+
+			var aSteps = this.getSteps();
+			// change the navigator current step
+			for (var index = 0; index < aSteps.length; index++) {
+				if (scrollTop + stepChangeThreshold <= stepOffset) {
+					progressNavigator.previousStep();
+
+					// update the currentStep reference
+					currentStepDOM = this._stepPath[progressNavigator.getCurrentStep() - 1].getDomRef();
+
+					if (!currentStepDOM) {
+						break;
+					}
+
+					stepOffset = currentStepDOM.offsetTop;
+				}
+			}
+			};
 
 			sap.ui.getCore().byId("html").setContent("<canvas id='signature-pad' width='200px' height='200px' class='signature-pad'></canvas>");
 			if (sap.ui.getCore().byId("claimFormWizard").getCurrentStep() === "personalDetailStep") {
@@ -82,7 +134,21 @@ sap.ui.define([
 			this._oSelectedStep = oNextStep;
 
 			if (this._oWizard.getCurrentStep() === "attachmentStep") {
-				sap.ui.getCore().byId("claimWizardNextBtn").setVisible(false);
+				var canvas = document.getElementById("signature-pad");
+				// roughString variable is used for storing the string of blank signature box and its used below for validation.
+				var roughString = "ZGF0YTppbWFnZS9qcGVnO2Jhc2U2NCwvOWovNEFBUVNrWkpSZ0FCQVFBQUFRQUJBQUQvNGdJb1NVTkRYMUJTVDBaSlRFVUFBUUVBQUFJWUFBQUFBQVF3QUFCdGJuUnlVa2RDSUZoWldpQUFBQUFBQUFBQUFBQUFBQUJoWTNOd0FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFRQUE5dFlBQVFBQUFBRFRMUUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBbGtaWE5qQUFBQThBQUFBSFJ5V0ZsYUFBQUJaQUFBQUJSbldGbGFBQUFCZUFBQUFCUmlXRmxhQUFBQmpBQUFBQlJ5VkZKREFBQUJvQUFBQUNoblZGSkRBQUFCb0FBQUFDaGlWRkpEQUFBQm9BQUFBQ2gzZEhCMEFBQUJ5QUFBQUJSamNISjBBQUFCM0FBQUFEeHRiSFZqQUFBQUFBQUFBQUVBQUFBTVpXNVZVd0FBQUZnQUFBQWNBSE1BVWdCSEFFSUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFGaFpXaUFBQUFBQUFBQnZvZ0FBT1BVQUFBT1FXRmxhSUFBQUFBQUFBR0taQUFDM2hRQUFHTnBZV1ZvZ0FBQUFBQUFBSktBQUFBK0VBQUMyejNCaGNtRUFBQUFBQUFRQUFBQUNabVlBQVBLbkFBQU5XUUFBRTlBQUFBcGJBQUFBQUFBQUFBQllXVm9nQUFBQUFBQUE5dFlBQVFBQUFBRFRMVzFzZFdNQUFBQUFBQUFBQVFBQUFBeGxibFZUQUFBQUlBQUFBQndBUndCdkFHOEFad0JzQUdVQUlBQkpBRzRBWXdBdUFDQUFNZ0F3QURFQU52L2JBRU1BQXdJQ0FnSUNBd0lDQWdNREF3TUVCZ1FFQkFRRUNBWUdCUVlKQ0FvS0NRZ0pDUW9NRHd3S0N3NExDUWtORVEwT0R4QVFFUkFLREJJVEVoQVREeEFRRVAvYkFFTUJBd01EQkFNRUNBUUVDQkFMQ1FzUUVCQVFFQkFRRUJBUUVCQVFFQkFRRUJBUUVCQVFFQkFRRUJBUUVCQVFFQkFRRUJBUUVCQVFFQkFRRUJBUUVCQVFFUC9BQUJFSUFNZ0F5QU1CSWdBQ0VRRURFUUgveEFBVkFBRUJBQUFBQUFBQUFBQUFBQUFBQUFBQUNmL0VBQlFRQVFBQUFBQUFBQUFBQUFBQUFBQUFBQUQveEFBVUFRRUFBQUFBQUFBQUFBQUFBQUFBQUFBQS84UUFGQkVCQUFBQUFBQUFBQUFBQUFBQUFBQUFBUC9hQUF3REFRQUNFUU1SQUQ4QWxVQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUQvOWs9";
+				this.signString = btoa(encodeURI(canvas.toDataURL('image/jpeg').replace("data:image/jpeg:base64,", "")));
+				if (roughString === this.signString) {
+					sap.m.MessageBox.information("Please fill the box with signature");
+					this._oWizard.previousStep();
+					sap.ui.getCore().byId("claimWizardNextBtn").setVisible(true);
+						}
+				else {
+					console.log(this.signString);
+					sap.ui.getCore().byId("claimWizardNextBtn").setVisible(false);
+					sap.ui.getCore().byId("claimSubmitBtn").setEnabled(true);
+				}
+				
 			} else if (this._oWizard.getCurrentStep() === "personalDetailStep") {
 				sap.ui.getCore().byId("claimWizardPrevBtn").setVisible(false);
 			} else {
@@ -116,6 +182,7 @@ sap.ui.define([
 		handleWizardCancel: function(oEvent) {
 			if (this.WizardTitle === "StartClaim") {
 				this.claimWizardDialog.close();
+				sap.ui.getCore().byId("claimWizardNextBtn").setVisible(true);
 				this._oWizard.setCurrentStep("personalDetailStep");
 				this.WizardTitle = "InjuryTab";
 			} else if (this.WizardTitle === "InjuryTab") {
@@ -219,26 +286,17 @@ sap.ui.define([
 						type: sap.m.ButtonType.Emphasized,
 						text: "Submit",
 						press: function() {
+							this.oApproveDialog.close();
 							var sSource = sap.ui.require.toUrl("safetysuitezclaimemployee/Attachment_Sample_Files/2056106_E_20220914.pdf");
-							var canvas = document.getElementById("signature-pad");
-							// roughString variable is used for storing the string of blank signature box and its used below for validation.
-							var roughString =
-								"ZGF0YTppbWFnZS9qcGVnO2Jhc2U2NCwvOWovNEFBUVNrWkpSZ0FCQVFBQUFRQUJBQUQvNGdJb1NVTkRYMUJTVDBaSlRFVUFBUUVBQUFJWUFBQUFBQVF3QUFCdGJuUnlVa2RDSUZoWldpQUFBQUFBQUFBQUFBQUFBQUJoWTNOd0FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFRQUE5dFlBQVFBQUFBRFRMUUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBbGtaWE5qQUFBQThBQUFBSFJ5V0ZsYUFBQUJaQUFBQUJSbldGbGFBQUFCZUFBQUFCUmlXRmxhQUFBQmpBQUFBQlJ5VkZKREFBQUJvQUFBQUNoblZGSkRBQUFCb0FBQUFDaGlWRkpEQUFBQm9BQUFBQ2gzZEhCMEFBQUJ5QUFBQUJSamNISjBBQUFCM0FBQUFEeHRiSFZqQUFBQUFBQUFBQUVBQUFBTVpXNVZVd0FBQUZnQUFBQWNBSE1BVWdCSEFFSUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFGaFpXaUFBQUFBQUFBQnZvZ0FBT1BVQUFBT1FXRmxhSUFBQUFBQUFBR0taQUFDM2hRQUFHTnBZV1ZvZ0FBQUFBQUFBSktBQUFBK0VBQUMyejNCaGNtRUFBQUFBQUFRQUFBQUNabVlBQVBLbkFBQU5XUUFBRTlBQUFBcGJBQUFBQUFBQUFBQllXVm9nQUFBQUFBQUE5dFlBQVFBQUFBRFRMVzFzZFdNQUFBQUFBQUFBQVFBQUFBeGxibFZUQUFBQUlBQUFBQndBUndCdkFHOEFad0JzQUdVQUlBQkpBRzRBWXdBdUFDQUFNZ0F3QURFQU52L2JBRU1BQXdJQ0FnSUNBd0lDQWdNREF3TUVCZ1FFQkFRRUNBWUdCUVlKQ0FvS0NRZ0pDUW9NRHd3S0N3NExDUWtORVEwT0R4QVFFUkFLREJJVEVoQVREeEFRRVAvYkFFTUJBd01EQkFNRUNBUUVDQkFMQ1FzUUVCQVFFQkFRRUJBUUVCQVFFQkFRRUJBUUVCQVFFQkFRRUJBUUVCQVFFQkFRRUJBUUVCQVFFQkFRRUJBUUVCQVFFUC9BQUJFSUFNZ0F5QU1CSWdBQ0VRRURFUUgveEFBVkFBRUJBQUFBQUFBQUFBQUFBQUFBQUFBQUNmL0VBQlFRQVFBQUFBQUFBQUFBQUFBQUFBQUFBQUQveEFBVUFRRUFBQUFBQUFBQUFBQUFBQUFBQUFBQS84UUFGQkVCQUFBQUFBQUFBQUFBQUFBQUFBQUFBUC9hQUF3REFRQUNFUU1SQUQ4QWxVQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUQvOWs9";
-							this.signString = btoa(encodeURI(canvas.toDataURL('image/jpeg').replace("data:image/jpeg:base64,", "")));
-							if (roughString === this.signString) {
-								sap.m.MessageBox.information("Please fill the box with signature");
-								this.oApproveDialog.close();
-							} else {
-								console.log(this.signString);
-								this.oApproveDialog.close();
 								this.claimWizardDialog.close();
+								sap.ui.getCore().byId("claimWizardNextBtn").setVisible(true);
 								this._oWizard.setCurrentStep("personalDetailStep");
 								this._pdfViewer = new sap.m.PDFViewer();
 								this.getView().addDependent(this._pdfViewer);
 								this._pdfViewer.setSource(sSource);
 								this._pdfViewer.setTitle("Details of Claim Form");
 								this._pdfViewer.open();
-							}
+							
 						}.bind(this)
 					}),
 					endButton: new sap.m.Button({
@@ -257,6 +315,7 @@ sap.ui.define([
 		onPressSaveDraftButton: function() {
 			sap.m.MessageToast.show("Claim has been saved as draft");
 			this.claimWizardDialog.close();
+			sap.ui.getCore().byId("claimWizardNextBtn").setVisible(true);
 			this._oWizard.setCurrentStep("personalDetailStep");
 		}, // Save as draft button functionality
 
@@ -381,24 +440,7 @@ sap.ui.define([
 				  penColor: 'rgb(0, 0, 0)',
 				  penWidth : '1'
 			})*/
-		},
-
-		/*handleNavigationButton: function(oEvent) {
-			//var claimWizard = sap.ui.getCore().byId("claimFormWizard");
-			if (oEvent.type === "scroll") {
-				var str = oEvent.target.innerText;
-			} 
-			else {
-				if (oEvent.target.innerText === "Attachments") {
-					sap.ui.getCore().byId("claimWizardNextBtn").setVisible(false);
-				} else if (oEvent.target.innerText === "Personal Details") {
-					sap.ui.getCore().byId("claimWizardPrevBtn").setVisible(false);
-				} else {
-					sap.ui.getCore().byId("claimWizardNextBtn").setVisible(true);
-					sap.ui.getCore().byId("claimWizardPrevBtn").setVisible(true);
-				}
-			}
-
-		}*/
+		}
+		
 	});
 });
