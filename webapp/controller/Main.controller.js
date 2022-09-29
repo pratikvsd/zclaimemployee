@@ -183,6 +183,7 @@ sap.ui.define([
 			if (this.WizardTitle === "StartClaim") {
 				this.claimWizardDialog.close();
 				sap.ui.getCore().byId("claimWizardNextBtn").setVisible(true);
+				sap.ui.getCore().byId("claimSubmitBtn").setEnabled(false);
 				this._oWizard.setCurrentStep("personalDetailStep");
 				this.WizardTitle = "InjuryTab";
 			} else if (this.WizardTitle === "InjuryTab") {
@@ -290,6 +291,7 @@ sap.ui.define([
 							var sSource = sap.ui.require.toUrl("safetysuitezclaimemployee/Attachment_Sample_Files/2056106_E_20220914.pdf");
 								this.claimWizardDialog.close();
 								sap.ui.getCore().byId("claimWizardNextBtn").setVisible(true);
+								sap.ui.getCore().byId("claimSubmitBtn").setEnabled(false);
 								this._oWizard.setCurrentStep("personalDetailStep");
 								this._pdfViewer = new sap.m.PDFViewer();
 								this.getView().addDependent(this._pdfViewer);
@@ -316,6 +318,7 @@ sap.ui.define([
 			sap.m.MessageToast.show("Claim has been saved as draft");
 			this.claimWizardDialog.close();
 			sap.ui.getCore().byId("claimWizardNextBtn").setVisible(true);
+			sap.ui.getCore().byId("claimSubmitBtn").setEnabled(false);
 			this._oWizard.setCurrentStep("personalDetailStep");
 		}, // Save as draft button functionality
 
