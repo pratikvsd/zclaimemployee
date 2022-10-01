@@ -4,7 +4,7 @@
 		<content>
 			<Page showHeader="false">
 				<content>
-					<Wizard  id="claimFormWizard" showNextButton="false" class="sapUiResponsivePadding--header sapUiResponsivePadding--content" >
+					<Wizard id="claimFormWizard" showNextButton="false" class="sapUiResponsivePadding--header sapUiResponsivePadding--content">
 						<WizardStep complete="onComplete" id="personalDetailStep" title="{i18n>claimFormWizardPersonalDetails}">
 							<form:SimpleForm id="personalDetailsForm" editable="true" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="4"
 								labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="3" columnsL="2" columnsM="2"
@@ -22,42 +22,38 @@
 									<Label text="{i18n>WizardPersonalDetailFormLabel_Gender}"/>
 									<Input enabled="false" value="Male"/>
 									<Label text="{i18n>WizardPersonalDetailFormLabel_Address}"/>
-									<Input type="Text" />
+									<Input type="Text"/>
 									<Label text="{i18n>WizardPersonalDetailFormLabel_Suburb}"/>
 									<Input type="Text"/>
 									<Label text="{i18n>WizardPersonalDetailFormLabel_State}"/>
-									<Select>
-										<items>
-											<core:Item text="State 1"/>
-											<core:Item text="State 2"/>
-											<core:Item text="State 3"/>
-										</items>
-									</Select>
+									<ComboBox items="{/StateSet}">
+										<core:Item key="{Statename}" text="{Statename}"/>
+									</ComboBox>
 									<Label text="{i18n>WizardPersonalDetailFormLabel_PAFC}"/>
-									<TextArea />
+									<TextArea/>
 									<Label text="{i18n>WizardPersonalDetailFormLabel_Postcode}"/>
-									<Input type="Text" />
+									<Input type="Text"/>
 									<core:Title text="{i18n>WizardPersonalDetailFormContactDetails}" level="H5"/>
 									<Label text="{i18n>WizardOtherknownorpreviouslegalnamesegMaidenname}"/>
-									<TextArea />
+									<TextArea/>
 									<Label text="{i18n>WizardPersonalDetailFormLabel_Mobile}"/>
-									<Input type="Number" />
+									<Input type="Number"/>
 									<Label text="{i18n>WizardPersonalDetailFormLabel_Work}"/>
-									<Input type="Number" />
+									<Input type="Number"/>
 									<Label text="{i18n>WizardPersonalDetailFormLabel_Home}"/>
-									<Input type="Number" />
+									<Input type="Number"/>
 									<Label text="{i18n>WizardPersonalDetailFormLabel_Email}"/>
-									<Input type="Text" />
+									<Input type="Text"/>
 									<Label text="{i18n>WizardPersonalDetailFormLabel_question1}"/>
-									<TextArea />
+									<TextArea/>
 									<Label text="{i18n>WizardPersonalDetailFormLabel_question2}"/>
-									<Input type="Text" />
+									<Input type="Text"/>
 									<Label text="{i18n>WizardPersonalDetailFormLabel_question3}"/>
 									<Input type="Text"/>
 								</form:content>
 							</form:SimpleForm>
 						</WizardStep>
-						<WizardStep id="injuryDetailStep" title="{i18n>claimFormWizardInjuryDetails}" >
+						<WizardStep id="injuryDetailStep" title="{i18n>claimFormWizardInjuryDetails}">
 							<form:SimpleForm id="injuryDetailsForm" editable="true" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="4"
 								labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="3" columnsL="2" columnsM="2"
 								singleContainerFullSize="false">
@@ -78,13 +74,9 @@
 									<Label text="{i18n>WizardInjuryDetailsFormLabel_Suburb}"/>
 									<Input type="Text"/>
 									<Label text="{i18n>WizardInjuryDetailsFormLabel_State}"/>
-									<Select>
-										<items>
-											<core:Item text="State 1"/>
-											<core:Item text="State 2"/>
-											<core:Item text="State 3"/>
-										</items>
-									</Select>
+									<ComboBox items="{/StateSet}">
+										<core:Item key="{Statename}" text="{Statename}"/>
+									</ComboBox>
 									<Label text="{i18n>WizardInjuryDetailsFormLabel_Postcode}"/>
 									<Input type="Text"/>
 									<Label text="{i18n>WizardInjuryDetailsFormLabel_InjuryDateTime}"/>
@@ -111,13 +103,9 @@
 									<Label text="{i18n>WizardInjuryDetailsFormLabel_RegNoOfInvoledVehicle}"/>
 									<Input type="Text"/>
 									<Label text="{i18n>WizardInjuryDetailsFormLabel_State}"/>
-									<Select>
-										<items>
-											<core:Item text="State 1"/>
-											<core:Item text="State 2"/>
-											<core:Item text="State 3"/>
-										</items>
-									</Select>
+									<ComboBox items="{/StateSet}">
+										<core:Item key="{Statename}" text="{Statename}"/>
+									</ComboBox>
 									<Label text="{i18n>WizardInjuryDetailsFormLabel_question1}"/>
 									<Textarea/>
 									<Label text="{i18n>WizardInjuryDetailsFormLabel_question2}"/>
@@ -131,7 +119,7 @@
 								</form:content>
 							</form:SimpleForm>
 						</WizardStep>
-						<WizardStep id="employmentDetailStep" title="{i18n>claimFormWizardEmploymentDetails}" >
+						<WizardStep id="employmentDetailStep" title="{i18n>claimFormWizardEmploymentDetails}">
 							<form:SimpleForm id="employementDetailsForm" editable="true" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="4"
 								labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="3" columnsL="2" columnsM="2"
 								singleContainerFullSize="false">
@@ -144,13 +132,9 @@
 									<Label text="{i18n>WizardEmployementDetailsFormLabel_Suburb}"/>
 									<Input type="Text"/>
 									<Label text="{i18n>WizardEmployementDetailsFormLabel_State}"/>
-									<Select>
-										<items>
-											<core:Item text="State 1"/>
-											<core:Item text="State 2"/>
-											<core:Item text="State 3"/>
-										</items>
-									</Select>
+									<ComboBox items="{/StateSet}">
+										<core:Item key="{Statename}" text="{Statename}"/>
+									</ComboBox>
 									<Label text="{i18n>WizardEmployementDetailsFormLabel_Postcode}"/>
 									<Input type="Text"/>
 									<Label text="{i18n>WizardEmployementDetailsFormLabel_NameandContactofEmployer}"/>
@@ -209,7 +193,7 @@
 								</form:content>
 							</form:SimpleForm>
 						</WizardStep>
-						<WizardStep id="workerEarningStep" title="{i18n>claimFormWizardWorkersprimaryearning}" >
+						<WizardStep id="workerEarningStep" title="{i18n>claimFormWizardWorkersprimaryearning}">
 							<form:SimpleForm id="workerEarningForm" editable="true" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="4"
 								labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="3" columnsL="2" columnsM="2"
 								singleContainerFullSize="false">
@@ -229,7 +213,7 @@
 								</form:content>
 							</form:SimpleForm>
 						</WizardStep>
-						<WizardStep id="returntoWorkStep" title="{i18n>claimFormWizardReturntowork}" >
+						<WizardStep id="returntoWorkStep" title="{i18n>claimFormWizardReturntowork}">
 							<form:SimpleForm id="returntoWorkForm" editable="true" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="3" labelSpanM="4"
 								labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="4" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="1" columnsM="1"
 								singleContainerFullSize="false">
@@ -263,7 +247,7 @@
 								</form:content>
 							</form:SimpleForm>
 						</WizardStep>
-						<WizardStep id="workerDecStep" title="{i18n>claimFormWizardWorkerdeclaration}" >
+						<WizardStep id="workerDecStep" title="{i18n>claimFormWizardWorkerdeclaration}">
 							<Text text="{i18n>workerDeclarationParagraph1}" class="sapUiSmallMargin"/>
 							<Text text="{i18n>workerDeclarationParagraph2}" class="sapUiSmallMargin"/>
 							<Text text="{i18n>workerDeclarationParagraph3}" class="sapUiSmallMargin"/>
@@ -286,7 +270,7 @@
 								</form:content>
 							</form:SimpleForm>
 						</WizardStep>
-						<WizardStep id="attachmentStep" title="{i18n>claimFormWizardAttachments}" >
+						<WizardStep id="attachmentStep" title="{i18n>claimFormWizardAttachments}">
 							<UploadCollection id="UploadCollection" multiple="false" change="onChange" fileDeleted="deleteAttachmentListItems"
 								typeMissmatch="onTypeMissmatch" uploadComplete="onUploadComplete" beforeUploadStarts="onBeforeUploadStarts"
 								uploadTerminated="onUploadTerminated" items="{ path: '/items', templateShareable: false }"

@@ -12,6 +12,16 @@
 		"sourceTemplate": {
 			"id": "servicecatalog.connectivityComponent",
 			"version": "0.0.0"
+		},
+		"dataSources": {
+			"VWA_CLAIM_SRV": {
+				"uri": "/sap/opu/odata/cnetohs/VWA_CLAIM_SRV/",
+				"type": "OData",
+				"settings": {
+					"odataVersion": "2.0",
+					"localUri": "localService/VWA_CLAIM_SRV/metadata.xml"
+				}
+			}
 		}
 	},
 	"sap.ui": {
@@ -29,7 +39,10 @@
 			"tablet": true,
 			"phone": true
 		},
-		"supportedThemes": ["sap_hcb", "sap_belize"]
+		"supportedThemes": [
+			"sap_hcb",
+			"sap_belize"
+		]
 	},
 	"sap.ui5": {
 		"rootView": {
@@ -59,15 +72,27 @@
 					"bundleName": "safetysuitezclaimemployee.i18n.i18n"
 				}
 			},
-			"": {
+			"InjuryTabModel": {
 				"type": "sap.ui.model.json.JSONModel",
 				"uri": "model/mockData.json"
+			},
+			"": {
+				"type": "sap.ui.model.odata.v2.ODataModel",
+				"settings": {
+					"defaultOperationMode": "Server",
+					"defaultBindingMode": "OneTime",
+					"defaultCountMode": "Request"
+				},
+				"dataSource": "VWA_CLAIM_SRV",
+				"preload": true
 			}
 		},
 		"resources": {
-			"css": [{
-				"uri": "css/style.css"
-			}]
+			"css": [
+				{
+					"uri": "css/style.css"
+				}
+			]
 		}
 	}
 }

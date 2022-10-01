@@ -1,0 +1,37 @@
+<edmx:Edmx
+    xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx"
+    xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+    xmlns:sap="http://www.sap.com/Protocols/SAPData" Version="1.0">
+    <edmx:DataServices m:DataServiceVersion="2.0">
+        <Schema
+            xmlns="http://schemas.microsoft.com/ado/2008/09/edm" Namespace="CNETOHS.VWA_CLAIM_SRV" xml:lang="en" sap:schema-version="1">
+            <EntityType Name="State" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="Statename"/>
+                    <PropertyRef Name="Country"/>
+                    <PropertyRef Name="Language"/>
+                </Key>
+                <Property Name="Statename" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false" sap:label="REGIO" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Country" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false" sap:label="LAND1" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Language" Type="Edm.String" Nullable="false" MaxLength="2" sap:unicode="false" sap:label="SPRAS" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Description" Type="Edm.String" Nullable="false" MaxLength="20" sap:unicode="false" sap:label="Description" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+            </EntityType>
+            <EntityType Name="WorkDeclarations" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="Clmno"/>
+                </Key>
+                <Property Name="Clmno" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Claim No." sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Surname" Type="Edm.String" Nullable="false" MaxLength="30" sap:unicode="false" sap:label="Surname" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="WdDate" Type="Edm.DateTime" Nullable="false" Precision="7" sap:unicode="false" sap:label="Date" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+            </EntityType>
+            <EntityContainer Name="CNETOHS_VWA_CLAIM_SRV_Entities" m:IsDefaultEntityContainer="true" sap:supported-formats="atom json xlsx">
+                <EntitySet Name="StateSet" EntityType="CNETOHS.VWA_CLAIM_SRV.State" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
+                <EntitySet Name="WorkDeclarationsSet" EntityType="CNETOHS.VWA_CLAIM_SRV.WorkDeclarations" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
+            </EntityContainer>
+            <atom:link
+                xmlns:atom="http://www.w3.org/2005/Atom" rel="self" href="./cnetohs/VWA_CLAIM_SRV/$metadata"/>
+                <atom:link
+                    xmlns:atom="http://www.w3.org/2005/Atom" rel="latest-version" href="./cnetohs/VWA_CLAIM_SRV/$metadata"/>
+                </Schema>
+            </edmx:DataServices>
+        </edmx:Edmx>

@@ -15,7 +15,7 @@
 								<Input type="Text" enabled="false" value="Authority 1"></Input>
 							</form:content>
 						</form:SimpleForm>
-						<Table id="injuryDetailsTable" class="sapUiResponsiveContentPadding" items="{/InjuryDetails}" mode="SingleSelectMaster"
+						<Table id="injuryDetailsTable" class="sapUiResponsiveContentPadding" items="{InjuryTabModel>/InjuryDetails}" mode="SingleSelectMaster"
 							selectionChange="onInjuryTableRowSelect">
 							<columns>
 								<Column>
@@ -37,11 +37,11 @@
 							<items>
 								<ColumnListItem vAlign="Middle">
 									<cells>
-										<Text text="{InjDesc}"/>
-										<Text text="{Date}"/>
-										<Text text="{Body_Part}"/>
-										<Text text="{Side}"/>
-										<Text text="{InjurtType}"/>
+										<Text text="{InjuryTabModel>InjDesc}"/>
+										<Text text="{InjuryTabModel>Date}"/>
+										<Text text="{InjuryTabModel>Body_Part}"/>
+										<Text text="{InjuryTabModel>Side}"/>
+										<Text text="{InjuryTabModel>InjurtType}"/>
 									</cells>
 								</ColumnListItem>
 							</items>
