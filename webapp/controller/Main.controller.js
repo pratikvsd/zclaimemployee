@@ -35,6 +35,7 @@ sap.ui.define([
 		}, //To open create incident app in new window.
 
 		openPrivacyStatementTab: function() {
+			this.ConfidentialColumnText = sap.ui.getCore().byId("injuryDetailsTable").getSelectedItem().getCells()[5].getText();
 			if (!this.PrivacyStatementDialog) {
 				this.PrivacyStatementDialog = sap.ui.xmlfragment("safetysuitezclaimemployee.fragment.PrivacyStatement", this);
 				this.getView().addDependent(this.PrivacyStatementDialog);
@@ -117,6 +118,14 @@ sap.ui.define([
 			sap.ui.getCore().byId("injuryDetailsTable").removeSelections();
 			sap.ui.getCore().byId("injuryTabStartBtn").setEnabled(false);
 			sap.ui.getCore().byId("injuryTabCreateIncBtn").setEnabled(false);
+
+			if(this.ConfidentialColumnText === "Yes"){
+				if(!this.confidentialPopup){
+				this.confidentialPopup = sap.ui.xmlfragment("safetysuitezclaimemployee.fragment.confidentialPopup", this);
+				this.getView().addDependent(this.confidentialPopup);
+				}
+				this.confidentialPopup.open();
+			}
 		}, // To open the main wizard dialog.
 
 		onDialogNextButton: function() {
@@ -180,11 +189,14 @@ sap.ui.define([
 		}, // Code for previous button in the main claim wizard control.
 
 		handleWizardCancel: function(oEvent) {
-			if (this.WizardTitle === "StartClaim") {
+			if(oEvent.getSource().getParent().getId() === "confidentialPopupDialog"){
+				oEvent.getSource().getParent().close();
+			}
+			else if (this.WizardTitle === "StartClaim") {
 				this.claimWizardDialog.close();
 				sap.ui.getCore().byId("claimWizardNextBtn").setVisible(true);
 				sap.ui.getCore().byId("claimSubmitBtn").setEnabled(false);
-				this._oWizard.setCurrentStep("personalDetailStep");
+				sap.ui.getCore().byId("claimFormWizard").setCurrentStep("personalDetailStep");
 				this.WizardTitle = "InjuryTab";
 			} else if (this.WizardTitle === "InjuryTab") {
 				this.InjuryTabDialog.close();
@@ -194,6 +206,7 @@ sap.ui.define([
 
 			} else if (this.WizardTitle === "PrivacyDialog") {
 				this.PrivacyStatementDialog.close();
+				this.WizardTitle = "InjuryTab";
 			}
 
 		}, // General method for closing the popup dialogs. 
@@ -443,6 +456,14 @@ sap.ui.define([
 				  penColor: 'rgb(0, 0, 0)',
 				  penWidth : '1'
 			})*/
+		},
+		
+		onOpenHelpPopup: function(oEvent){
+			if(!this.helpPopup){
+				this.helpPopup = sap.ui.xmlfragment("safetysuitezclaimemployee.fragment.HelpPopup", this);
+				this.getView().addDependent(this.helpPopup);
+			}
+			this.helpPopup.openBy(oEvent.getSource());
 		}
 		
 	});

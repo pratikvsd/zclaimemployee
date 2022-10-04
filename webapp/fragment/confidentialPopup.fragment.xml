@@ -1,0 +1,24 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:f="sap.f" xmlns:form="sap.ui.layout.form" xmlns:core="sap.ui.core">
+	<Dialog id="confidentialPopupDialog" title="{i18n>confidentialPopupTitle}" icon="sap-icon://hint" state="Warning">
+		<content>
+			<form:SimpleForm class="sapUiResponsiveContentPadding" editable="true" layout="ResponsiveGridLayout">
+				<form:content>
+					<VBox>
+					<Text text="{i18n>confidentialPopupContent}"/>
+					<ComboBox>
+						<core:Item text="Approver 1"/>
+						<core:Item text="Approver 2"/>
+						<core:Item text="Approver 3"/>
+					</ComboBox>
+					</VBox>
+				</form:content>
+			</form:SimpleForm>
+		</content>
+		<beginButton>
+			<Button type="Emphasized" icon="sap-icon://accept" text="{i18n>PrivacyStatementAcceptBtn}" press="handleWizardCancel"/>
+		</beginButton>
+		<endButton>
+			<Button type="Reject" icon="sap-icon://sys-cancel-2" text="{i18n>WizardFooterCancelBtn}" press="handleWizardCancel"/>
+		</endButton>
+	</Dialog>
+</core:FragmentDefinition>

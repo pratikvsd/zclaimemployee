@@ -5,21 +5,24 @@
 			"Date" : "01/01/2020",
 			"Body_Part" : "Leg",
 			"Side" : "Left",
-			"InjurtType" : "Burns"
+			"InjurtType" : "Burns",
+			"confidential" : "Yes"
 		},
 		{
 			"InjDesc" : "Mental stress",
 			"Date" : "03/06/2021",
 			"Body_Part" : "Head",
 			"Side" : "N/A",
-			"InjurtType" : "psycology"
+			"InjurtType" : "psycology",
+			"confidential" : "Yes"
 		},
 		{
 			"InjDesc" : "Contact with households wireing or power lines",
 			"Date" : "03/06/2019",
 			"Body_Part" : "Hand",
 			"Side" : "Right",
-			"InjurtType" : "Electrical Injury"
+			"InjurtType" : "Electrical Injury",
+			"confidential" : "No"
 		}
 	],
 	"items": [
@@ -38,11 +41,6 @@
 				{
 					"title": "Uploaded On",
 					"text": "2014-09-03",
-					"active": false
-				},
-				{
-					"title": "File Size",
-					"text": "5",
 					"active": false
 				}
 			]

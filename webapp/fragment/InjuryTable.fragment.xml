@@ -33,6 +33,9 @@
 								<Column demandPopin="true" minScreenWidth="Desktop">
 									<Label design="Bold" text="{i18n>InjuryTableColumnInjuryType}"/>
 								</Column>
+								<Column demandPopin="true" minScreenWidth="Desktop">
+									<Label design="Bold" text="{i18n>InjuryTableColumnConfidential}"/>
+								</Column>
 							</columns>
 							<items>
 								<ColumnListItem vAlign="Middle">
@@ -42,6 +45,7 @@
 										<Text text="{InjuryTabModel>Body_Part}"/>
 										<Text text="{InjuryTabModel>Side}"/>
 										<Text text="{InjuryTabModel>InjurtType}"/>
+										<Text text="{InjuryTabModel>confidential}"/>
 									</cells>
 								</ColumnListItem>
 							</items>

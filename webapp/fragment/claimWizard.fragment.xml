@@ -298,6 +298,7 @@
 								<OverflowToolbarLayoutData priority="NeverOverflow"/>
 							</layoutData>
 						</Button>
+						<core:Icon src="sap-icon://sys-help-2" press="onOpenHelpPopup" color="#0a6ed1"/>
 						<ToolbarSpacer/>
 						<Button id="claimWizardPrevBtn" text="{i18n>WizardFooterPreviousBtn}" icon="sap-icon://navigation-left-arrow" type="Emphasized"
 							visible="false" press="onDialogBackButton">

@@ -1,0 +1,11 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+	<ResponsivePopover id="myPopover" title="Help" class="sapUiContentPadding" placement="Auto">
+		<content>
+			<VBox>
+				<Text text="Help Content 1"/>
+				<Text text="Help Content 2"/>
+				<Text text="Help Content 3"/>
+			</VBox>
+		</content>
+	</ResponsivePopover>
+</core:FragmentDefinition>
