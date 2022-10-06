@@ -4,7 +4,11 @@
 		<content>
 		<Page showHeader="false">
 			<content>
-				<Text class="sapUiLargeMargin" text="{i18n>PrivacyStatement}"/>
+				<Panel class="sapuiTinyMargin">
+					<content>
+						<HTML xmlns="sap.ui.core" content="{i18n>PrivacyStatement}"/>
+					</content>
+				</Panel>	
 			</content>
 			<footer>
 				<OverflowToolbar>

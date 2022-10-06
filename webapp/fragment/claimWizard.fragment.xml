@@ -273,17 +273,17 @@
 						<WizardStep id="attachmentStep" title="{i18n>claimFormWizardAttachments}">
 							<UploadCollection id="UploadCollection" multiple="false" change="onChange" fileDeleted="deleteAttachmentListItems"
 								typeMissmatch="onTypeMissmatch" uploadComplete="onUploadComplete" beforeUploadStarts="onBeforeUploadStarts"
-								uploadTerminated="onUploadTerminated" items="{ path: '/items', templateShareable: false }"
+								uploadTerminated="onUploadTerminated" items="{ path: 'InjuryTabModel>/items', templateShareable: false }"
 								numberOfAttachmentsText="{i18n>WizardAttachmentsListTitle}(1)" uploadEnabled="true">
 								<items>
-									<UploadCollectionItem documentId="{documentId}" fileName="{fileName}" mimeType="{mimeType}" thumbnailUrl="{thumbnailUrl}" url="{url}"
-										enableEdit="true" enableDelete="true" visibleDelete="true" visibleEdit="true" attributes="{path : 'attributes', templateShareable : false}"
-										statuses="{path : 'statuses', templateShareable : false}" selected="{selected}">
+									<UploadCollectionItem documentId="{InjuryTabModel>documentId}" fileName="{InjuryTabModel>fileName}" mimeType="{InjuryTabModel>mimeType}" thumbnailUrl="{InjuryTabModel>thumbnailUrl}" url="{InjuryTabModel>url}"
+										enableEdit="true" enableDelete="true" visibleDelete="true" visibleEdit="true" attributes="{path : 'InjuryTabModel>attributes', templateShareable : false}"
+										statuses="{path : 'InjuryTabModel>statuses', templateShareable : false}" selected="{InjuryTabModel>selected}">
 										<attributes>
-											<ObjectAttribute title="{title}" text="{path : 'text', formatter : '.formatAttribute'}" active="{active}" press="onAttributePress"/>
+											<ObjectAttribute title="{InjuryTabModel>title}" text="{path : 'text', formatter : '.formatAttribute'}" active="{InjuryTabModel>active}" press="onAttributePress"/>
 										</attributes>
 										<statuses>
-											<ObjectStatus title="{title}" text="{text}" state="{state}"/>
+											<ObjectStatus title="{InjuryTabModel>title}" text="{InjuryTabModel>text}" state="{InjuryTabModel>state}"/>
 										</statuses>
 									</UploadCollectionItem>
 								</items>
@@ -293,12 +293,16 @@
 				</content>
 				<footer>
 					<OverflowToolbar>
+						<Button icon="sap-icon://sys-help-2" press="onOpenHelpPopup" type="Emphasized">
+							<layoutData>
+								<OverflowToolbarLayoutData priority="NeverOverflow"/>
+							</layoutData>
+						</Button>
 						<Button text="{i18n>WizardFooterCancelBtn}" icon="sap-icon://sys-cancel-2" type="Reject" press="handleWizardCancel">
 							<layoutData>
 								<OverflowToolbarLayoutData priority="NeverOverflow"/>
 							</layoutData>
 						</Button>
-						<core:Icon src="sap-icon://sys-help-2" press="onOpenHelpPopup" color="#0a6ed1"/>
 						<ToolbarSpacer/>
 						<Button id="claimWizardPrevBtn" text="{i18n>WizardFooterPreviousBtn}" icon="sap-icon://navigation-left-arrow" type="Emphasized"
 							visible="false" press="onDialogBackButton">

@@ -4,7 +4,15 @@
 		<pages>
 			<Page title="{i18n>title}">
 				<content>
-					<Text class="sapUiLargeMargin" text="{i18n>Paragraph}"></Text>
+	<!--				<Text class="sapUiLargeMargin" text="{i18n>Paragraph}"></Text>-->
+				<Panel class="sapuiTinyMargin">
+					<content>
+						<HTML xmlns="sap.ui.core" content="{i18n>AsTheWorkerParagraph}"/>
+						<HTML xmlns="sap.ui.core" content="{i18n>GettingBackToWorkParagraph}"/>
+						<HTML xmlns="sap.ui.core" content="{i18n>HelpCompletingParagraph}"/>
+					</content>
+				</Panel>	
+				
 				</content>
 				<footer>
 					<OverflowToolbar>
