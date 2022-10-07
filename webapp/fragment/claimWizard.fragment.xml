@@ -5,18 +5,18 @@
 			<Page showHeader="false">
 				<content>
 					<Wizard id="claimFormWizard" showNextButton="false" class="sapUiResponsivePadding--header sapUiResponsivePadding--content">
-						<WizardStep complete="onComplete" id="personalDetailStep" title="{i18n>claimFormWizardPersonalDetails}">
+						<WizardStep id="personalDetailStep" title="{i18n>claimFormWizardPersonalDetails}">
 							<form:SimpleForm id="personalDetailsForm" editable="true" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="4"
 								labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="3" columnsL="2" columnsM="2"
 								singleContainerFullSize="false">
 								<form:content>
 									<core:Title text="" level="H5"/>
-									<Label text="{i18n>WizardPersonalDetailFormLabel_Title}"/>
-									<Input enabled="false" value="Mr."/>
-									<Label text="{i18n>WizardPersonalDetailFormLabel_FamilyName}"/>
-									<Input type="Text" enabled="false" value="Family Name 1"/>
-									<Label text="{i18n>WizardPersonalDetailFormLabel_GivenName}"/>
-									<Input type="Text" enabled="false" value="Given Name 1"/>
+									<Label required="true" text="{i18n>WizardPersonalDetailFormLabel_Title}"/>
+									<Input id="titleInput" enabled="false" value="Mr."/>
+									<Label required="true" text="{i18n>WizardPersonalDetailFormLabel_FamilyName}"/>
+									<Input id="familyNameInput" type="Text" enabled="false" value="Family Name 1"/>
+									<Label required="true" text="{i18n>WizardPersonalDetailFormLabel_GivenName}"/>
+									<Input id="givenNameInput" type="Text" enabled="false" value="Given Name 1"/>
 									<Label text="{i18n>WizardPersonalDetailFormLabel_DOB}"/>
 									<Input enabled="false" value="12.03.2000"/>
 									<Label text="{i18n>WizardPersonalDetailFormLabel_Gender}"/>
@@ -79,12 +79,12 @@
 									</ComboBox>
 									<Label text="{i18n>WizardInjuryDetailsFormLabel_Postcode}"/>
 									<Input type="Text"/>
-									<Label text="{i18n>WizardInjuryDetailsFormLabel_InjuryDateTime}"/>
-									<DatePicker/>
+									<Label required="true" text="{i18n>WizardInjuryDetailsFormLabel_InjuryDateTime}"/>
+									<DatePicker id="injuryDatePicker" change="checkInputValidation"/>
 									<Label text="{i18n>WizardInjuryDetailsFormLabel_FirstNoticeInjuryCondition}"/>
 									<DatePicker/>
-									<Label text="{i18n>WizardInjuryDetailsFormLabel_StoppedWorkDateTime}"/>
-									<DatePicker/>
+									<Label required="true" text="{i18n>WizardInjuryDetailsFormLabel_StoppedWorkDateTime}"/>
+									<DatePicker id="stoppedWorkDatePicker" change="checkInputValidation"/>
 									<Label text="{i18n>WizardInjuryDetailsFormLabel_ReportInjuryToEmployee}"/>
 									<DatePicker/>
 									<core:Title text="" level="H5"/>
@@ -145,37 +145,29 @@
 									<DatePicker/>
 									<core:Title text="{i18n>WizardEmployementDetailsSecTitle_PleaseSelectAny}" level="H5"/>
 									<Label text="{i18n>WizardEmployementDetailsFormLabel_ADirectorofMyEmployersCompany}"/>
-									<Select>
-										<items>
-											<core:Item text="No"/>
-											<core:Item text="Yes"/>
-										</items>
-									</Select>
+									<ComboBox>
+										<core:Item text="No"/>
+										<core:Item text="Yes"/>
+									</ComboBox>
 									<Label text="{i18n>WizardEmployementDetailsFormLabel_APartnerofMyEmployerCompany}"/>
-									<Select>
-										<items>
-											<core:Item text="No"/>
-											<core:Item text="Yes"/>
-										</items>
-									</Select>
+									<ComboBox>
+										<core:Item text="No"/>
+										<core:Item text="Yes"/>
+									</ComboBox>
 									<Label text="{i18n>WizardEmployementDetailsFormLabel_ASoleTrader}"/>
-									<Select>
-										<items>
-											<core:Item text="No"/>
-											<core:Item text="Yes"/>
-										</items>
-									</Select>
+									<ComboBox>
+										<core:Item text="No"/>
+										<core:Item text="Yes"/>
+									</ComboBox>
 									<Label text="{i18n>WizardEmployementDetailsFormLabel_ARelativeofMyEmployer}"/>
-									<Select>
-										<items>
-											<core:Item text="No"/>
-											<core:Item text="Yes"/>
-										</items>
-									</Select>
+									<ComboBox>
+										<core:Item text="No"/>
+										<core:Item text="Yes"/>
+									</ComboBox>
 									<Label text="{i18n>WizardEmployementDetailsFormLabel_question1}"/>
 									<Textarea/>
-									<Label text="{i18n>WizardEmployementDetailsFormLabel_FollowingAppiesToYou}"/>
-									<Select>
+									<Label required="true" text="{i18n>WizardEmployementDetailsFormLabel_FollowingAppiesToYou}"/>
+									<ComboBox id="appliesToYouDropdown" change="checkInputValidation">
 										<core:Item text="Full-time"/>
 										<core:Item text="Part-time"/>
 										<core:Item text="Student"/>
@@ -189,7 +181,7 @@
 										<core:Item text="Trainee"/>
 										<core:Item text="Seasonal"/>
 										<core:Item text="Agency Worker"/>
-									</Select>
+									</ComboBox>
 								</form:content>
 							</form:SimpleForm>
 						</WizardStep>
@@ -206,10 +198,10 @@
 									<Input/>
 									<Label text="{i18n>WizardworkerEarningFormLabel_question4}"/>
 									<Input/>
-									<Label text="{i18n>WizardworkerEarningFormLabel_WeeklyShiftAllowence}"/>
-									<Input/>
-									<Label text="{i18n>WizardworkerEarningFormLabel_WeeklyOvertime}"/>
-									<Input/>
+									<Label required="true" text="{i18n>WizardworkerEarningFormLabel_WeeklyShiftAllowence}"/>
+									<Input id="weeklyShiftInput" change="checkInputValidation"/>
+									<Label required="true" text="{i18n>WizardworkerEarningFormLabel_WeeklyOvertime}"/>
+									<Input id="weeklyOvertimeInput"/>
 								</form:content>
 							</form:SimpleForm>
 						</WizardStep>
@@ -266,7 +258,7 @@
 										</HBox>
 									</VBox>
 									<core:Title text="{i18n>WizardworkerDecFormmLabel_Date}"/>
-									<DatePicker/>
+									<DatePicker id="declarationDatePicker" change="checkInputValidation"/>
 								</form:content>
 							</form:SimpleForm>
 						</WizardStep>
@@ -276,11 +268,13 @@
 								uploadTerminated="onUploadTerminated" items="{ path: 'InjuryTabModel>/items', templateShareable: false }"
 								numberOfAttachmentsText="{i18n>WizardAttachmentsListTitle}(1)" uploadEnabled="true">
 								<items>
-									<UploadCollectionItem documentId="{InjuryTabModel>documentId}" fileName="{InjuryTabModel>fileName}" mimeType="{InjuryTabModel>mimeType}" thumbnailUrl="{InjuryTabModel>thumbnailUrl}" url="{InjuryTabModel>url}"
-										enableEdit="true" enableDelete="true" visibleDelete="true" visibleEdit="true" attributes="{path : 'InjuryTabModel>attributes', templateShareable : false}"
+									<UploadCollectionItem documentId="{InjuryTabModel>documentId}" fileName="{InjuryTabModel>fileName}" mimeType="{InjuryTabModel>mimeType}"
+										thumbnailUrl="{InjuryTabModel>thumbnailUrl}" url="{InjuryTabModel>url}" enableEdit="true" enableDelete="true" visibleDelete="true"
+										visibleEdit="true" attributes="{path : 'InjuryTabModel>attributes', templateShareable : false}"
 										statuses="{path : 'InjuryTabModel>statuses', templateShareable : false}" selected="{InjuryTabModel>selected}">
 										<attributes>
-											<ObjectAttribute title="{InjuryTabModel>title}" text="{path : 'text', formatter : '.formatAttribute'}" active="{InjuryTabModel>active}" press="onAttributePress"/>
+											<ObjectAttribute title="{InjuryTabModel>title}" text="{path : 'text', formatter : '.formatAttribute'}" active="{InjuryTabModel>active}"
+												press="onAttributePress"/>
 										</attributes>
 										<statuses>
 											<ObjectStatus title="{InjuryTabModel>title}" text="{InjuryTabModel>text}" state="{InjuryTabModel>state}"/>
