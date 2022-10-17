@@ -10,12 +10,12 @@
 							<form:content>
 								<core:Title text="{i18n>InjuryInputEmployee}"/>
 								<!--<Label text="{i18n>InjuryInputEmployee}"/>-->
-								<Input type="Text" enabled="false" value="Employee 1"></Input>
-								<core:Title text="{i18n>InjuryInputRegulatoryAuthority}"/>
-								<Input type="Text" enabled="false" value="Authority 1"></Input>
+								<Input type="Text" enabled="false" value="{userDetailModel>/Conname} {userDetailModel>/FamilyName}"></Input>
+								<core:Title text="{i18n>InjuryInputRegulatoryLabel}"/>
+								<Input type="Text" enabled="false" value="{i18n>RegulatoryAuthority}"></Input>
 							</form:content>
 						</form:SimpleForm>
-						<Table id="injuryDetailsTable" class="sapUiResponsiveContentPadding" items="{InjuryTabModel>/InjuryDetails}" mode="SingleSelectMaster"
+						<Table id="injuryDetailsTable" class="sapUiResponsiveContentPadding" items="{/injuries}" mode="SingleSelectMaster"
 							selectionChange="onInjuryTableRowSelect">
 							<columns>
 								<Column>
@@ -36,16 +36,22 @@
 								<Column demandPopin="true" minScreenWidth="Desktop">
 									<Label design="Bold" text="{i18n>InjuryTableColumnConfidential}"/>
 								</Column>
+								<Column visible="false">
+								</Column>
+								<Column visible="false">
+								</Column>
 							</columns>
 							<items>
 								<ColumnListItem vAlign="Middle">
 									<cells>
-										<Text text="{InjuryTabModel>InjDesc}"/>
-										<Text text="{InjuryTabModel>Date}"/>
-										<Text text="{InjuryTabModel>Body_Part}"/>
-										<Text text="{InjuryTabModel>Side}"/>
-										<Text text="{InjuryTabModel>InjurtType}"/>
-										<Text text="{InjuryTabModel>confidential}"/>
+										<Text text="{InjuryDes}"/>
+										<Text text="{Date}"/>
+										<Text text="{BodypartDes}"/>
+										<Text text="{Side}"/>
+										<Text text="{InjurytypeDes}"/>
+										<Text text="{Confidential}"/>
+										<Text text="{Injurytype}"/>
+										<Text text="{Rdate}{Rtime}"/>
 									</cells>
 								</ColumnListItem>
 							</items>

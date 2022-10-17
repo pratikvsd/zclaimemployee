@@ -4,10 +4,8 @@
 		<content>
 			<VBox class="sapUiSmallMargin">
 				<Text text="{i18n>confidentialPopupContent}"/>
-				<ComboBox>
-					<core:Item text="Approver 1"/>
-					<core:Item text="Approver 2"/>
-					<core:Item text="Approver 3"/>
+				<ComboBox items="{/Manager_list}">
+					<core:Item text="{ManagerFullName}"/>
 				</ComboBox>
 			</VBox>
 		</content>

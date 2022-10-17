@@ -13,10 +13,28 @@ sap.ui.define([
 		//All the methods have been written in the flow of the application.
 
 		onInit: function() {
+			this.userName = 'JPRAKASH';
 			this.WizardTitle = ""; // This is important flag which is used below to close the dialogs
 		},
-
+		
+		onAfterRendering: function() {
+			var userDetailModel = new sap.ui.model.json.JSONModel();
+			var that = this;
+			this.getView().getModel().read("/UserDetail('" + this.userName + "')", {
+				success: function(oData, oResponse) {
+					if (oData !== undefined || oData !== null) {
+						userDetailModel.setData(oData);
+						that.getView().setModel(userDetailModel, "userDetailModel");
+					}
+				},
+				error: function() {
+					debugger;
+				}
+			});
+		}, // Backend call to read the userdetail information
+		
 		openInjuryTab: function() {
+
 			if (!this.InjuryTabDialog) {
 				this.InjuryTabDialog = sap.ui.xmlfragment("safetysuitezclaimemployee.fragment.InjuryTable", this);
 				this.getView().addDependent(this.InjuryTabDialog);
@@ -36,6 +54,7 @@ sap.ui.define([
 
 		openPrivacyStatementTab: function() {
 			this.ConfidentialColumnText = sap.ui.getCore().byId("injuryDetailsTable").getSelectedItem().getCells()[5].getText();
+			this.InjurTypeNumber = sap.ui.getCore().byId("injuryDetailsTable").getSelectedItem().getCells()[6].getText();
 			if (!this.PrivacyStatementDialog) {
 				this.PrivacyStatementDialog = sap.ui.xmlfragment("safetysuitezclaimemployee.fragment.PrivacyStatement", this);
 				this.getView().addDependent(this.PrivacyStatementDialog);
@@ -114,12 +133,12 @@ sap.ui.define([
 				sap.ui.getCore().byId("claimWizardPrevBtn").setVisible(false);
 			}
 			this.PrivacyStatementDialog.close();
+			//sap.ui.getCore().byId("injuryDateTimePicker").setDateValue(sap.ui.getCore().byId("injuryDetailsTable").getSelectedItem().getCells()[7].getText());
 			this.InjuryTabDialog.close();
 			sap.ui.getCore().byId("injuryDetailsTable").removeSelections();
 			sap.ui.getCore().byId("injuryTabStartBtn").setEnabled(false);
-			sap.ui.getCore().byId("injuryTabCreateIncBtn").setEnabled(false);
 
-			if (this.ConfidentialColumnText === "Yes") {
+			if (this.ConfidentialColumnText === "true") {
 				if (!this.confidentialPopup) {
 					this.confidentialPopup = sap.ui.xmlfragment("safetysuitezclaimemployee.fragment.confidentialPopup", this);
 					this.getView().addDependent(this.confidentialPopup);
@@ -134,16 +153,16 @@ sap.ui.define([
 			var oNextStep = this._oWizard.getSteps()[this._iSelectedStepIndex + 1];
 
 			if (this._oWizard.getCurrentStep() === "personalDetailStep") {
-				var titleInput = sap.ui.getCore().byId("titleInput");
-				var familyNameInput = sap.ui.getCore().byId("familyNameInput");
-				var givenNameInput = sap.ui.getCore().byId("givenNameInput");
+				var InputTitle = sap.ui.getCore().byId("InputTitle");
+				var InputFamilyName = sap.ui.getCore().byId("InputFamilyName");
+				var InputGivenName = sap.ui.getCore().byId("InputGivenName");
 
-				if (titleInput.getValue() === "" || titleInput.getValue() === undefined) {
-					titleInput.setValueState("Error");
-				} else if (familyNameInput.getValue() === "" || familyNameInput.getValue() === undefined) {
-					familyNameInput.setValueState("Error");
-				} else if (givenNameInput.getValue() === "" || givenNameInput.getValue() === undefined) {
-					givenNameInput.setValueState("Error");
+				if (InputTitle.getValue() === "" || InputTitle.getValue() === undefined) {
+					InputTitle.setValueState("Error");
+				} else if (InputFamilyName.getValue() === "" || InputFamilyName.getValue() === undefined) {
+					InputFamilyName.setValueState("Error");
+				} else if (InputGivenName.getValue() === "" || InputGivenName.getValue() === undefined) {
+					InputGivenName.setValueState("Error");
 				} else {
 					if (this._oSelectedStep && !this._oSelectedStep.bLast) {
 						this._oWizard.goToStep(oNextStep, true);
@@ -154,12 +173,12 @@ sap.ui.define([
 				}
 
 			} else if (this._oWizard.getCurrentStep() === "injuryDetailStep") {
-				var injuryDatePicker = sap.ui.getCore().byId("injuryDatePicker");
-				var stoppedWorkDatePicker = sap.ui.getCore().byId("stoppedWorkDatePicker");
-				if (injuryDatePicker.getValue() === "" || injuryDatePicker.getValue() === undefined) {
-					injuryDatePicker.setValueState("Error");
-				} else if (stoppedWorkDatePicker.getValue() === "" || stoppedWorkDatePicker.getValue() === undefined) {
-					stoppedWorkDatePicker.setValueState("Error");
+				var InputInjuryDateTime = sap.ui.getCore().byId("InputInjuryDateTime");
+				var InputStoppedWorkDateTIme = sap.ui.getCore().byId("InputStoppedWorkDateTIme");
+				if (InputInjuryDateTime.getValue() === "" || InputInjuryDateTime.getValue() === undefined) {
+					InputInjuryDateTime.setValueState("Error");
+				} else if (InputStoppedWorkDateTIme.getValue() === "" || InputStoppedWorkDateTIme.getValue() === undefined) {
+					InputStoppedWorkDateTIme.setValueState("Error");
 				} else {
 					if (this._oSelectedStep && !this._oSelectedStep.bLast) {
 						this._oWizard.goToStep(oNextStep, true);
@@ -169,9 +188,9 @@ sap.ui.define([
 					}
 				}
 			} else if (this._oWizard.getCurrentStep() === "employmentDetailStep") {
-				var appliesToYouDropdown = sap.ui.getCore().byId("appliesToYouDropdown");
-				if (appliesToYouDropdown.getValue() === "" || appliesToYouDropdown.getValue() === undefined) {
-					appliesToYouDropdown.setValueState("Error");
+				var InputEmpAppliesToYou = sap.ui.getCore().byId("InputEmpAppliesToYou");
+				if (InputEmpAppliesToYou.getValue() === "" || InputEmpAppliesToYou.getValue() === undefined) {
+					InputEmpAppliesToYou.setValueState("Error");
 				} else {
 					if (this._oSelectedStep && !this._oSelectedStep.bLast) {
 						this._oWizard.goToStep(oNextStep, true);
@@ -181,12 +200,12 @@ sap.ui.define([
 					}
 				}
 			} else if (this._oWizard.getCurrentStep() === "workerEarningStep") {
-				var weeklyShiftInput = sap.ui.getCore().byId("weeklyShiftInput");
-				var weeklyOvertimeInput = sap.ui.getCore().byId("weeklyOvertimeInput");
-				if (weeklyShiftInput.getValue() === "" || weeklyShiftInput.getValue() === undefined) {
-					weeklyShiftInput.setValueState("Error");
-				} else if (weeklyOvertimeInput.getValue() === "" || weeklyOvertimeInput.getValue() === undefined) {
-					weeklyOvertimeInput.setValueState("Error");
+				var InputWorkerWeeklyShiftAllowence = sap.ui.getCore().byId("InputWorkerWeeklyShiftAllowence");
+				var InputWorkerWeeklyOvertime = sap.ui.getCore().byId("InputWorkerWeeklyOvertime");
+				if (InputWorkerWeeklyShiftAllowence.getValue() === "" || InputWorkerWeeklyShiftAllowence.getValue() === undefined) {
+					InputWorkerWeeklyShiftAllowence.setValueState("Error");
+				} else if (InputWorkerWeeklyOvertime.getValue() === "" || InputWorkerWeeklyOvertime.getValue() === undefined) {
+					InputWorkerWeeklyOvertime.setValueState("Error");
 				} else {
 					if (this._oSelectedStep && !this._oSelectedStep.bLast) {
 						this._oWizard.goToStep(oNextStep, true);
@@ -201,9 +220,9 @@ sap.ui.define([
 				var roughString =
 					"ZGF0YTppbWFnZS9qcGVnO2Jhc2U2NCwvOWovNEFBUVNrWkpSZ0FCQVFBQUFRQUJBQUQvNGdJb1NVTkRYMUJTVDBaSlRFVUFBUUVBQUFJWUFBQUFBQVF3QUFCdGJuUnlVa2RDSUZoWldpQUFBQUFBQUFBQUFBQUFBQUJoWTNOd0FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFRQUE5dFlBQVFBQUFBRFRMUUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBbGtaWE5qQUFBQThBQUFBSFJ5V0ZsYUFBQUJaQUFBQUJSbldGbGFBQUFCZUFBQUFCUmlXRmxhQUFBQmpBQUFBQlJ5VkZKREFBQUJvQUFBQUNoblZGSkRBQUFCb0FBQUFDaGlWRkpEQUFBQm9BQUFBQ2gzZEhCMEFBQUJ5QUFBQUJSamNISjBBQUFCM0FBQUFEeHRiSFZqQUFBQUFBQUFBQUVBQUFBTVpXNVZVd0FBQUZnQUFBQWNBSE1BVWdCSEFFSUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFGaFpXaUFBQUFBQUFBQnZvZ0FBT1BVQUFBT1FXRmxhSUFBQUFBQUFBR0taQUFDM2hRQUFHTnBZV1ZvZ0FBQUFBQUFBSktBQUFBK0VBQUMyejNCaGNtRUFBQUFBQUFRQUFBQUNabVlBQVBLbkFBQU5XUUFBRTlBQUFBcGJBQUFBQUFBQUFBQllXVm9nQUFBQUFBQUE5dFlBQVFBQUFBRFRMVzFzZFdNQUFBQUFBQUFBQVFBQUFBeGxibFZUQUFBQUlBQUFBQndBUndCdkFHOEFad0JzQUdVQUlBQkpBRzRBWXdBdUFDQUFNZ0F3QURFQU52L2JBRU1BQXdJQ0FnSUNBd0lDQWdNREF3TUVCZ1FFQkFRRUNBWUdCUVlKQ0FvS0NRZ0pDUW9NRHd3S0N3NExDUWtORVEwT0R4QVFFUkFLREJJVEVoQVREeEFRRVAvYkFFTUJBd01EQkFNRUNBUUVDQkFMQ1FzUUVCQVFFQkFRRUJBUUVCQVFFQkFRRUJBUUVCQVFFQkFRRUJBUUVCQVFFQkFRRUJBUUVCQVFFQkFRRUJBUUVCQVFFUC9BQUJFSUFNZ0F5QU1CSWdBQ0VRRURFUUgveEFBVkFBRUJBQUFBQUFBQUFBQUFBQUFBQUFBQUNmL0VBQlFRQVFBQUFBQUFBQUFBQUFBQUFBQUFBQUQveEFBVUFRRUFBQUFBQUFBQUFBQUFBQUFBQUFBQS84UUFGQkVCQUFBQUFBQUFBQUFBQUFBQUFBQUFBUC9hQUF3REFRQUNFUU1SQUQ4QWxVQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUQvOWs9";
 				this.signString = btoa(encodeURI(canvas.toDataURL('image/jpeg').replace("data:image/jpeg:base64,", "")));
-				var declarationDatePicker = sap.ui.getCore().byId("declarationDatePicker");
-				if (declarationDatePicker.getValue() === "" || declarationDatePicker.getValue() === undefined) {
-					declarationDatePicker.setValueState("Error");
+				var InputDeclarationDate = sap.ui.getCore().byId("InputDeclarationDate");
+				if (InputDeclarationDate.getValue() === "" || InputDeclarationDate.getValue() === undefined) {
+					InputDeclarationDate.setValueState("Error");
 				} else if (roughString === this.signString) {
 					canvas.style.borderColor = "red";
 				} else {
@@ -288,6 +307,13 @@ sap.ui.define([
 		onInjuryTableRowSelect: function(oiEvent) {
 			sap.ui.getCore().byId("injuryTabStartBtn").setEnabled(true);
 			sap.ui.getCore().byId("injuryTabCreateIncBtn").setEnabled(true);
+			var oInjuryDetailModel = new sap.ui.model.json.JSONModel();
+			var path = oiEvent.getParameter('listItem').getBindingContext().getPath();
+			var selectedRow = oiEvent.getSource().getModel().getProperty(path);
+			selectedRow.InjuryTime = selectedRow.Itime.ms;
+			oInjuryDetailModel.setData(selectedRow);
+			this.getView().setModel(oInjuryDetailModel, "oInjuryDetailModel");
+
 		}, // To enable the the button in Injury table on click on row.
 
 		onChange: function(oEvent) {
@@ -362,52 +388,190 @@ sap.ui.define([
 			sap.ui.getCore().byId("UploadCollection").setNumberOfAttachmentsText("Employee Attachments(" + Items.length + ")");
 		}, // To delete the files from the attchment list.
 
-		onPressSubmitButton: function() {
-			if (!this.oApproveDialog) {
-				this.oApproveDialog = new sap.m.Dialog({
-					type: sap.m.DialogType.Message,
-					title: "Confirm",
-					content: new sap.m.Text({
-						text: "Do you want to submit this claim?"
-					}),
-					beginButton: new sap.m.Button({
-						type: sap.m.ButtonType.Emphasized,
-						text: "Submit",
-						press: function() {
-							this.oApproveDialog.close();
-							var sSource = sap.ui.require.toUrl("safetysuitezclaimemployee/Attachment_Sample_Files/2056106_E_20220914.pdf");
-							this.claimWizardDialog.close();
-							sap.ui.getCore().byId("claimWizardNextBtn").setVisible(true);
-							sap.ui.getCore().byId("claimSubmitBtn").setEnabled(false);
-							this._oWizard.setCurrentStep("personalDetailStep");
-							this._pdfViewer = new sap.m.PDFViewer();
-							this.getView().addDependent(this._pdfViewer);
-							this._pdfViewer.setSource(sSource);
-							this._pdfViewer.setTitle("Details of Claim Form");
-							this._pdfViewer.open();
+		onPressSaveButton: function(oEvent) {
+			this._oWizard = sap.ui.getCore().byId("claimFormWizard");
+			var InputTitle = sap.ui.getCore().byId("InputTitle"); 
+			var InputFamilyName =  sap.ui.getCore().byId("InputFamilyName");
+			var InputGivenName = sap.ui.getCore().byId("InputGivenName");
+			var InputDob = sap.ui.getCore().byId("InputDob");
+			var InputGender = sap.ui.getCore().byId("InputGender");
+			var InputAddress = sap.ui.getCore().byId("InputAddress");
+			var InputSuburb = sap.ui.getCore().byId("InputSuburb");
+			var InputPersnlDetlState = sap.ui.getCore().byId("InputPersnlDetlState");
+			var InputPostalAddress = sap.ui.getCore().byId("InputPostalAddress");
+			var InputPostCode = sap.ui.getCore().byId("InputPostCode");
+			var InputMaidenName = sap.ui.getCore().byId("InputMaidenName");
+			var InputMobile = sap.ui.getCore().byId("InputMobile");
+			var InputWork = sap.ui.getCore().byId("InputWork");
+			var InputHome = sap.ui.getCore().byId("InputHome");
+			var InputEmail = sap.ui.getCore().byId("InputEmail");
+			var InputPersnlDetlQue1 = sap.ui.getCore().byId("InputPersnlDetlQue1");
+			var InputPersnlDetlQue2 = sap.ui.getCore().byId("InputPersnlDetlQue2");
+			var InputPersnlDetlQue3 = sap.ui.getCore().byId("InputPersnlDetlQue3");
+			var InputInjuryBodyPart = sap.ui.getCore().byId("InputInjuryBodyPart");
+			var InputInjuryType = sap.ui.getCore().byId("InputInjuryType");
+			var InputHowWereYouInjured = sap.ui.getCore().byId("InputHowWereYouInjured");
+			var InputWhatTaskWhenInjured = sap.ui.getCore().byId("InputWhatTaskWhenInjured");
+			var InputAreaOfWorksite = sap.ui.getCore().byId("InputAreaOfWorksite");
+			var InputAddressofIncident = sap.ui.getCore().byId("InputAddressofIncident");
+			var InputInjurySuburb = sap.ui.getCore().byId("InputInjurySuburb");
+			var InputInjuryState = sap.ui.getCore().byId("InputInjuryState");
+			var InputInjuryPostcode = sap.ui.getCore().byId("InputInjuryPostcode");
+			var InputInjuryDateTime = sap.ui.getCore().byId("InputInjuryDateTime");
+			var InputWhenNoticeInjury = sap.ui.getCore().byId("InputWhenNoticeInjury");
+			var InputStoppedWorkDateTIme = sap.ui.getCore().byId("InputStoppedWorkDateTIme");
+			var InputInjuryReportDateTime = sap.ui.getCore().byId("InputInjuryReportDateTime");
+			var InputEmployerResponsible = sap.ui.getCore().byId("InputEmployerResponsible");
+			var InputActivityOnTimeOfInjury = sap.ui.getCore().byId("InputActivityOnTimeOfInjury");
+			var InputInjuryPoliceStationReported = sap.ui.getCore().byId("InputInjuryPoliceStationReported");
+			var InputRegNoOfVehicles = sap.ui.getCore().byId("InputRegNoOfVehicles");
+			var InputVehicleState = sap.ui.getCore().byId("InputVehicleState");
+			var InputInjuryQue1 = sap.ui.getCore().byId("InputInjuryQue1");
+			var InputInjuryQue2 = sap.ui.getCore().byId("InputInjuryQue2");
+			var InputInjuryQue3 = sap.ui.getCore().byId("InputInjuryQue3");
+			var InputInjuryQue4 = sap.ui.getCore().byId("InputInjuryQue4");
+			var InputInjuryQue5 = sap.ui.getCore().byId("InputInjuryQue5");
+			var InputEmpNameOfOrg = sap.ui.getCore().byId("InputEmpNameOfOrg");
+			var InputEmpStreetAdd = sap.ui.getCore().byId("InputEmpStreetAdd");
+			var InputEmpOrgState = sap.ui.getCore().byId("InputEmpOrgState");
+			var InputEmpOrgSuburb = sap.ui.getCore().byId("InputEmpOrgSuburb");
+			var InputEmpOrgPostcode = sap.ui.getCore().byId("InputEmpOrgPostcode");
+			var InputEmpNameAndContact = sap.ui.getCore().byId("InputEmpNameAndContact");
+			var InputEmpOccupation = sap.ui.getCore().byId("InputEmpOccupation");
+			var InputEmpStartWorkingDate = sap.ui.getCore().byId("InputEmpStartWorkingDate");
+			var InputEmpDirectorofMyEmployersComp = sap.ui.getCore().byId("InputEmpDirectorofMyEmployersComp");
+			var InputEmpPartnerinMyEmployersComp = sap.ui.getCore().byId("InputEmpPartnerinMyEmployersComp");
+			var InputEmpSoleTrader = sap.ui.getCore().byId("InputEmpSoleTrader");
+			var InputEmpRelativeofMyEmployer = sap.ui.getCore().byId("InputEmpRelativeofMyEmployer");
+			var InputEmpOtherEmployment = sap.ui.getCore().byId("InputEmpOtherEmployment");
+			var InputEmpAppliesToYou = sap.ui.getCore().byId("InputEmpAppliesToYou");
+			var InputWorkerQue1 = sap.ui.getCore().byId("InputWorkerQue1");
+			var InputWorkerQue2 = sap.ui.getCore().byId("InputWorkerQue2");
+			var InputWorkerQue3 = sap.ui.getCore().byId("InputWorkerQue3");
+			var InputWorkerQue4 = sap.ui.getCore().byId("InputWorkerQue4");
+			var InputWorkerWeeklyShiftAllowence = sap.ui.getCore().byId("InputWorkerWeeklyShiftAllowence");
+			var InputWorkerWeeklyOvertime = sap.ui.getCore().byId("InputWorkerWeeklyOvertime");
+			var InputReturToWorkQue1 = sap.ui.getCore().byId("InputReturToWorkQue1");
+			var InputReturToWorkDate = sap.ui.getCore().byId("InputReturToWorkDate");
+			var InputReturToWorkDuties = sap.ui.getCore().byId("InputReturToWorkDuties");
+			var InputReturToWorkOue2 = sap.ui.getCore().byId("InputReturToWorkOue2");
+			var InputReturToWorkOue3 = sap.ui.getCore().byId("InputReturToWorkOue3");
+			var InputReturToWorkOue4 = sap.ui.getCore().byId("InputReturToWorkOue4");
+			var InputReturToWorkClaimFormSubmissionDate = sap.ui.getCore().byId("InputReturToWorkClaimFormSubmissionDate");
+			var InputReturToWorkOue5 = sap.ui.getCore().byId("InputReturToWorkOue5");
+			var InputReturToWorkMedicalCertificateSubmissionDate = sap.ui.getCore().byId("InputReturToWorkMedicalCertificateSubmissionDate");
+			var InputDeclarationDate = sap.ui.getCore().byId("InputDeclarationDate");
+			
+			if (oEvent.getSource().getText() === "Save as draft") {
+				if(this._oWizard.getCurrentStep() === "personalDetailStep"){
+					var payload = {
+						"InputTitle" : InputTitle.getValue(),
+						"InputFamilyName" : InputFamilyName.getValue(),
+						"InputGivenName" : InputGivenName.getValue(),
+						"InputDob" : InputDob.getValue(),
+						"InputGender" : InputGender.getValue(),
+						"InputAddress" : InputAddress.getValue(),
+						"InputSuburb" : InputSuburb.getValue(),
+						"InputPersnlDetlState" : InputPersnlDetlState(),
+						"InputPostalAddress" : InputPostalAddress.getValue(),
+						"InputPostCode" : InputPostCode.getValue(),
+						"InputMaidenName" : InputMaidenName.getValue(),
+						"InputMobile" : InputMobile.getValue(),
+						"InputWork" : InputWork.getValue(),
+						"InputHome" : InputHome.getValue(),
+						"InputEmail" : InputEmail.getValue(),
+						"InputPersnlDetlQue1" : InputPersnlDetlQue1.getValue(),
+						"InputPersnlDetlQue2" : InputPersnlDetlQue2.getValue(),
+						"InputPersnlDetlQue3" : InputPersnlDetlQue3.getValue()
+					};
+				}
+				else if(this._oWizard.getCurrentStep() === "injuryDetailStep"){
+					var payload = {
+						"InputTitle" : InputTitle.getValue(),
+						"InputFamilyName" : InputFamilyName.getValue(),
+						"InputGivenName" : InputGivenName.getValue(),
+						"InputDob" : InputDob.getValue(),
+						"InputGender" : InputGender.getValue(),
+						"InputAddress" : InputAddress.getValue(),
+						"InputSuburb" : InputSuburb.getValue(),
+						"InputPersnlDetlState" : InputPersnlDetlState(),
+						"InputPostalAddress" : InputPostalAddress.getValue(),
+						"InputPostCode" : InputPostCode.getValue(),
+						"InputMaidenName" : InputMaidenName.getValue(),
+						"InputMobile" : InputMobile.getValue(),
+						"InputWork" : InputWork.getValue(),
+						"InputHome" : InputHome.getValue(),
+						"InputEmail" : InputEmail.getValue(),
+						"InputPersnlDetlQue1" : InputPersnlDetlQue1.getValue(),
+						"InputPersnlDetlQue2" : InputPersnlDetlQue2.getValue(),
+						"InputPersnlDetlQue3" : InputPersnlDetlQue3.getValue(),
+						"InputInjuryBodyPart" : InputInjuryBodyPart.getValue(),
+						"InputInjuryType" : InputInjuryType.getValue(),
+						"InputHowWereYouInjured" : InputHowWereYouInjured.getValue(),
+						"InputWhatTaskWhenInjured" : InputWhatTaskWhenInjured.getValue(),
+						"InputAreaOfWorksite" : InputAreaOfWorksite.getValue(),
+						"InputAddressofIncident" : InputAddressofIncident.getValue(),
+						"InputInjurySuburb" : InputInjurySuburb.getValue(),
+						"InputInjuryState" : InputInjuryState.getValue(),
+						"InputInjuryPostcode" : InputInjuryPostcode.getValue(),
+						"InputInjuryDateTime" : InputInjuryDateTime.getValue(),
+						"InputWhenNoticeInjury" : InputWhenNoticeInjury.getValue(),
+						"InputStoppedWorkDateTIme" : InputStoppedWorkDateTIme.getValue(),
+						"InputInjuryReportDateTime" : InputInjuryReportDateTime.getValue(),
+						"InputEmployerResponsible" : InputEmployerResponsible.getValue(),
+						"InputActivityOnTimeOfInjury" : InputActivityOnTimeOfInjury.getValue(),
+					};
+				}
+				else if(this._oWizard.getCurrentStep() === "employmentDetailStep"){}
+				else if(this._oWizard.getCurrentStep() === "workerEarningStep"){}
+				else if(this._oWizard.getCurrentStep() === "returntoWorkStep"){}
+				else if(this._oWizard.getCurrentStep() === "workerDecStep"){}
+				else if(this._oWizard.getCurrentStep() === "attachmentStep"){}
+				sap.m.MessageToast.show("Claim has been saved as draft");
+				this.claimWizardDialog.close();
+				sap.ui.getCore().byId("claimWizardNextBtn").setVisible(true);
+				sap.ui.getCore().byId("claimSubmitBtn").setEnabled(false);
+				this._oWizard.setCurrentStep("personalDetailStep");
+			} else {
+				if (!this.oApproveDialog) {
+					this.oApproveDialog = new sap.m.Dialog({
+						type: sap.m.DialogType.Message,
+						title: "Confirm",
+						content: new sap.m.Text({
+							text: "Do you want to submit this claim?"
+						}),
+						beginButton: new sap.m.Button({
+							type: sap.m.ButtonType.Emphasized,
+							text: "Submit",
+							press: function() {
+								this.oApproveDialog.close();
+								var sSource = sap.ui.require.toUrl("safetysuitezclaimemployee/Attachment_Sample_Files/2056106_E_20220914.pdf");
+								this.claimWizardDialog.close();
+								sap.ui.getCore().byId("claimWizardNextBtn").setVisible(true);
+								sap.ui.getCore().byId("claimSubmitBtn").setEnabled(false);
+								this._oWizard.setCurrentStep("personalDetailStep");
+								this._pdfViewer = new sap.m.PDFViewer();
+								this.getView().addDependent(this._pdfViewer);
+								this._pdfViewer.setSource(sSource);
+								this._pdfViewer.setTitle("Details of Claim Form");
+								this._pdfViewer.open();
 
-						}.bind(this)
-					}),
-					endButton: new sap.m.Button({
-						text: "Cancel",
-						press: function() {
-							this.oApproveDialog.close();
-						}.bind(this)
-					})
-				});
+							}.bind(this)
+						}),
+						endButton: new sap.m.Button({
+							text: "Cancel",
+							press: function() {
+								this.oApproveDialog.close();
+							}.bind(this)
+						})
+					});
+				}
+
+				this.oApproveDialog.open();
+
 			}
 
-			this.oApproveDialog.open();
-
-		}, // Submit button functionality
-
-		onPressSaveDraftButton: function() {
-			sap.m.MessageToast.show("Claim has been saved as draft");
-			this.claimWizardDialog.close();
-			sap.ui.getCore().byId("claimWizardNextBtn").setVisible(true);
-			sap.ui.getCore().byId("claimSubmitBtn").setEnabled(false);
-			this._oWizard.setCurrentStep("personalDetailStep");
-		}, // Save as draft button functionality
+		}, // Submit and save as draft button functionality
 
 		onSign: function() {
 			var canvas = document.getElementById("signature-pad");
