@@ -175,7 +175,7 @@ sap.ui.define([
 				var base_image = new Image();
 				base_image.src = this.getView().getModel("userDetailModel").getData().Signature;
 				base_image.onload = function() {
-					context.drawImage(base_image, 0, 0);
+					context.drawImage(base_image,0,0);
 				};
 
 				if (this.getView().getModel("userDetailModel").getData().TabNo !== undefined) {
