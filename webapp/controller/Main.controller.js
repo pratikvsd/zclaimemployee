@@ -30,7 +30,7 @@ sap.ui.define([
 						oData.EmpMcertDate = new Date(oData.EmpMcertDate);
 						oData.IDate = new Date(oData.IDate);
 						oData.Rdate = new Date(oData.Rdate);
-						oData.RtwEmpDate = new Date(oData.Rdate);
+						oData.RtwEmpDate = new Date(oData.RtwEmpDate);
 						oData.Sdate = new Date(oData.Sdate);
 						oData.Startdate = new Date(oData.Startdate);
 						oData.Signature = atob(oData.Signature);
@@ -178,8 +178,15 @@ sap.ui.define([
 				var base_image = new Image();
 				base_image.src = this.getView().getModel("userDetailModel").getData().Signature;
 				base_image.onload = function() {
-					context.drawImage(base_image,0,0);
+					context.fillStyle = "#fff";
+					context.strokeStyle = "#444";
+					context.lineWidth = 1.5;
+					context.lineCap = "round";
+					context.fillRect(0, 0, c.width, c.height);
+					context.drawImage(base_image, 0, 0);
 				};
+				
+				
 
 				if (this.getView().getModel("userDetailModel").getData().TabNo !== undefined) {
 					if (this.getView().getModel("userDetailModel").getData().TabNo === "1") {
@@ -269,7 +276,7 @@ sap.ui.define([
 				}
 			} else if (this._oWizard.getCurrentStep() === "employmentDetailStep") {
 				var InputEmpAppliesToYou = sap.ui.getCore().byId("InputEmpAppliesToYou");
-				if (InputEmpAppliesToYou.getValue() === "" || InputEmpAppliesToYou.getValue() === undefined) {
+				if (InputEmpAppliesToYou.getSelectedKey() === "" || InputEmpAppliesToYou.getSelectedKey() === undefined) {
 					InputEmpAppliesToYou.setValueState("Error");
 				} else {
 					if (this._oSelectedStep && !this._oSelectedStep.bLast) {
@@ -297,7 +304,7 @@ sap.ui.define([
 			} else if (this._oWizard.getCurrentStep() === "workerDecStep") {
 				var canvas = document.getElementById("signature-pad");
 				// roughString variable is used for storing the string of blank signature box and its used below for validation.
-				 this.roughString =
+				this.roughString =
 					"ZGF0YTppbWFnZS9qcGVnO2Jhc2U2NCwvOWovNEFBUVNrWkpSZ0FCQVFBQUFRQUJBQUQvNGdJb1NVTkRYMUJTVDBaSlRFVUFBUUVBQUFJWUFBQUFBQVF3QUFCdGJuUnlVa2RDSUZoWldpQUFBQUFBQUFBQUFBQUFBQUJoWTNOd0FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFRQUE5dFlBQVFBQUFBRFRMUUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBbGtaWE5qQUFBQThBQUFBSFJ5V0ZsYUFBQUJaQUFBQUJSbldGbGFBQUFCZUFBQUFCUmlXRmxhQUFBQmpBQUFBQlJ5VkZKREFBQUJvQUFBQUNoblZGSkRBQUFCb0FBQUFDaGlWRkpEQUFBQm9BQUFBQ2gzZEhCMEFBQUJ5QUFBQUJSamNISjBBQUFCM0FBQUFEeHRiSFZqQUFBQUFBQUFBQUVBQUFBTVpXNVZVd0FBQUZnQUFBQWNBSE1BVWdCSEFFSUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFGaFpXaUFBQUFBQUFBQnZvZ0FBT1BVQUFBT1FXRmxhSUFBQUFBQUFBR0taQUFDM2hRQUFHTnBZV1ZvZ0FBQUFBQUFBSktBQUFBK0VBQUMyejNCaGNtRUFBQUFBQUFRQUFBQUNabVlBQVBLbkFBQU5XUUFBRTlBQUFBcGJBQUFBQUFBQUFBQllXVm9nQUFBQUFBQUE5dFlBQVFBQUFBRFRMVzFzZFdNQUFBQUFBQUFBQVFBQUFBeGxibFZUQUFBQUlBQUFBQndBUndCdkFHOEFad0JzQUdVQUlBQkpBRzRBWXdBdUFDQUFNZ0F3QURFQU52L2JBRU1BQXdJQ0FnSUNBd0lDQWdNREF3TUVCZ1FFQkFRRUNBWUdCUVlKQ0FvS0NRZ0pDUW9NRHd3S0N3NExDUWtORVEwT0R4QVFFUkFLREJJVEVoQVREeEFRRVAvYkFFTUJBd01EQkFNRUNBUUVDQkFMQ1FzUUVCQVFFQkFRRUJBUUVCQVFFQkFRRUJBUUVCQVFFQkFRRUJBUUVCQVFFQkFRRUJBUUVCQVFFQkFRRUJBUUVCQVFFUC9BQUJFSUFNZ0F5QU1CSWdBQ0VRRURFUUgveEFBVkFBRUJBQUFBQUFBQUFBQUFBQUFBQUFBQUNmL0VBQlFRQVFBQUFBQUFBQUFBQUFBQUFBQUFBQUQveEFBVUFRRUFBQUFBQUFBQUFBQUFBQUFBQUFBQS84UUFGQkVCQUFBQUFBQUFBQUFBQUFBQUFBQUFBUC9hQUF3REFRQUNFUU1SQUQ4QWxVQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUQvOWs9";
 				this.signString = btoa(encodeURI(canvas.toDataURL('image/jpeg').replace("data:image/jpeg:base64,", "")));
 				var InputDeclarationDate = sap.ui.getCore().byId("InputDeclarationDate");
@@ -544,7 +551,7 @@ sap.ui.define([
 			var InputDeclarationDate = sap.ui.getCore().byId("InputDeclarationDate");
 			var canvas = document.getElementById("signature-pad");
 			this.signString = btoa(encodeURI(canvas.toDataURL('image/jpeg').replace("data:image/jpeg:base64,", "")));
-			if (this.roughString === this.signString){
+			if (this.roughString === this.signString) {
 				this.signString = "";
 			}
 			if (InputInjuryDateTime.getDateValue() !== undefined || InputInjuryDateTime.getDateValue() !== null) {
@@ -594,10 +601,9 @@ sap.ui.define([
 					var tabNo = "7";
 				}
 				if (this.getView().getModel("oInjuryDetailModel")) {
-					if(this.getView().getModel("userDetailModel").getData().UserId === undefined){
+					if (this.getView().getModel("userDetailModel").getData().UserId === undefined) {
 						this.getView().getModel("userDetailModel").getData().UserId = this.getView().getModel("userDetailModel").getData().Userid;
-					}
-					else if(this.getView().getModel("userDetailModel").getData().Userid === undefined) {
+					} else if (this.getView().getModel("userDetailModel").getData().Userid === undefined) {
 						this.getView().getModel("userDetailModel").getData().Userid = this.getView().getModel("userDetailModel").getData().UserId;
 					}
 					var payload = {
@@ -681,9 +687,9 @@ sap.ui.define([
 						"NrtwIdp": InputReturToWorkOue4.getValue(),
 						"EmpClmfrmDate": !EmpClmfrmDate ? "" : EmpClmfrmDate,
 						"EmpClmForm": InputReturToWorkOue5.getSelectedKey(),
-						"EmpMcertDate": !EmpMcertDate ? "" : EmpClmfrmDate,
+						"EmpMcertDate": !EmpMcertDate ? "" : EmpMcertDate,
 						"DDate": !dDate ? "" : dDate,
-						"Signature": this.signString 
+						"Signature": this.signString
 					};
 				} else {
 					var payload = {
@@ -767,7 +773,7 @@ sap.ui.define([
 						"NrtwIdp": InputReturToWorkOue4.getValue(),
 						"EmpClmfrmDate": !EmpClmfrmDate ? "" : EmpClmfrmDate,
 						"EmpClmForm": InputReturToWorkOue5.getSelectedKey(),
-						"EmpMcertDate": !EmpMcertDate ? "" : EmpClmfrmDate,
+						"EmpMcertDate": !EmpMcertDate ? "" : EmpMcertDate,
 						"DDate": !dDate ? "" : dDate,
 						"Signature": this.signString
 					};
@@ -969,7 +975,7 @@ sap.ui.define([
 										"EmpClmForm": InputReturToWorkOue5.getSelectedKey(),
 										"EmpMcertDate": !EmpMcertDate ? "" : EmpMcertDate,
 										"DDate": !dDate ? "" : dDate,
-										"Signature": this.signString 
+										"Signature": this.signString
 									};
 								}
 
@@ -1019,11 +1025,11 @@ sap.ui.define([
 			var context = canvas.getContext("2d");
 			canvas.width = 200;
 			canvas.height = 200;
-			//context.fillStyle = "#fff";
+			context.fillStyle = "#fff";
 			context.strokeStyle = "#444";
 			context.lineWidth = 1.5;
 			context.lineCap = "round";
-			//context.fillRect(0, 0, canvas.width, canvas.height);
+			context.fillRect(0, 0, canvas.width, canvas.height);
 			var disableSave = true;
 			var pixels = [];
 			var cpixels = [];

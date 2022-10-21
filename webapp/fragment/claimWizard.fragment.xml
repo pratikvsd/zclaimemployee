@@ -26,7 +26,7 @@
 									<Label text="{i18n>WizardPersonalDetailFormLabel_Suburb}"/>
 									<Input id="InputSuburb" type="Text" value="{userDetailModel>/Suburb}"/>
 									<Label text="{i18n>WizardPersonalDetailFormLabel_State}"/>
-									<Select id="InputPersnlDetlState" items="{/StateSet}" selectedKey="{userDetailModel>/stateId}" >
+									<Select id="InputPersnlDetlState" items="{/StateSet}" selectedKey="{userDetailModel>/StateId}" >
 										<core:Item key="{Statename}" text="{Description}"/>
 									</Select>
 									<Label text="{i18n>WizardPersonalDetailFormLabel_PAFC}"/>
