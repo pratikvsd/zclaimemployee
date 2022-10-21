@@ -26,7 +26,7 @@
 									<Label text="{i18n>WizardPersonalDetailFormLabel_Suburb}"/>
 									<Input id="InputSuburb" type="Text" value="{userDetailModel>/Suburb}"/>
 									<Label text="{i18n>WizardPersonalDetailFormLabel_State}"/>
-									<ComboBox id="InputPersnlDetlState" items="{/StateSet}">
+									<ComboBox id="InputPersnlDetlState" items="{/StateSet}" value="{userDetailModel>/StateId}">
 										<core:Item key="{Statename}" text="{Description}"/>
 									</ComboBox>
 									<Label text="{i18n>WizardPersonalDetailFormLabel_PAFC}"/>
@@ -74,7 +74,7 @@
 									<Label text="{i18n>WizardInjuryDetailsFormLabel_Suburb}"/>
 									<Input id="InputInjurySuburb" type="Text" value="{userDetailModel>/SuburbInj}"/>
 									<Label text="{i18n>WizardInjuryDetailsFormLabel_State}"/>
-									<ComboBox id="InputInjuryState" items="{/StateSet}">
+									<ComboBox id="InputInjuryState" items="{/StateSet}" selectedKey="{userDetailModel>/State}">
 										<core:Item key="{Statename}" text="{Description}"/>
 									</ComboBox>
 									<Label text="{i18n>WizardInjuryDetailsFormLabel_Postcode}"/>
@@ -97,7 +97,7 @@
 									<Label text="{i18n>WizardInjuryDetailsFormLabel_ResposibleManAtWorkplace}"/>
 									<Input id="InputEmployerResponsible" type="Text" value="{userDetailModel>/Name1}"/>
 									<Label text="{i18n>WizardInjuryDetailsFormLabel_ActivityonTimeofInjury}"/>
-									<ComboBox id="InputActivityOnTimeOfInjury">
+									<ComboBox id="InputActivityOnTimeOfInjury" selectedKey="{userDetailModel>/Activitywheninjureddesc}">
 										<core:Item text="Activity 1"/>
 										<core:Item text="Activity 2"/>
 										<core:Item text="Activity 3"/>
@@ -107,7 +107,7 @@
 									<Label text="{i18n>WizardInjuryDetailsFormLabel_RegNoOfInvoledVehicle}"/>
 									<Input id="InputRegNoOfVehicles" type="Text" value="{userDetailModel>/InjRegNo}"/>
 									<Label text="{i18n>WizardInjuryDetailsFormLabel_State}"/>
-									<ComboBox id="InputVehicleState" items="{/StateSet}">
+									<ComboBox id="InputVehicleState" items="{/StateSet}" selectedKey="{userDetailModel>/InjState}">
 										<core:Item key="{Statename}" text="{Description}"/>
 									</ComboBox>
 									<Label text="{i18n>WizardInjuryDetailsFormLabel_question1}"/>
@@ -136,7 +136,7 @@
 									<Label text="{i18n>WizardEmployementDetailsFormLabel_Suburb}"/>
 									<Input id="InputEmpOrgSuburb" type="Text" value="{userDetailModel>/EmpSuburb}"/>
 									<Label text="{i18n>WizardEmployementDetailsFormLabel_State}"/>
-									<ComboBox id="InputEmpOrgState" items="{/StateSet}">
+									<ComboBox id="InputEmpOrgState" items="{/StateSet}" selectedKey="{userDetailModel>/Employerstate}">
 										<core:Item key="{Statename}" text="{Description}"/>
 									</ComboBox>
 									<Label text="{i18n>WizardEmployementDetailsFormLabel_Postcode}"/>
@@ -147,45 +147,45 @@
 									<Input id="InputEmpOccupation" type="Text" value="{userDetailModel>/Usualoccupation}"/>
 									<Label text="{i18n>WizardEmployementDetailsFormLabel_WhenStartWorkingForEmployer}"/>
 									<DatePicker id="InputEmpStartWorkingDate"
-										value="{path:'userDetailModel>/startDate', type:'sap.ui.model.type.Date', formatOptions: { style: 'medium', strictParsing: true}}"/>
+										value="{path:'userDetailModel>/Startdate', type:'sap.ui.model.type.Date', formatOptions: { style: 'medium', strictParsing: true}}"/>
 									<core:Title text="{i18n>WizardEmployementDetailsSecTitle_PleaseSelectAny}" level="H5"/>
 									<Label text="{i18n>WizardEmployementDetailsFormLabel_ADirectorofMyEmployersCompany}"/>
-									<ComboBox id="InputEmpDirectorofMyEmployersComp">
-										<core:Item text="No"/>
-										<core:Item text="Yes"/>
+									<ComboBox id="InputEmpDirectorofMyEmployersComp" selectedKey="{userDetailModel>/Directorcheck}">
+										<core:Item text="No" key="No"/>
+										<core:Item text="Yes"  key="Yes"/>
 									</ComboBox>
 									<Label text="{i18n>WizardEmployementDetailsFormLabel_APartnerofMyEmployerCompany}"/>
-									<ComboBox id="InputEmpPartnerinMyEmployersComp">
-										<core:Item text="No"/>
-										<core:Item text="Yes"/>
+									<ComboBox id="InputEmpPartnerinMyEmployersComp" selectedKey="{userDetailModel>/Partnercheck}">
+										<core:Item text="No"  key="No"/>
+										<core:Item text="Yes" key="Yes"/>
 									</ComboBox>
 									<Label text="{i18n>WizardEmployementDetailsFormLabel_ASoleTrader}"/>
-									<ComboBox id="InputEmpSoleTrader">
-										<core:Item text="No"/>
-										<core:Item text="Yes"/>
+									<ComboBox id="InputEmpSoleTrader" selectedKey="{userDetailModel>/Soletradercheck}">
+										<core:Item text="No"  key="No"/>
+										<core:Item text="Yes" key="Yes"/>
 									</ComboBox>
 									<Label text="{i18n>WizardEmployementDetailsFormLabel_ARelativeofMyEmployer}"/>
-									<ComboBox id="InputEmpRelativeofMyEmployer">
-										<core:Item text="No"/>
-										<core:Item text="Yes"/>
+									<ComboBox id="InputEmpRelativeofMyEmployer" selectedKey="{userDetailModel>/Relativecheck}">
+										<core:Item text="No"  key="No"/>
+										<core:Item text="Yes" key="Yes"/>
 									</ComboBox>
 									<Label text="{i18n>WizardEmployementDetailsFormLabel_question1}"/>
 									<Textarea id="InputEmpOtherEmployment" value="{userDetailModel>/OtherEmployement}"/>
 									<Label required="true" text="{i18n>WizardEmployementDetailsFormLabel_FollowingAppiesToYou}"/>
-									<ComboBox id="InputEmpAppliesToYou" change="checkInputValidation">
-										<core:Item text="Full-time" key="full"/>
-										<core:Item text="Part-time"/>
-										<core:Item text="Student"/>
-										<core:Item text="Apprentice"/>
-										<core:Item text="Volunteer"/>
-										<core:Item text="Jockey"/>
-										<core:Item text="Contractor"/>
-										<core:Item text="Parmanent"/>
-										<core:Item text="Temporary"/>
-										<core:Item text="Contract"/>
-										<core:Item text="Trainee"/>
-										<core:Item text="Seasonal"/>
-										<core:Item text="Agency Worker"/>
+									<ComboBox id="InputEmpAppliesToYou" selectedKey="{userDetailModel>/Reasontoapply}" change="checkInputValidation">
+										<core:Item text="Full-time" key="Full-time"/>
+										<core:Item text="Part-time" key="Part-time"/>
+										<core:Item text="Student" key="Student"/>
+										<core:Item text="Apprentice" key="Apprentice"/>
+										<core:Item text="Volunteer" key="Volunteer"/>
+										<core:Item text="Jockey" key="Jockey"/>
+										<core:Item text="Contractor" key="Contractor"/>
+										<core:Item text="Parmanent" key="Parmanent"/>
+										<core:Item text="Temporary" key="Temporary"/>
+										<core:Item text="Contract" key="Contract"/>
+										<core:Item text="Trainee" key="Trainee"/>
+										<core:Item text="Seasonal" key="Seasonal"/>
+										<core:Item text="Agency Worker" key="Agency Worker"/>
 									</ComboBox>
 								</form:content>
 							</form:SimpleForm>
@@ -221,7 +221,7 @@
 									<DatePicker id="InputReturToWorkDate"
 										value="{path:'userDetailModel>/RtwEmpDate', type:'sap.ui.model.type.Date', formatOptions: { style: 'medium', strictParsing: true}}"/>
 									<Label text="{i18n>WizardreturntoWorkFormLabel_question2}"/>
-									<ComboBox id="InputReturToWorkOue2">
+									<ComboBox id="InputReturToWorkOue2" selectedKey="{userDetailModel>/Duties}">
 										<core:Item text="Full" key="Full"/>
 										<core:Item text="Suitable/Modified" key="Suitable/Modified"/>
 									</ComboBox>
@@ -233,7 +233,7 @@
 									<DatePicker id="InputReturToWorkClaimFormSubmissionDate"
 										value="{path:'userDetailModel>/EmpClmfrmDate', type:'sap.ui.model.type.Date', formatOptions: { style: 'medium', strictParsing: true}}"/>
 									<Label text="{i18n>WizardreturntoWorkFormLabel_question5}"/>
-									<ComboBox id="InputReturToWorkOue5">
+									<ComboBox id="InputReturToWorkOue5" selectedKey="{userDetailModel>/EmpClmForm}">
 										<core:Item text="Hand Delivery" key="Hand Delivery"/>
 										<core:Item text="By Post" key="By Post"/>
 									</ComboBox>

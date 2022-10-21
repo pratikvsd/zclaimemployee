@@ -36,6 +36,7 @@ sap.ui.define([
 						oData.Signature = atob(oData.Signature);
 						userDetailModel.setData(oData);
 						that.getView().setModel(userDetailModel, "userDetailModel");
+						sap.ui.getCore().setModel(userDetailModel, "userDetailModel");
 						if (!that.DraftDialog) {
 							that.DraftDialog = sap.ui.xmlfragment("safetysuitezclaimemployee.fragment.saveAsDraft", that);
 							that.getView().addDependent(that.DraftDialog);
@@ -49,6 +50,7 @@ sap.ui.define([
 							if (oData !== undefined || oData !== null) {
 								userDetailModel.setData(oData);
 								that.getView().setModel(userDetailModel, "userDetailModel");
+								sap.ui.getCore().setModel(userDetailModel, "userDetailModel");
 							}
 						},
 						error: function(error) {
@@ -591,6 +593,12 @@ sap.ui.define([
 					var tabNo = "7";
 				}
 				if (this.getView().getModel("oInjuryDetailModel")) {
+					if(this.getView().getModel("userDetailModel").getData().UserId === undefined){
+						this.getView().getModel("userDetailModel").getData().UserId = this.getView().getModel("userDetailModel").getData().Userid;
+					}
+					else if(this.getView().getModel("userDetailModel").getData().Userid === undefined) {
+						this.getView().getModel("userDetailModel").getData().Userid = this.getView().getModel("userDetailModel").getData().UserId;
+					}
 					var payload = {
 						"Confidential": !this.ConfidentialColumnText ? false : true,
 						"Draft": true,
