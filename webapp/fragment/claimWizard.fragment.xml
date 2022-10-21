@@ -18,8 +18,7 @@
 									<Label required="true" text="{i18n>WizardPersonalDetailFormLabel_GivenName}"/>
 									<Input id="InputGivenName" type="Text" enabled="false" value="{userDetailModel>/Conname}"/>
 									<Label text="{i18n>WizardPersonalDetailFormLabel_DOB}"/>
-									<Input id="InputDob" enabled="false"
-										value="{path:'userDetailModel>/Dateofbirth', type:'sap.ui.model.type.DateTime', formatOptions: { style: 'medium', strictParsing: true}}"/>
+									<Input id="InputDob" enabled="false" value="{userDetailModel>/Dateofbirth}"/>
 									<Label text="{i18n>WizardPersonalDetailFormLabel_Gender}"/>
 									<Input id="InputGender" enabled="false" value="{userDetailModel>/Gender}"/>
 									<Label text="{i18n>WizardPersonalDetailFormLabel_Address}"/>
@@ -27,30 +26,30 @@
 									<Label text="{i18n>WizardPersonalDetailFormLabel_Suburb}"/>
 									<Input id="InputSuburb" type="Text" value="{userDetailModel>/Suburb}"/>
 									<Label text="{i18n>WizardPersonalDetailFormLabel_State}"/>
-									<ComboBox id="InputPersnlDetlState" items="{/StateSet}" selectedKey="{userDetailModel>/State}">
+									<ComboBox id="InputPersnlDetlState" items="{/StateSet}">
 										<core:Item key="{Statename}" text="{Description}"/>
 									</ComboBox>
 									<Label text="{i18n>WizardPersonalDetailFormLabel_PAFC}"/>
-									<TextArea id="InputPostalAddress"/>
+									<TextArea id="InputPostalAddress" value="{userDetailModel>/PostalAddress}"/>
 									<Label text="{i18n>WizardPersonalDetailFormLabel_Postcode}"/>
 									<Input id="InputPostCode" type="Text" value="{userDetailModel>/Pstlz}"/>
 									<core:Title text="{i18n>WizardPersonalDetailFormContactDetails}" level="H5"/>
 									<Label text="{i18n>WizardOtherknownorpreviouslegalnamesegMaidenname}"/>
-									<TextArea id="InputMaidenName"/>
+									<TextArea id="InputMaidenName" value="{userDetailModel>/Othnam}"/>
 									<Label text="{i18n>WizardPersonalDetailFormLabel_Mobile}"/>
 									<Input id="InputMobile" type="Number" value="{userDetailModel>/Mobile}"/>
-									<Label  text="{i18n>WizardPersonalDetailFormLabel_Work}"/>
+									<Label text="{i18n>WizardPersonalDetailFormLabel_Work}"/>
 									<Input id="InputWork" type="Number" value="{userDetailModel>/WorkN}"/>
 									<Label text="{i18n>WizardPersonalDetailFormLabel_Home}"/>
-									<Input id="InputHome" type="Number" value="{userDetailModel>/Home}"/>
+									<Input id="InputHome" value="{userDetailModel>/Home}"/>
 									<Label text="{i18n>WizardPersonalDetailFormLabel_Email}"/>
 									<Input id="InputEmail" type="Text" value="{userDetailModel>/Email}"/>
 									<Label text="{i18n>WizardPersonalDetailFormLabel_question1}"/>
-									<TextArea id="InputPersnlDetlQue1"/>
+									<TextArea id="InputPersnlDetlQue1" value="{userDetailModel>/Agree}"/>
 									<Label text="{i18n>WizardPersonalDetailFormLabel_question2}"/>
-									<Input id="InputPersnlDetlQue2" type="Text"/>
+									<Input id="InputPersnlDetlQue2" type="Text" value="{userDetailModel>/Language}"/>
 									<Label text="{i18n>WizardPersonalDetailFormLabel_question3}"/>
-									<Input id="InputPersnlDetlQue3" type="Text"/>
+									<Input id="InputPersnlDetlQue3" type="Text" value="{userDetailModel>/Communication}"/>
 								</form:content>
 							</form:SimpleForm>
 						</WizardStep>
@@ -61,61 +60,66 @@
 								<form:content>
 									<core:Title text="" level="H5"/>
 									<Label text="{i18n>WizardInjuryDetailsFormLabel_InjuryBodyPart}"/>
-									<Input id="InputInjuryBodyPart" enabled="false" value="Hand"/>
+									<Input id="InputInjuryBodyPart" enabled="false" value="{userDetailModel>/BodypartDes}"/>
 									<Label text="{i18n>WizardInjuryDetailsFormLabel_InjuryType}"/>
-									<Input id="InputInjuryType" type="Text" enabled="false" value="Electrical Injury"/>
+									<Input id="InputInjuryType" type="Text" enabled="false" value="{userDetailModel>/InjurytypeDes}"/>
 									<Label text="{i18n>WizardInjuryDetailsFormLabel_HowInjured}"/>
-									<Textarea id="InputHowWereYouInjured"/>
+									<Textarea id="InputHowWereYouInjured" value="{userDetailModel>/InjHapDes}"/>
 									<Label text="{i18n>WizardInjuryDetailsFormLabel_TaskWhenInjured}"/>
-									<Textarea id="InputWhatTaskWhenInjured"/>
+									<Textarea id="InputWhatTaskWhenInjured" value="{userDetailModel>/InjDoingDes}"/>
 									<Label text="{i18n>WizardInjuryDetailsFormLabel_WorkLocationWhenInjured}"/>
-									<Textarea id="InputAreaOfWorksite"/>
+									<Textarea id="InputAreaOfWorksite" value="{userDetailModel>/InjWorkSide}"/>
 									<Label text="{i18n>WizardInjuryDetailsFormLabel_AddressOfInjury}"/>
-									<Textarea id="InputAddressofIncident"/>
+									<Textarea id="InputAddressofIncident" value="{userDetailModel>/AddressInj}"/>
 									<Label text="{i18n>WizardInjuryDetailsFormLabel_Suburb}"/>
-									<Input id="InputInjurySuburb" type="Text"/>
+									<Input id="InputInjurySuburb" type="Text" value="{userDetailModel>/SuburbInj}"/>
 									<Label text="{i18n>WizardInjuryDetailsFormLabel_State}"/>
 									<ComboBox id="InputInjuryState" items="{/StateSet}">
-										<core:Item key="{Statename}" text="{Statename}"/>
+										<core:Item key="{Statename}" text="{Description}"/>
 									</ComboBox>
 									<Label text="{i18n>WizardInjuryDetailsFormLabel_Postcode}"/>
-									<Input id="InputInjuryPostcode" type="Text"/>
+									<Input id="InputInjuryPostcode" type="Text" value="{userDetailModel>/PostcodeInj}"/>
 									<Label required="true" text="{i18n>WizardInjuryDetailsFormLabel_InjuryDateTime}"/>
 									<DateTimePicker id="InputInjuryDateTime"
-										value="{path:'', type:'sap.ui.model.type.DateTime', formatOptions: { style: 'medium', strictParsing: true}}" change="checkInputValidation"/>
+										value="{path:'userDetailModel>/IDate', type:'sap.ui.model.type.DateTime', formatOptions: { style: 'medium', strictParsing: true}}"
+										change="checkInputValidation"/>
 									<Label text="{i18n>WizardInjuryDetailsFormLabel_FirstNoticeInjuryCondition}"/>
-									<DateTimePicker id="InputWhenNoticeInjury"/>
+									<DateTimePicker id="InputWhenNoticeInjury"
+										value="{path:'userDetailModel>/Crdate', type:'sap.ui.model.type.DateTime', formatOptions: { style: 'medium', strictParsing: true}}"/>
 									<Label required="true" text="{i18n>WizardInjuryDetailsFormLabel_StoppedWorkDateTime}"/>
-									<DateTimePicker id="InputStoppedWorkDateTIme" change="checkInputValidation"/>
+									<DateTimePicker id="InputStoppedWorkDateTIme"
+										value="{path:'userDetailModel>/Sdate', type:'sap.ui.model.type.DateTime', formatOptions: { style: 'medium', strictParsing: true}}"
+										change="checkInputValidation"/>
 									<Label text="{i18n>WizardInjuryDetailsFormLabel_ReportInjuryToEmployee}"/>
-									<DateTimePicker id="InputInjuryReportDateTime"/>
+									<DateTimePicker id="InputInjuryReportDateTime"
+										value="{path:'userDetailModel>/Rdate', type:'sap.ui.model.type.DateTime', formatOptions: { style: 'medium', strictParsing: true}}"/>
 									<core:Title text="" level="H5"/>
 									<Label text="{i18n>WizardInjuryDetailsFormLabel_ResposibleManAtWorkplace}"/>
-									<Input id="InputEmployerResponsible" type="Text"/>
+									<Input id="InputEmployerResponsible" type="Text" value="{userDetailModel>/Name1}"/>
 									<Label text="{i18n>WizardInjuryDetailsFormLabel_ActivityonTimeofInjury}"/>
 									<ComboBox id="InputActivityOnTimeOfInjury">
-											<core:Item text="Activity 1"/>
-											<core:Item text="Activity 2"/>
-											<core:Item text="Activity 3"/>
+										<core:Item text="Activity 1"/>
+										<core:Item text="Activity 2"/>
+										<core:Item text="Activity 3"/>
 									</ComboBox>
 									<Label text="{i18n>WizardInjuryDetailsFormLabel_AccidentReportingStation}"/>
-									<Input id="InputInjuryPoliceStationReported" type="Text"/>
+									<Input id="InputInjuryPoliceStationReported" type="Text" value="{userDetailModel>/InjPsName}"/>
 									<Label text="{i18n>WizardInjuryDetailsFormLabel_RegNoOfInvoledVehicle}"/>
-									<Input id="InputRegNoOfVehicles" type="Text"/>
+									<Input id="InputRegNoOfVehicles" type="Text" value="{userDetailModel>/InjRegNo}"/>
 									<Label text="{i18n>WizardInjuryDetailsFormLabel_State}"/>
 									<ComboBox id="InputVehicleState" items="{/StateSet}">
-										<core:Item key="{Statename}" text="{Statename}"/>
+										<core:Item key="{Statename}" text="{Description}"/>
 									</ComboBox>
 									<Label text="{i18n>WizardInjuryDetailsFormLabel_question1}"/>
-									<Textarea id="InputInjuryQue1"/>
+									<Textarea id="InputInjuryQue1" value="{userDetailModel>/InjCondMs}"/>
 									<Label text="{i18n>WizardInjuryDetailsFormLabel_question2}"/>
-									<Textarea id="InputInjuryQue2"/>
+									<Textarea id="InputInjuryQue2" value="{userDetailModel>/InjNamePersonR}"/>
 									<Label text="{i18n>WizardInjuryDetailsFormLabel_question3}"/>
-									<Textarea id="InputInjuryQue3"/>
+									<Textarea id="InputInjuryQue3" value="{userDetailModel>/InjNrepoDelay}"/>
 									<Label text="{i18n>WizardInjuryDetailsFormLabel_question4}"/>
-									<Textarea id="InputInjuryQue4"/>
+									<Textarea id="InputInjuryQue4" value="{userDetailModel>/InjWitDet}"/>
 									<Label text="{i18n>WizardInjuryDetailsFormLabel_question5}"/>
-									<Textarea id="InputInjuryQue5"/>
+									<Textarea id="InputInjuryQue5" value="{userDetailModel>/InjPrev}"/>
 								</form:content>
 							</form:SimpleForm>
 						</WizardStep>
@@ -126,23 +130,24 @@
 								<form:content>
 									<core:Title text="" level="H5"/>
 									<Label text="{i18n>WizardEmployementDetailsFormLabel_NameofOrg}"/>
-									<Input id="InputEmpNameOfOrg"/>
+									<Input id="InputEmpNameOfOrg" value="{userDetailModel>/Orgname}"/>
 									<Label text="{i18n>WizardEmployementDetailsFormLabel_AddressOfUsualWorkplace}"/>
-									<Textarea id="InputEmpStreetAdd"/>
+									<Textarea id="InputEmpStreetAdd" value="{userDetailModel>/EmpStreetAdd}"/>
 									<Label text="{i18n>WizardEmployementDetailsFormLabel_Suburb}"/>
-									<Input id="InputEmpOrgSuburb" type="Text"/>
+									<Input id="InputEmpOrgSuburb" type="Text" value="{userDetailModel>/EmpSuburb}"/>
 									<Label text="{i18n>WizardEmployementDetailsFormLabel_State}"/>
 									<ComboBox id="InputEmpOrgState" items="{/StateSet}">
-										<core:Item key="{Statename}" text="{Statename}"/>
+										<core:Item key="{Statename}" text="{Description}"/>
 									</ComboBox>
 									<Label text="{i18n>WizardEmployementDetailsFormLabel_Postcode}"/>
-									<Input id="InputEmpOrgPostcode" type="Text"/>
+									<Input id="InputEmpOrgPostcode" type="Text" value="{userDetailModel>/EmpPostcode}"/>
 									<Label text="{i18n>WizardEmployementDetailsFormLabel_NameandContactofEmployer}"/>
-									<Textarea id="InputEmpNameAndContact"/>
+									<Textarea id="InputEmpNameAndContact" value="{userDetailModel>/Employercontact}"/>
 									<Label text="{i18n>WizardEmployementDetailsFormLabel_UsualOccupation}"/>
-									<Input id="InputEmpOccupation" type="Text"/>
+									<Input id="InputEmpOccupation" type="Text" value="{userDetailModel>/Usualoccupation}"/>
 									<Label text="{i18n>WizardEmployementDetailsFormLabel_WhenStartWorkingForEmployer}"/>
-									<DatePicker id="InputEmpStartWorkingDate"/>
+									<DatePicker id="InputEmpStartWorkingDate"
+										value="{path:'userDetailModel>/startDate', type:'sap.ui.model.type.Date', formatOptions: { style: 'medium', strictParsing: true}}"/>
 									<core:Title text="{i18n>WizardEmployementDetailsSecTitle_PleaseSelectAny}" level="H5"/>
 									<Label text="{i18n>WizardEmployementDetailsFormLabel_ADirectorofMyEmployersCompany}"/>
 									<ComboBox id="InputEmpDirectorofMyEmployersComp">
@@ -165,7 +170,7 @@
 										<core:Item text="Yes"/>
 									</ComboBox>
 									<Label text="{i18n>WizardEmployementDetailsFormLabel_question1}"/>
-									<Textarea id="InputEmpOtherEmployment"/>
+									<Textarea id="InputEmpOtherEmployment" value="{userDetailModel>/OtherEmployement}"/>
 									<Label required="true" text="{i18n>WizardEmployementDetailsFormLabel_FollowingAppiesToYou}"/>
 									<ComboBox id="InputEmpAppliesToYou" change="checkInputValidation">
 										<core:Item text="Full-time" key="full"/>
@@ -191,17 +196,17 @@
 								singleContainerFullSize="false">
 								<form:content>
 									<Label text="{i18n>WizardworkerEarningFormLabel_question1}"/>
-									<Input id="InputWorkerQue1"/>
+									<Input id="InputWorkerQue1" value="{userDetailModel>/WpeStdHrsWeek}"/>
 									<Label text="{i18n>WizardworkerEarningFormLabel_question2}"/>
-									<Textarea id="InputWorkerQue2"/>
+									<Textarea id="InputWorkerQue2" value="{userDetailModel>/WpeUsuWeeklyHrs}"/>
 									<Label text="{i18n>WizardworkerEarningFormLabel_question3}"/>
-									<Input id="InputWorkerQue3"/>
+									<Input id="InputWorkerQue3" value="{userDetailModel>/WpePreTaxHrRt}"/>
 									<Label text="{i18n>WizardworkerEarningFormLabel_question4}"/>
-									<Input id="InputWorkerQue4"/>
+									<Input id="InputWorkerQue4" value="{userDetailModel>/WpePtaxWkEr}"/>
 									<Label required="true" text="{i18n>WizardworkerEarningFormLabel_WeeklyShiftAllowence}"/>
-									<Input id="InputWorkerWeeklyShiftAllowence" change="checkInputValidation"/>
+									<Input id="InputWorkerWeeklyShiftAllowence" value="{userDetailModel>/WpeWklyAllw}" change="checkInputValidation"/>
 									<Label required="true" text="{i18n>WizardworkerEarningFormLabel_WeeklyOvertime}"/>
-									<Input id="InputWorkerWeeklyOvertime" change="checkInputValidation"/>
+									<Input id="InputWorkerWeeklyOvertime" value="{userDetailModel>/WpeWostd}" change="checkInputValidation"/>
 								</form:content>
 							</form:SimpleForm>
 						</WizardStep>
@@ -211,32 +216,30 @@
 								singleContainerFullSize="false">
 								<form:content>
 									<Label text="{i18n>WizardreturntoWorkFormLabel_question1}"/>
-									<Textarea id="InputReturToWorkQue1"/>
+									<Textarea id="InputReturToWorkQue1" value="{userDetailModel>/RtwDetails}"/>
 									<Label text="{i18n>WizardreturntoWorkFormLabel_ReturnDateQuestion}"/>
-									<DateTimePicker id="InputReturToWorkDate"
-										value="{path:'oInjuryDetailModel>/Rdate', type:'sap.ui.model.type.DateTime', formatOptions: { style: 'medium', strictParsing: true}}"/>
+									<DatePicker id="InputReturToWorkDate"
+										value="{path:'userDetailModel>/RtwEmpDate', type:'sap.ui.model.type.Date', formatOptions: { style: 'medium', strictParsing: true}}"/>
 									<Label text="{i18n>WizardreturntoWorkFormLabel_question2}"/>
-									<Select id="InputReturToWorkOue2">
-										<items>
-											<core:Item text="Full"/>
-											<core:Item text="Suitable/Modified"/>
-										</items>
-									</Select>
+									<ComboBox id="InputReturToWorkOue2">
+										<core:Item text="Full" key="Full"/>
+										<core:Item text="Suitable/Modified" key="Suitable/Modified"/>
+									</ComboBox>
 									<Label text="{i18n>WizardreturntoWorkFormLabel_question3}"/>
-									<Textarea id="InputReturToWorkOue3"/>
+									<Textarea id="InputReturToWorkOue3" value="{userDetailModel>/RtwNempDetails}"/>
 									<Label text="{i18n>WizardreturntoWorkFormLabel_question4}"/>
-									<Textarea id="InputReturToWorkOue4"/>
+									<Textarea id="InputReturToWorkOue4" value="{userDetailModel>/NrtwIdp}"/>
 									<Label text="{i18n>WizardreturntoWorkFormLabel_ClaimFormSubmissionDate}"/>
-									<DatePicker id="InputReturToWorkClaimFormSubmissionDate"/>
+									<DatePicker id="InputReturToWorkClaimFormSubmissionDate"
+										value="{path:'userDetailModel>/EmpClmfrmDate', type:'sap.ui.model.type.Date', formatOptions: { style: 'medium', strictParsing: true}}"/>
 									<Label text="{i18n>WizardreturntoWorkFormLabel_question5}"/>
-									<Select id="InputReturToWorkOue5">
-										<items>
-											<core:Item text="Hand Delivery"/>
-											<core:Item text="By Post"/>
-										</items>
-									</Select>
+									<ComboBox id="InputReturToWorkOue5">
+										<core:Item text="Hand Delivery" key="Hand Delivery"/>
+										<core:Item text="By Post" key="By Post"/>
+									</ComboBox>
 									<Label text="{i18n>WizardreturntoWorkFormLabel_MedicalCertificateSubmissionDate}"/>
-									<DatePicker id="InputReturToWorkMedicalCertificateSubmissionDate"/>
+									<DatePicker id="InputReturToWorkMedicalCertificateSubmissionDate"
+										value="{path:'userDetailModel>/EmpMcertDate', type:'sap.ui.model.type.Date', formatOptions: { style: 'medium', strictParsing: true}}"/>
 								</form:content>
 							</form:SimpleForm>
 						</WizardStep>
@@ -251,15 +254,14 @@
 									<core:Title text="{i18n>WizardworkerDecFormmLabel_WorkerSignature}"/>
 									<VBox>
 										<core:HTML id="html"></core:HTML>
-										<Text text="{i18n>SignatureInfoText}"/>
 										<HBox>
-											<Button id="SignatureBtn" text="Sign" press="onSign" class="sapUiTinyMarginEnd"/>
-											<!--<Button id="Save" text="Save" press="onSaveImage" class="sapUiTinyMarginEnd"></Button>-->
+											<!--<Button id="SignatureBtn" text="Sign" visible="false" press="onSign" class="sapUiTinyMarginEnd"/>-->
 											<Button id="clear" text="Clear" press="clearButton"></Button>
 										</HBox>
 									</VBox>
 									<core:Title text="{i18n>WizardworkerDecFormmLabel_Date}"/>
-									<DatePicker id="InputDeclarationDate" change="checkInputValidation"/>
+									<DatePicker id="InputDeclarationDate" change="checkInputValidation"
+										value="{path:'userDetailModel>/dDate', type:'sap.ui.model.type.Date', formatOptions: { style: 'medium', strictParsing: true}}"/>
 								</form:content>
 							</form:SimpleForm>
 						</WizardStep>
@@ -300,7 +302,7 @@
 						</Button>
 						<ToolbarSpacer/>
 						<Button id="claimWizardPrevBtn" text="{i18n>WizardFooterPreviousBtn}" icon="sap-icon://navigation-left-arrow" type="Emphasized"
-							visible="false" press="onDialogBackButton">
+							press="onDialogBackButton">
 							<layoutData>
 								<OverflowToolbarLayoutData priority="NeverOverflow"/>
 							</layoutData>
@@ -315,7 +317,7 @@
 							<menu>
 								<Menu>
 									<MenuItem id="claimSubmitBtn" enabled="false" text="{i18n>WizardFooterSubmitBtn}" icon="sap-icon://accept" press="onPressSaveButton"/>
-									<MenuItem text="{i18n>WizardFooterSaveasdraftBtn}" icon="sap-icon://open-folder" press="onPressSaveButton"/>
+									<MenuItem id="claimDraftBtn" text="{i18n>WizardFooterSaveasdraftBtn}" icon="sap-icon://open-folder" press="onPressSaveButton"/>
 								</Menu>
 							</menu>
 						</MenuButton>

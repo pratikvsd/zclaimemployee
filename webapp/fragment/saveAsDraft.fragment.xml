@@ -1,0 +1,14 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:f="sap.f" xmlns:form="sap.ui.layout.form" xmlns:u="sap.ui.unified"
+	xmlns:layout="sap.ui.layout">
+	<Dialog title="Draft Record">
+		<content>
+			<Text class="sapUiLargeMargin" text="You have one record pending in save as draft. Would youl like to continue as draft?"/>
+		</content>
+		<beginButton>
+			<Button id="contAsDraftBtn" type="Emphasized" text="Continue as draft" press="openClaimWizard"/>
+		</beginButton>
+		<endButton>
+			<Button id="startNewClaimBtn" type="Emphasized" text="Start new claim" press="openInjuryTab"/>
+		</endButton>
+	</Dialog>
+</core:FragmentDefinition>

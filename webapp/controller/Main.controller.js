@@ -16,23 +16,57 @@ sap.ui.define([
 			this.userName = 'JPRAKASH';
 			this.WizardTitle = ""; // This is important flag which is used below to close the dialogs
 		},
-		
+
 		onAfterRendering: function() {
 			var userDetailModel = new sap.ui.model.json.JSONModel();
 			var that = this;
-			this.getView().getModel().read("/UserDetail('" + this.userName + "')", {
+			this.getView().getModel().read("/SaveDraftDetailsSet('" + this.userName + "')", {
 				success: function(oData, oResponse) {
 					if (oData !== undefined || oData !== null) {
+						oData.Crdate = new Date(oData.Crdate);
+						oData.DDate = new Date(oData.DDate);
+						oData.ElDateClmfrm = new Date(oData.ElDateClmfrm);
+						oData.EmpClmfrmDate = new Date(oData.EmpClmfrmDate);
+						oData.EmpMcertDate = new Date(oData.EmpMcertDate);
+						oData.IDate = new Date(oData.IDate);
+						oData.Rdate = new Date(oData.Rdate);
+						oData.RtwEmpDate = new Date(oData.Rdate);
+						oData.Sdate = new Date(oData.Sdate);
+						oData.Startdate = new Date(oData.Startdate);
+						oData.Signature = atob(oData.Signature);
 						userDetailModel.setData(oData);
 						that.getView().setModel(userDetailModel, "userDetailModel");
+						if (!that.DraftDialog) {
+							that.DraftDialog = sap.ui.xmlfragment("safetysuitezclaimemployee.fragment.saveAsDraft", that);
+							that.getView().addDependent(that.DraftDialog);
+						}
+						that.DraftDialog.open();
 					}
 				},
-				error: function() {
-					debugger;
+				error: function(error) {
+					that.getView().getModel().read("/UserDetail('" + that.userName + "')", {
+						success: function(oData, oResponse) {
+							if (oData !== undefined || oData !== null) {
+								userDetailModel.setData(oData);
+								that.getView().setModel(userDetailModel, "userDetailModel");
+							}
+						},
+						error: function(error) {
+							console.log(error);
+						}
+					});
 				}
 			});
+			this.getView().getModel().read("/injuries", {
+				success: function(oData, oResponse) {
+					var injuryTableData = new sap.ui.model.json.JSONModel(oData);
+					that.getView().setModel(injuryTableData, "injuryTableData");
+				},
+				error: function(error) {}
+			});
+
 		}, // Backend call to read the userdetail information
-		
+
 		openInjuryTab: function() {
 
 			if (!this.InjuryTabDialog) {
@@ -42,6 +76,9 @@ sap.ui.define([
 			}
 			this.WizardTitle = "InjuryTab";
 			this.InjuryTabDialog.open();
+			if (this.DraftDialog) {
+				this.DraftDialog.close();
+			}
 
 		}, // To open the initial injury Table dialog.
 
@@ -69,10 +106,14 @@ sap.ui.define([
 			if (!this.claimWizardDialog) {
 				this.claimWizardDialog = sap.ui.xmlfragment("safetysuitezclaimemployee.fragment.claimWizard", this);
 				this.getView().addDependent(this.claimWizardDialog);
+				sap.ui.getCore().byId("html").setContent("<canvas id='signature-pad' width='200px' height='200px' class='signature-pad'></canvas>");
 
 			}
 			this.WizardTitle = "StartClaim";
 			this.claimWizardDialog.open();
+			if (this.DraftDialog) {
+				this.DraftDialog.close();
+			}
 			sap.ui.getCore().byId("claimFormWizard")._getProgressNavigator().ontap = function() {};
 			sap.ui.getCore().byId("claimFormWizard")._scrollHandler = function() {
 				if (this._scrollLocked) {
@@ -127,18 +168,54 @@ sap.ui.define([
 					}
 				}
 			};
+			this.onSign();
+			if (oEvent.getSource().getId() === "contAsDraftBtn") {
+				var c = document.getElementById("signature-pad");
+				var context = c.getContext("2d");
+				var base_image = new Image();
+				base_image.src = this.getView().getModel("userDetailModel").getData().Signature;
+				base_image.onload = function() {
+					context.drawImage(base_image, 0, 0);
+				};
 
-			sap.ui.getCore().byId("html").setContent("<canvas id='signature-pad' width='200px' height='200px' class='signature-pad'></canvas>");
+				if (this.getView().getModel("userDetailModel").getData().TabNo !== undefined) {
+					if (this.getView().getModel("userDetailModel").getData().TabNo === "1") {
+						sap.ui.getCore().byId("claimFormWizard").setCurrentStep("personalDetailStep");
+					}
+					if (this.getView().getModel("userDetailModel").getData().TabNo === "2") {
+						sap.ui.getCore().byId("claimFormWizard").setCurrentStep("injuryDetailStep");
+					}
+					if (this.getView().getModel("userDetailModel").getData().TabNo === "3") {
+						sap.ui.getCore().byId("claimFormWizard").setCurrentStep("employmentDetailStep");
+					}
+					if (this.getView().getModel("userDetailModel").getData().TabNo === "4") {
+						sap.ui.getCore().byId("claimFormWizard").setCurrentStep("workerEarningStep");
+					}
+					if (this.getView().getModel("userDetailModel").getData().TabNo === "5") {
+						sap.ui.getCore().byId("claimFormWizard").setCurrentStep("returntoWorkStep");
+					}
+					if (this.getView().getModel("userDetailModel").getData().TabNo === "6") {
+						sap.ui.getCore().byId("claimFormWizard").setCurrentStep("workerDecStep");
+					}
+					if (this.getView().getModel("userDetailModel").getData().TabNo === "7") {
+						sap.ui.getCore().byId("claimFormWizard").setCurrentStep("attachmentStep");
+					}
+				}
+			}
 			if (sap.ui.getCore().byId("claimFormWizard").getCurrentStep() === "personalDetailStep") {
 				sap.ui.getCore().byId("claimWizardPrevBtn").setVisible(false);
 			}
-			this.PrivacyStatementDialog.close();
-			//sap.ui.getCore().byId("injuryDateTimePicker").setDateValue(sap.ui.getCore().byId("injuryDetailsTable").getSelectedItem().getCells()[7].getText());
-			this.InjuryTabDialog.close();
-			sap.ui.getCore().byId("injuryDetailsTable").removeSelections();
-			sap.ui.getCore().byId("injuryTabStartBtn").setEnabled(false);
+			if (this.PrivacyStatementDialog) {
+				this.PrivacyStatementDialog.close();
+			}
 
-			if (this.ConfidentialColumnText === "true") {
+			if (this.InjuryTabDialog) {
+				sap.ui.getCore().byId("injuryDetailsTable").removeSelections();
+				sap.ui.getCore().byId("injuryTabStartBtn").setEnabled(false);
+				this.InjuryTabDialog.close();
+			}
+
+			if (this.ConfidentialColumnText === "Yes") {
 				if (!this.confidentialPopup) {
 					this.confidentialPopup = sap.ui.xmlfragment("safetysuitezclaimemployee.fragment.confidentialPopup", this);
 					this.getView().addDependent(this.confidentialPopup);
@@ -217,13 +294,13 @@ sap.ui.define([
 			} else if (this._oWizard.getCurrentStep() === "workerDecStep") {
 				var canvas = document.getElementById("signature-pad");
 				// roughString variable is used for storing the string of blank signature box and its used below for validation.
-				var roughString =
+				 this.roughString =
 					"ZGF0YTppbWFnZS9qcGVnO2Jhc2U2NCwvOWovNEFBUVNrWkpSZ0FCQVFBQUFRQUJBQUQvNGdJb1NVTkRYMUJTVDBaSlRFVUFBUUVBQUFJWUFBQUFBQVF3QUFCdGJuUnlVa2RDSUZoWldpQUFBQUFBQUFBQUFBQUFBQUJoWTNOd0FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFRQUE5dFlBQVFBQUFBRFRMUUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBbGtaWE5qQUFBQThBQUFBSFJ5V0ZsYUFBQUJaQUFBQUJSbldGbGFBQUFCZUFBQUFCUmlXRmxhQUFBQmpBQUFBQlJ5VkZKREFBQUJvQUFBQUNoblZGSkRBQUFCb0FBQUFDaGlWRkpEQUFBQm9BQUFBQ2gzZEhCMEFBQUJ5QUFBQUJSamNISjBBQUFCM0FBQUFEeHRiSFZqQUFBQUFBQUFBQUVBQUFBTVpXNVZVd0FBQUZnQUFBQWNBSE1BVWdCSEFFSUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFGaFpXaUFBQUFBQUFBQnZvZ0FBT1BVQUFBT1FXRmxhSUFBQUFBQUFBR0taQUFDM2hRQUFHTnBZV1ZvZ0FBQUFBQUFBSktBQUFBK0VBQUMyejNCaGNtRUFBQUFBQUFRQUFBQUNabVlBQVBLbkFBQU5XUUFBRTlBQUFBcGJBQUFBQUFBQUFBQllXVm9nQUFBQUFBQUE5dFlBQVFBQUFBRFRMVzFzZFdNQUFBQUFBQUFBQVFBQUFBeGxibFZUQUFBQUlBQUFBQndBUndCdkFHOEFad0JzQUdVQUlBQkpBRzRBWXdBdUFDQUFNZ0F3QURFQU52L2JBRU1BQXdJQ0FnSUNBd0lDQWdNREF3TUVCZ1FFQkFRRUNBWUdCUVlKQ0FvS0NRZ0pDUW9NRHd3S0N3NExDUWtORVEwT0R4QVFFUkFLREJJVEVoQVREeEFRRVAvYkFFTUJBd01EQkFNRUNBUUVDQkFMQ1FzUUVCQVFFQkFRRUJBUUVCQVFFQkFRRUJBUUVCQVFFQkFRRUJBUUVCQVFFQkFRRUJBUUVCQVFFQkFRRUJBUUVCQVFFUC9BQUJFSUFNZ0F5QU1CSWdBQ0VRRURFUUgveEFBVkFBRUJBQUFBQUFBQUFBQUFBQUFBQUFBQUNmL0VBQlFRQVFBQUFBQUFBQUFBQUFBQUFBQUFBQUQveEFBVUFRRUFBQUFBQUFBQUFBQUFBQUFBQUFBQS84UUFGQkVCQUFBQUFBQUFBQUFBQUFBQUFBQUFBUC9hQUF3REFRQUNFUU1SQUQ4QWxVQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUQvOWs9";
 				this.signString = btoa(encodeURI(canvas.toDataURL('image/jpeg').replace("data:image/jpeg:base64,", "")));
 				var InputDeclarationDate = sap.ui.getCore().byId("InputDeclarationDate");
 				if (InputDeclarationDate.getValue() === "" || InputDeclarationDate.getValue() === undefined) {
 					InputDeclarationDate.setValueState("Error");
-				} else if (roughString === this.signString) {
+				} else if (this.roughString === this.signString) {
 					canvas.style.borderColor = "red";
 				} else {
 					console.log(this.signString);
@@ -261,6 +338,7 @@ sap.ui.define([
 		}, // Code for next button in the main claim wizard control.
 
 		onDialogBackButton: function() {
+			this._oWizard = sap.ui.getCore().byId("claimFormWizard");
 			this._iSelectedStepIndex = this._oWizard.getCurrentStep();
 			var oPreviousStep = this._oWizard.getSteps()[this._iSelectedStepIndex - 1];
 
@@ -310,7 +388,9 @@ sap.ui.define([
 			var oInjuryDetailModel = new sap.ui.model.json.JSONModel();
 			var path = oiEvent.getParameter('listItem').getBindingContext().getPath();
 			var selectedRow = oiEvent.getSource().getModel().getProperty(path);
-			selectedRow.InjuryTime = selectedRow.Itime.ms;
+			this.getView().getModel("userDetailModel").getData().BodypartDes = selectedRow.BodypartDes;
+			this.getView().getModel("userDetailModel").getData().InjurytypeDes = selectedRow.InjurytypeDes;
+			this.getView().getModel("userDetailModel").getData().RtwEmpDate = new Date(selectedRow.Rdate);
 			oInjuryDetailModel.setData(selectedRow);
 			this.getView().setModel(oInjuryDetailModel, "oInjuryDetailModel");
 
@@ -390,8 +470,8 @@ sap.ui.define([
 
 		onPressSaveButton: function(oEvent) {
 			this._oWizard = sap.ui.getCore().byId("claimFormWizard");
-			var InputTitle = sap.ui.getCore().byId("InputTitle"); 
-			var InputFamilyName =  sap.ui.getCore().byId("InputFamilyName");
+			var InputTitle = sap.ui.getCore().byId("InputTitle");
+			var InputFamilyName = sap.ui.getCore().byId("InputFamilyName");
 			var InputGivenName = sap.ui.getCore().byId("InputGivenName");
 			var InputDob = sap.ui.getCore().byId("InputDob");
 			var InputGender = sap.ui.getCore().byId("InputGender");
@@ -409,7 +489,6 @@ sap.ui.define([
 			var InputPersnlDetlQue2 = sap.ui.getCore().byId("InputPersnlDetlQue2");
 			var InputPersnlDetlQue3 = sap.ui.getCore().byId("InputPersnlDetlQue3");
 			var InputInjuryBodyPart = sap.ui.getCore().byId("InputInjuryBodyPart");
-			var InputInjuryType = sap.ui.getCore().byId("InputInjuryType");
 			var InputHowWereYouInjured = sap.ui.getCore().byId("InputHowWereYouInjured");
 			var InputWhatTaskWhenInjured = sap.ui.getCore().byId("InputWhatTaskWhenInjured");
 			var InputAreaOfWorksite = sap.ui.getCore().byId("InputAreaOfWorksite");
@@ -453,7 +532,6 @@ sap.ui.define([
 			var InputWorkerWeeklyOvertime = sap.ui.getCore().byId("InputWorkerWeeklyOvertime");
 			var InputReturToWorkQue1 = sap.ui.getCore().byId("InputReturToWorkQue1");
 			var InputReturToWorkDate = sap.ui.getCore().byId("InputReturToWorkDate");
-			var InputReturToWorkDuties = sap.ui.getCore().byId("InputReturToWorkDuties");
 			var InputReturToWorkOue2 = sap.ui.getCore().byId("InputReturToWorkOue2");
 			var InputReturToWorkOue3 = sap.ui.getCore().byId("InputReturToWorkOue3");
 			var InputReturToWorkOue4 = sap.ui.getCore().byId("InputReturToWorkOue4");
@@ -461,78 +539,246 @@ sap.ui.define([
 			var InputReturToWorkOue5 = sap.ui.getCore().byId("InputReturToWorkOue5");
 			var InputReturToWorkMedicalCertificateSubmissionDate = sap.ui.getCore().byId("InputReturToWorkMedicalCertificateSubmissionDate");
 			var InputDeclarationDate = sap.ui.getCore().byId("InputDeclarationDate");
-			
-			if (oEvent.getSource().getText() === "Save as draft") {
-				if(this._oWizard.getCurrentStep() === "personalDetailStep"){
+			var canvas = document.getElementById("signature-pad");
+			this.signString = btoa(encodeURI(canvas.toDataURL('image/jpeg').replace("data:image/jpeg:base64,", "")));
+			if (this.roughString === this.signString){
+				this.signString = "";
+			}
+			if (InputInjuryDateTime.getDateValue() !== undefined || InputInjuryDateTime.getDateValue() !== null) {
+				var finDate = new Date(InputInjuryDateTime.getDateValue()).toISOString();
+			}
+			if (InputWhenNoticeInjury.getDateValue() !== undefined || InputWhenNoticeInjury.getDateValue() !== null) {
+				var crDate = new Date(InputWhenNoticeInjury.getDateValue()).toISOString();
+			}
+			if (InputStoppedWorkDateTIme.getDateValue() !== undefined || InputStoppedWorkDateTIme.getDateValue() !== null) {
+				var sDate = new Date(InputStoppedWorkDateTIme.getDateValue()).toISOString();
+			}
+			if (InputInjuryReportDateTime.getDateValue() !== undefined || InputInjuryReportDateTime.getDateValue() !== null) {
+				var rDate = new Date(InputInjuryReportDateTime.getDateValue()).toISOString();
+			}
+			if (InputDeclarationDate.getDateValue() !== undefined || InputDeclarationDate.getDateValue() !== null) {
+				var dDate = new Date(InputDeclarationDate.getDateValue()).toISOString();
+			}
+			if (InputEmpStartWorkingDate.getDateValue() !== undefined || InputEmpStartWorkingDate.getDateValue() !== null) {
+				var startDate = new Date(InputEmpStartWorkingDate.getDateValue()).toISOString();
+			}
+			if (InputReturToWorkDate.getDateValue() !== undefined || InputReturToWorkDate.getDateValue() !== null) {
+				var returnToWorkDate = new Date(InputReturToWorkDate.getDateValue()).toISOString();
+			}
+			if (InputReturToWorkClaimFormSubmissionDate.getDateValue() !== undefined || InputReturToWorkClaimFormSubmissionDate.getDateValue() !==
+				null) {
+				var EmpClmfrmDate = new Date(InputReturToWorkClaimFormSubmissionDate.getDateValue()).toISOString();
+			}
+			if (InputReturToWorkMedicalCertificateSubmissionDate.getDateValue() !== undefined ||
+				InputReturToWorkMedicalCertificateSubmissionDate.getDateValue() !== null) {
+				var EmpMcertDate = new Date(InputReturToWorkMedicalCertificateSubmissionDate.getDateValue()).toISOString();
+			}
+			if (oEvent.getSource().getId() === "claimDraftBtn") {
+
+				if (this._oWizard.getCurrentStep() === "personalDetailStep") {
+					var tabNo = "1";
+				} else if (this._oWizard.getCurrentStep() === "injuryDetailStep") {
+					var tabNo = "2";
+				} else if (this._oWizard.getCurrentStep() === "employmentDetailStep") {
+					var tabNo = "3";
+				} else if (this._oWizard.getCurrentStep() === "workerEarningStep") {
+					var tabNo = "4";
+				} else if (this._oWizard.getCurrentStep() === "returntoWorkStep") {
+					var tabNo = "5";
+				} else if (this._oWizard.getCurrentStep() === "workerDecStep") {
+					var tabNo = "6";
+				} else if (this._oWizard.getCurrentStep() === "attachmentStep") {
+					var tabNo = "7";
+				}
+				if (this.getView().getModel("oInjuryDetailModel")) {
 					var payload = {
-						"InputTitle" : InputTitle.getValue(),
-						"InputFamilyName" : InputFamilyName.getValue(),
-						"InputGivenName" : InputGivenName.getValue(),
-						"InputDob" : InputDob.getValue(),
-						"InputGender" : InputGender.getValue(),
-						"InputAddress" : InputAddress.getValue(),
-						"InputSuburb" : InputSuburb.getValue(),
-						"InputPersnlDetlState" : InputPersnlDetlState(),
-						"InputPostalAddress" : InputPostalAddress.getValue(),
-						"InputPostCode" : InputPostCode.getValue(),
-						"InputMaidenName" : InputMaidenName.getValue(),
-						"InputMobile" : InputMobile.getValue(),
-						"InputWork" : InputWork.getValue(),
-						"InputHome" : InputHome.getValue(),
-						"InputEmail" : InputEmail.getValue(),
-						"InputPersnlDetlQue1" : InputPersnlDetlQue1.getValue(),
-						"InputPersnlDetlQue2" : InputPersnlDetlQue2.getValue(),
-						"InputPersnlDetlQue3" : InputPersnlDetlQue3.getValue()
+						"Confidential": !this.ConfidentialColumnText ? false : true,
+						"Draft": true,
+						"TabNo": tabNo,
+						"Pernr": this.getView().getModel("userDetailModel").getData().Pernr,
+						"Userid": this.getView().getModel("userDetailModel").getData().UserId,
+						"RegulatoryAuth": "VIC",
+						"Title": InputTitle.getValue(),
+						"FamilyName": InputFamilyName.getValue(),
+						"Conname": InputGivenName.getValue(),
+						"Dateofbirth": InputDob.getValue(),
+						"Gender": InputGender.getValue(),
+						"Add1": InputAddress.getValue(),
+						"Suburb": InputSuburb.getValue(),
+						"StateId": InputPersnlDetlState.getSelectedKey(),
+						"PostalAddress": InputPostalAddress.getValue(),
+						"Pstlz": InputPostCode.getValue(),
+						"Othnam": InputMaidenName.getValue(),
+						"Mobile": InputMobile.getValue(),
+						"WorkN": InputWork.getValue(),
+						"Home": InputHome.getValue(),
+						"Email": InputEmail.getValue(),
+						"Agree": InputPersnlDetlQue1.getValue(),
+						"Language": InputPersnlDetlQue2.getValue(),
+						"Communication": InputPersnlDetlQue3.getValue(),
+						"BodypartDes": InputInjuryBodyPart.getValue(),
+						"Bodypart": this.getView().getModel("oInjuryDetailModel").getData().Bodypart,
+						"Casno": this.getView().getModel("oInjuryDetailModel").getData().InjuryNumber,
+						"Maininjury": this.getView().getModel("oInjuryDetailModel").getData().Maininjury,
+						"Injurytypevcode": this.getView().getModel("oInjuryDetailModel").getData().Injurytypevcode,
+						"Side": this.getView().getModel("oInjuryDetailModel").getData().Side,
+						"Injurytype": this.getView().getModel("oInjuryDetailModel").getData().Injurytype,
+						"InjHapDes": InputHowWereYouInjured.getValue(),
+						"InjDoingDes": InputWhatTaskWhenInjured.getValue(),
+						"InjWorkSide": InputAreaOfWorksite.getValue(),
+						"AddressInj": InputAddressofIncident.getValue(),
+						"SuburbInj": InputInjurySuburb.getValue(),
+						"State": InputInjuryState.getValue(),
+						"PostcodeInj": InputInjuryPostcode.getValue(),
+						"IDate": !finDate ? "" : finDate,
+						"Crdate": !crDate ? "" : crDate,
+						"Sdate": !sDate ? "" : sDate,
+						"Rdate": !rDate ? "" : rDate,
+						"ManagerPernr": !this.ManagerPernr ? "" : this.ManagerPernr,
+						"Name1": InputEmployerResponsible.getValue(),
+						"Activitywheninjureddesc": InputActivityOnTimeOfInjury.getValue(),
+						"InjPsName": InputInjuryPoliceStationReported.getValue(),
+						"InjRegNo": InputRegNoOfVehicles.getValue(),
+						"InjState": InputVehicleState.getValue(),
+						"InjCondMs": InputInjuryQue1.getValue(),
+						"InjNamePersonR": InputInjuryQue2.getValue(),
+						"InjNrepoDelay": InputInjuryQue3.getValue(),
+						"InjWitDet": InputInjuryQue4.getValue(),
+						"InjPrev": InputInjuryQue5.getValue(),
+						"Orgname": InputEmpNameOfOrg.getValue(),
+						"EmpStreetAdd": InputEmpStreetAdd.getValue(),
+						"Employerstate": InputEmpOrgState.getValue(),
+						"EmpSuburb": InputEmpOrgSuburb.getValue(),
+						"EmpPostcode": InputEmpOrgPostcode.getValue(),
+						"Employercontact": InputEmpNameAndContact.getValue(),
+						"Usualoccupation": InputEmpOccupation.getValue(),
+						"Startdate": !startDate ? "" : startDate,
+						"Directorcheck": InputEmpDirectorofMyEmployersComp.getValue(),
+						"Partnercheck": InputEmpPartnerinMyEmployersComp.getValue(),
+						"Soletradercheck": InputEmpSoleTrader.getValue(),
+						"Relativecheck": InputEmpRelativeofMyEmployer.getValue(),
+						"OtherEmployement": InputEmpOtherEmployment.getValue(),
+						"Reasontoapply": InputEmpAppliesToYou.getValue(),
+						"WpeStdHrsWeek": InputWorkerQue1.getValue(),
+						"WpeUsuWeeklyHrs": InputWorkerQue2.getValue(),
+						"WpePreTaxHrRt": InputWorkerQue3.getValue(),
+						"WpePtaxWkEr": InputWorkerQue4.getValue(),
+						"WpeWklyAllw": InputWorkerWeeklyShiftAllowence.getValue(),
+						"WpeWostd": InputWorkerWeeklyOvertime.getValue(),
+						"RtwDetails": InputReturToWorkQue1.getValue(),
+						"RtwEmpDate": !returnToWorkDate ? "" : returnToWorkDate,
+						"Duties": InputReturToWorkOue2.getSelectedKey(),
+						"RtwNempDetails": InputReturToWorkOue3.getValue(),
+						"NrtwIdp": InputReturToWorkOue4.getValue(),
+						"EmpClmfrmDate": !EmpClmfrmDate ? "" : EmpClmfrmDate,
+						"EmpClmForm": InputReturToWorkOue5.getSelectedKey(),
+						"EmpMcertDate": !EmpMcertDate ? "" : EmpClmfrmDate,
+						"DDate": !dDate ? "" : dDate,
+						"Signature": this.signString 
+					};
+				} else {
+					var payload = {
+						"Confidential": !this.ConfidentialColumnText ? false : true,
+						"Draft": true,
+						"TabNo": tabNo,
+						"Pernr": this.getView().getModel("userDetailModel").getData().Pernr,
+						"Userid": this.getView().getModel("userDetailModel").getData().Userid,
+						"RegulatoryAuth": "VIC",
+						"Title": InputTitle.getValue(),
+						"FamilyName": InputFamilyName.getValue(),
+						"Conname": InputGivenName.getValue(),
+						"Dateofbirth": InputDob.getValue(),
+						"Gender": InputGender.getValue(),
+						"Add1": InputAddress.getValue(),
+						"Suburb": InputSuburb.getValue(),
+						"StateId": InputPersnlDetlState.getSelectedKey(),
+						"PostalAddress": InputPostalAddress.getValue(),
+						"Pstlz": InputPostCode.getValue(),
+						"Othnam": InputMaidenName.getValue(),
+						"Mobile": InputMobile.getValue(),
+						"WorkN": InputWork.getValue(),
+						"Home": InputHome.getValue(),
+						"Email": InputEmail.getValue(),
+						"Agree": InputPersnlDetlQue1.getValue(),
+						"Language": InputPersnlDetlQue2.getValue(),
+						"Communication": InputPersnlDetlQue3.getValue(),
+						"BodypartDes": InputInjuryBodyPart.getValue(),
+						"Bodypart": this.getView().getModel("userDetailModel").getData().Bodypart,
+						"Casno": this.getView().getModel("userDetailModel").getData().InjuryNumber,
+						"Maininjury": this.getView().getModel("userDetailModel").getData().Maininjury,
+						"Injurytypevcode": this.getView().getModel("userDetailModel").getData().Injurytypevcode,
+						"Side": this.getView().getModel("userDetailModel").getData().Side,
+						"Injurytype": this.getView().getModel("userDetailModel").getData().Injurytype,
+						"InjHapDes": InputHowWereYouInjured.getValue(),
+						"InjDoingDes": InputWhatTaskWhenInjured.getValue(),
+						"InjWorkSide": InputAreaOfWorksite.getValue(),
+						"AddressInj": InputAddressofIncident.getValue(),
+						"SuburbInj": InputInjurySuburb.getValue(),
+						"State": InputInjuryState.getValue(),
+						"PostcodeInj": InputInjuryPostcode.getValue(),
+						"IDate": !finDate ? "" : finDate,
+						"Crdate": !crDate ? "" : crDate,
+						"Sdate": !sDate ? "" : sDate,
+						"Rdate": !rDate ? "" : rDate,
+						"ManagerPernr": !this.ManagerPernr ? "" : this.ManagerPernr,
+						"Name1": InputEmployerResponsible.getValue(),
+						"Activitywheninjureddesc": InputActivityOnTimeOfInjury.getValue(),
+						"InjPsName": InputInjuryPoliceStationReported.getValue(),
+						"InjRegNo": InputRegNoOfVehicles.getValue(),
+						"InjState": InputVehicleState.getValue(),
+						"InjCondMs": InputInjuryQue1.getValue(),
+						"InjNamePersonR": InputInjuryQue2.getValue(),
+						"InjNrepoDelay": InputInjuryQue3.getValue(),
+						"InjWitDet": InputInjuryQue4.getValue(),
+						"InjPrev": InputInjuryQue5.getValue(),
+						"Orgname": InputEmpNameOfOrg.getValue(),
+						"EmpStreetAdd": InputEmpStreetAdd.getValue(),
+						"Employerstate": InputEmpOrgState.getValue(),
+						"EmpSuburb": InputEmpOrgSuburb.getValue(),
+						"EmpPostcode": InputEmpOrgPostcode.getValue(),
+						"Employercontact": InputEmpNameAndContact.getValue(),
+						"Usualoccupation": InputEmpOccupation.getValue(),
+						"Startdate": !startDate ? "" : startDate,
+						"Directorcheck": InputEmpDirectorofMyEmployersComp.getValue(),
+						"Partnercheck": InputEmpPartnerinMyEmployersComp.getValue(),
+						"Soletradercheck": InputEmpSoleTrader.getValue(),
+						"Relativecheck": InputEmpRelativeofMyEmployer.getValue(),
+						"OtherEmployement": InputEmpOtherEmployment.getValue(),
+						"Reasontoapply": InputEmpAppliesToYou.getValue(),
+						"WpeStdHrsWeek": InputWorkerQue1.getValue(),
+						"WpeUsuWeeklyHrs": InputWorkerQue2.getValue(),
+						"WpePreTaxHrRt": InputWorkerQue3.getValue(),
+						"WpePtaxWkEr": InputWorkerQue4.getValue(),
+						"WpeWklyAllw": InputWorkerWeeklyShiftAllowence.getValue(),
+						"WpeWostd": InputWorkerWeeklyOvertime.getValue(),
+						"RtwDetails": InputReturToWorkQue1.getValue(),
+						"RtwEmpDate": !returnToWorkDate ? "" : returnToWorkDate,
+						"Duties": InputReturToWorkOue2.getSelectedKey(),
+						"RtwNempDetails": InputReturToWorkOue3.getValue(),
+						"NrtwIdp": InputReturToWorkOue4.getValue(),
+						"EmpClmfrmDate": !EmpClmfrmDate ? "" : EmpClmfrmDate,
+						"EmpClmForm": InputReturToWorkOue5.getSelectedKey(),
+						"EmpMcertDate": !EmpMcertDate ? "" : EmpClmfrmDate,
+						"DDate": !dDate ? "" : dDate,
+						"Signature": this.signString
 					};
 				}
-				else if(this._oWizard.getCurrentStep() === "injuryDetailStep"){
-					var payload = {
-						"InputTitle" : InputTitle.getValue(),
-						"InputFamilyName" : InputFamilyName.getValue(),
-						"InputGivenName" : InputGivenName.getValue(),
-						"InputDob" : InputDob.getValue(),
-						"InputGender" : InputGender.getValue(),
-						"InputAddress" : InputAddress.getValue(),
-						"InputSuburb" : InputSuburb.getValue(),
-						"InputPersnlDetlState" : InputPersnlDetlState(),
-						"InputPostalAddress" : InputPostalAddress.getValue(),
-						"InputPostCode" : InputPostCode.getValue(),
-						"InputMaidenName" : InputMaidenName.getValue(),
-						"InputMobile" : InputMobile.getValue(),
-						"InputWork" : InputWork.getValue(),
-						"InputHome" : InputHome.getValue(),
-						"InputEmail" : InputEmail.getValue(),
-						"InputPersnlDetlQue1" : InputPersnlDetlQue1.getValue(),
-						"InputPersnlDetlQue2" : InputPersnlDetlQue2.getValue(),
-						"InputPersnlDetlQue3" : InputPersnlDetlQue3.getValue(),
-						"InputInjuryBodyPart" : InputInjuryBodyPart.getValue(),
-						"InputInjuryType" : InputInjuryType.getValue(),
-						"InputHowWereYouInjured" : InputHowWereYouInjured.getValue(),
-						"InputWhatTaskWhenInjured" : InputWhatTaskWhenInjured.getValue(),
-						"InputAreaOfWorksite" : InputAreaOfWorksite.getValue(),
-						"InputAddressofIncident" : InputAddressofIncident.getValue(),
-						"InputInjurySuburb" : InputInjurySuburb.getValue(),
-						"InputInjuryState" : InputInjuryState.getValue(),
-						"InputInjuryPostcode" : InputInjuryPostcode.getValue(),
-						"InputInjuryDateTime" : InputInjuryDateTime.getValue(),
-						"InputWhenNoticeInjury" : InputWhenNoticeInjury.getValue(),
-						"InputStoppedWorkDateTIme" : InputStoppedWorkDateTIme.getValue(),
-						"InputInjuryReportDateTime" : InputInjuryReportDateTime.getValue(),
-						"InputEmployerResponsible" : InputEmployerResponsible.getValue(),
-						"InputActivityOnTimeOfInjury" : InputActivityOnTimeOfInjury.getValue(),
-					};
-				}
-				else if(this._oWizard.getCurrentStep() === "employmentDetailStep"){}
-				else if(this._oWizard.getCurrentStep() === "workerEarningStep"){}
-				else if(this._oWizard.getCurrentStep() === "returntoWorkStep"){}
-				else if(this._oWizard.getCurrentStep() === "workerDecStep"){}
-				else if(this._oWizard.getCurrentStep() === "attachmentStep"){}
-				sap.m.MessageToast.show("Claim has been saved as draft");
-				this.claimWizardDialog.close();
-				sap.ui.getCore().byId("claimWizardNextBtn").setVisible(true);
-				sap.ui.getCore().byId("claimSubmitBtn").setEnabled(false);
-				this._oWizard.setCurrentStep("personalDetailStep");
-			} else {
+
+				var that = this;
+				this.getView().getModel().setUseBatch(false);
+				this.getView().getModel().create("/SaveDraftDetailsSet", payload, {
+					success: function(oData, oResponse) {
+						that.claimWizardDialog.close();
+						sap.m.MessageBox.success("Draft Saved successfully");
+
+					},
+					error: function(error) {
+						debugger;
+						that.claimWizardDialog.close();
+					}
+				});
+
+			} else if (oEvent.getSource().getId() === "claimSubmitBtn") {
 				if (!this.oApproveDialog) {
 					this.oApproveDialog = new sap.m.Dialog({
 						type: sap.m.DialogType.Message,
@@ -544,17 +790,203 @@ sap.ui.define([
 							type: sap.m.ButtonType.Emphasized,
 							text: "Submit",
 							press: function() {
+								if (this.getView().getModel("oInjuryDetailModel")) {
+									var payload = {
+										"Confidential": !this.ConfidentialColumnText ? false : true,
+										"Draft": false,
+										"TabNo": tabNo,
+										"Pernr": this.getView().getModel("userDetailModel").getData().Pernr,
+										"Userid": this.getView().getModel("userDetailModel").getData().UserId,
+										"RegulatoryAuth": "VIC",
+										"Title": InputTitle.getValue(),
+										"FamilyName": InputFamilyName.getValue(),
+										"Conname": InputGivenName.getValue(),
+										"Dateofbirth": InputDob.getValue(),
+										"Gender": InputGender.getValue(),
+										"Add1": InputAddress.getValue(),
+										"Suburb": InputSuburb.getValue(),
+										"StateId": InputPersnlDetlState.getSelectedKey(),
+										"PostalAddress": InputPostalAddress.getValue(),
+										"Pstlz": InputPostCode.getValue(),
+										"Othnam": InputMaidenName.getValue(),
+										"Mobile": InputMobile.getValue(),
+										"WorkN": InputWork.getValue(),
+										"Home": InputHome.getValue(),
+										"Email": InputEmail.getValue(),
+										"Agree": InputPersnlDetlQue1.getValue(),
+										"Language": InputPersnlDetlQue2.getValue(),
+										"Communication": InputPersnlDetlQue3.getValue(),
+										"BodypartDes": InputInjuryBodyPart.getValue(),
+										"Bodypart": this.getView().getModel("oInjuryDetailModel").getData().Bodypart,
+										"Casno": this.getView().getModel("oInjuryDetailModel").getData().InjuryNumber,
+										"Maininjury": this.getView().getModel("oInjuryDetailModel").getData().Maininjury,
+										"Injurytypevcode": this.getView().getModel("oInjuryDetailModel").getData().Injurytypevcode,
+										"Side": this.getView().getModel("oInjuryDetailModel").getData().Side,
+										"Injurytype": this.getView().getModel("oInjuryDetailModel").getData().Injurytype,
+										"InjHapDes": InputHowWereYouInjured.getValue(),
+										"InjDoingDes": InputWhatTaskWhenInjured.getValue(),
+										"InjWorkSide": InputAreaOfWorksite.getValue(),
+										"AddressInj": InputAddressofIncident.getValue(),
+										"SuburbInj": InputInjurySuburb.getValue(),
+										"State": InputInjuryState.getValue(),
+										"PostcodeInj": InputInjuryPostcode.getValue(),
+										"IDate": !finDate ? "" : finDate,
+										"Crdate": !crDate ? "" : crDate,
+										"Sdate": !sDate ? "" : sDate,
+										"Rdate": !rDate ? "" : rDate,
+										"ManagerPernr": !this.ManagerPernr ? "" : this.ManagerPernr,
+										"Name1": InputEmployerResponsible.getValue(),
+										"Activitywheninjureddesc": InputActivityOnTimeOfInjury.getValue(),
+										"InjPsName": InputInjuryPoliceStationReported.getValue(),
+										"InjRegNo": InputRegNoOfVehicles.getValue(),
+										"InjState": InputVehicleState.getValue(),
+										"InjCondMs": InputInjuryQue1.getValue(),
+										"InjNamePersonR": InputInjuryQue2.getValue(),
+										"InjNrepoDelay": InputInjuryQue3.getValue(),
+										"InjWitDet": InputInjuryQue4.getValue(),
+										"InjPrev": InputInjuryQue5.getValue(),
+										"Orgname": InputEmpNameOfOrg.getValue(),
+										"EmpStreetAdd": InputEmpStreetAdd.getValue(),
+										"Employerstate": InputEmpOrgState.getValue(),
+										"EmpSuburb": InputEmpOrgSuburb.getValue(),
+										"EmpPostcode": InputEmpOrgPostcode.getValue(),
+										"Employercontact": InputEmpNameAndContact.getValue(),
+										"Usualoccupation": InputEmpOccupation.getValue(),
+										"Startdate": !startDate ? "" : startDate,
+										"Directorcheck": InputEmpDirectorofMyEmployersComp.getValue(),
+										"Partnercheck": InputEmpPartnerinMyEmployersComp.getValue(),
+										"Soletradercheck": InputEmpSoleTrader.getValue(),
+										"Relativecheck": InputEmpRelativeofMyEmployer.getValue(),
+										"OtherEmployement": InputEmpOtherEmployment.getValue(),
+										"Reasontoapply": InputEmpAppliesToYou.getValue(),
+										"WpeStdHrsWeek": InputWorkerQue1.getValue(),
+										"WpeUsuWeeklyHrs": InputWorkerQue2.getValue(),
+										"WpePreTaxHrRt": InputWorkerQue3.getValue(),
+										"WpePtaxWkEr": InputWorkerQue4.getValue(),
+										"WpeWklyAllw": InputWorkerWeeklyShiftAllowence.getValue(),
+										"WpeWostd": InputWorkerWeeklyOvertime.getValue(),
+										"RtwDetails": InputReturToWorkQue1.getValue(),
+										"RtwEmpDate": !returnToWorkDate ? "" : returnToWorkDate,
+										"Duties": InputReturToWorkOue2.getSelectedKey(),
+										"RtwNempDetails": InputReturToWorkOue3.getValue(),
+										"NrtwIdp": InputReturToWorkOue4.getValue(),
+										"EmpClmfrmDate": !EmpClmfrmDate ? "" : EmpClmfrmDate,
+										"EmpClmForm": InputReturToWorkOue5.getSelectedKey(),
+										"EmpMcertDate": !EmpMcertDate ? "" : EmpMcertDate,
+										"DDate": !dDate ? "" : dDate,
+										"Signature": this.signString
+									};
+								} else {
+									var payload = {
+										"Confidential": !this.ConfidentialColumnText ? false : true,
+										"Draft": false,
+										"TabNo": tabNo,
+										"Pernr": this.getView().getModel("userDetailModel").getData().Pernr,
+										"Userid": this.getView().getModel("userDetailModel").getData().Userid,
+										"RegulatoryAuth": "VIC",
+										"Title": InputTitle.getValue(),
+										"FamilyName": InputFamilyName.getValue(),
+										"Conname": InputGivenName.getValue(),
+										"Dateofbirth": InputDob.getValue(),
+										"Gender": InputGender.getValue(),
+										"Add1": InputAddress.getValue(),
+										"Suburb": InputSuburb.getValue(),
+										"StateId": InputPersnlDetlState.getSelectedKey(),
+										"PostalAddress": InputPostalAddress.getValue(),
+										"Pstlz": InputPostCode.getValue(),
+										"Othnam": InputMaidenName.getValue(),
+										"Mobile": InputMobile.getValue(),
+										"WorkN": InputWork.getValue(),
+										"Home": InputHome.getValue(),
+										"Email": InputEmail.getValue(),
+										"Agree": InputPersnlDetlQue1.getValue(),
+										"Language": InputPersnlDetlQue2.getValue(),
+										"Communication": InputPersnlDetlQue3.getValue(),
+										"BodypartDes": InputInjuryBodyPart.getValue(),
+										"Bodypart": this.getView().getModel("userDetailModel").getData().Bodypart,
+										"Casno": this.getView().getModel("userDetailModel").getData().InjuryNumber,
+										"Maininjury": this.getView().getModel("userDetailModel").getData().Maininjury,
+										"Injurytypevcode": this.getView().getModel("userDetailModel").getData().Injurytypevcode,
+										"Side": this.getView().getModel("userDetailModel").getData().Side,
+										"Injurytype": this.getView().getModel("userDetailModel").getData().Injurytype,
+										"InjHapDes": InputHowWereYouInjured.getValue(),
+										"InjDoingDes": InputWhatTaskWhenInjured.getValue(),
+										"InjWorkSide": InputAreaOfWorksite.getValue(),
+										"AddressInj": InputAddressofIncident.getValue(),
+										"SuburbInj": InputInjurySuburb.getValue(),
+										"State": InputInjuryState.getValue(),
+										"PostcodeInj": InputInjuryPostcode.getValue(),
+										"IDate": !finDate ? "" : finDate,
+										"Crdate": !crDate ? "" : crDate,
+										"Sdate": !sDate ? "" : sDate,
+										"Rdate": !rDate ? "" : rDate,
+										"ManagerPernr": !this.ManagerPernr ? "" : this.ManagerPernr,
+										"Name1": InputEmployerResponsible.getValue(),
+										"Activitywheninjureddesc": InputActivityOnTimeOfInjury.getValue(),
+										"InjPsName": InputInjuryPoliceStationReported.getValue(),
+										"InjRegNo": InputRegNoOfVehicles.getValue(),
+										"InjState": InputVehicleState.getValue(),
+										"InjCondMs": InputInjuryQue1.getValue(),
+										"InjNamePersonR": InputInjuryQue2.getValue(),
+										"InjNrepoDelay": InputInjuryQue3.getValue(),
+										"InjWitDet": InputInjuryQue4.getValue(),
+										"InjPrev": InputInjuryQue5.getValue(),
+										"Orgname": InputEmpNameOfOrg.getValue(),
+										"EmpStreetAdd": InputEmpStreetAdd.getValue(),
+										"Employerstate": InputEmpOrgState.getValue(),
+										"EmpSuburb": InputEmpOrgSuburb.getValue(),
+										"EmpPostcode": InputEmpOrgPostcode.getValue(),
+										"Employercontact": InputEmpNameAndContact.getValue(),
+										"Usualoccupation": InputEmpOccupation.getValue(),
+										"Startdate": !startDate ? "" : startDate,
+										"Directorcheck": InputEmpDirectorofMyEmployersComp.getValue(),
+										"Partnercheck": InputEmpPartnerinMyEmployersComp.getValue(),
+										"Soletradercheck": InputEmpSoleTrader.getValue(),
+										"Relativecheck": InputEmpRelativeofMyEmployer.getValue(),
+										"OtherEmployement": InputEmpOtherEmployment.getValue(),
+										"Reasontoapply": InputEmpAppliesToYou.getValue(),
+										"WpeStdHrsWeek": InputWorkerQue1.getValue(),
+										"WpeUsuWeeklyHrs": InputWorkerQue2.getValue(),
+										"WpePreTaxHrRt": InputWorkerQue3.getValue(),
+										"WpePtaxWkEr": InputWorkerQue4.getValue(),
+										"WpeWklyAllw": InputWorkerWeeklyShiftAllowence.getValue(),
+										"WpeWostd": InputWorkerWeeklyOvertime.getValue(),
+										"RtwDetails": InputReturToWorkQue1.getValue(),
+										"RtwEmpDate": returnToWorkDate,
+										"Duties": InputReturToWorkOue2.getSelectedKey(),
+										"RtwNempDetails": InputReturToWorkOue3.getValue(),
+										"NrtwIdp": InputReturToWorkOue4.getValue(),
+										"EmpClmfrmDate": !EmpClmfrmDate ? "" : EmpClmfrmDate,
+										"EmpClmForm": InputReturToWorkOue5.getSelectedKey(),
+										"EmpMcertDate": !EmpMcertDate ? "" : EmpMcertDate,
+										"DDate": !dDate ? "" : dDate,
+										"Signature": this.signString 
+									};
+								}
+
 								this.oApproveDialog.close();
-								var sSource = sap.ui.require.toUrl("safetysuitezclaimemployee/Attachment_Sample_Files/2056106_E_20220914.pdf");
-								this.claimWizardDialog.close();
-								sap.ui.getCore().byId("claimWizardNextBtn").setVisible(true);
-								sap.ui.getCore().byId("claimSubmitBtn").setEnabled(false);
-								this._oWizard.setCurrentStep("personalDetailStep");
-								this._pdfViewer = new sap.m.PDFViewer();
-								this.getView().addDependent(this._pdfViewer);
-								this._pdfViewer.setSource(sSource);
-								this._pdfViewer.setTitle("Details of Claim Form");
-								this._pdfViewer.open();
+								var that = this;
+								this.getView().getModel().create("/SaveDraftDetailsSet", payload, {
+									success: function(oData, oResponse) {
+
+										var sSource = that.getView().getModel().sServiceUrl + "/InjuryFormSet('" + that.userName + "')/$value";
+										that.claimWizardDialog.close();
+										if (that.DraftDialog) {
+											that.DraftDialog.close();
+										}
+										sap.ui.getCore().byId("claimWizardNextBtn").setVisible(true);
+										sap.ui.getCore().byId("claimSubmitBtn").setEnabled(false);
+										that._oWizard.setCurrentStep("personalDetailStep");
+										that._pdfViewer = new sap.m.PDFViewer();
+										that.getView().addDependent(that._pdfViewer);
+										that._pdfViewer.setSource(sSource);
+										that._pdfViewer.setTitle("Details of Claim Form");
+										that._pdfViewer.open();
+									},
+									error: function(error) {
+
+									}
+								});
 
 							}.bind(this)
 						}),
@@ -578,11 +1010,11 @@ sap.ui.define([
 			var context = canvas.getContext("2d");
 			canvas.width = 200;
 			canvas.height = 200;
-			context.fillStyle = "#fff";
+			//context.fillStyle = "#fff";
 			context.strokeStyle = "#444";
 			context.lineWidth = 1.5;
 			context.lineCap = "round";
-			context.fillRect(0, 0, canvas.width, canvas.height);
+			//context.fillRect(0, 0, canvas.width, canvas.height);
 			var disableSave = true;
 			var pixels = [];
 			var cpixels = [];
@@ -710,6 +1142,10 @@ sap.ui.define([
 			} else {
 				oEvent.getSource().setValueState("Error");
 			}
+			if (oEvent.getSource().getId() === "ManagerList") {
+				this.ManagerPernr = oEvent.getSource().getSelectedKey();
+			}
+
 		}
 
 	});

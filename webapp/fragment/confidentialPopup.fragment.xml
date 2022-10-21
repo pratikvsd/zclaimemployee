@@ -4,8 +4,8 @@
 		<content>
 			<VBox class="sapUiSmallMargin">
 				<Text text="{i18n>confidentialPopupContent}"/>
-				<ComboBox items="{/Manager_list}">
-					<core:Item text="{ManagerFullName}"/>
+				<ComboBox id="ManagerList" items="{/Manager_list}" change="checkInputValidation">
+					<core:Item text="{ManagerFullName}" key="{ManagerPernr}"/>
 				</ComboBox>
 			</VBox>
 		</content>
