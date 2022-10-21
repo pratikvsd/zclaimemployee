@@ -948,7 +948,7 @@ sap.ui.define([
 										"InjPrev": InputInjuryQue5.getValue(),
 										"Orgname": InputEmpNameOfOrg.getValue(),
 										"EmpStreetAdd": InputEmpStreetAdd.getValue(),
-										"Employerstate": InputEmpOrgState.getValue(),
+										"Employerstate": InputEmpOrgState.getSelectedKey(),
 										"EmpSuburb": InputEmpOrgSuburb.getValue(),
 										"EmpPostcode": InputEmpOrgPostcode.getValue(),
 										"Employercontact": InputEmpNameAndContact.getValue(),
