@@ -116,6 +116,8 @@ sap.ui.define([
 			if (this.DraftDialog) {
 				this.DraftDialog.close();
 			}
+			sap.ui.getCore().byId("UploadCollection").setUploadUrl("/sap/opu/odata/cnetohs/VWA_CLAIM_SRV/Files");
+			
 			sap.ui.getCore().byId("claimFormWizard")._getProgressNavigator().ontap = function() {};
 			sap.ui.getCore().byId("claimFormWizard")._scrollHandler = function() {
 				if (this._scrollLocked) {
@@ -409,18 +411,34 @@ sap.ui.define([
 		onChange: function(oEvent) {
 			var oUploadCollection = oEvent.getSource();
 			// Header Token
-			var oCustomerHeaderToken = new UploadCollectionParameter({
+			/*var oCustomerHeaderToken = new UploadCollectionParameter({
 				name: "x-csrf-token",
 				value: "securityTokenFromModel"
 			});
-			oUploadCollection.addHeaderParameter(oCustomerHeaderToken);
+			oUploadCollection.addHeaderParameter(oCustomerHeaderToken);*/
+			
+			var oCustomerRequestToken = new UploadCollectionParameter({
+				name: "x-requested-with",
+				value: "X"
+			});
+			oUploadCollection.addHeaderParameter(oCustomerRequestToken);
+			
+			var oCustomerAcceptToken = new UploadCollectionParameter({
+				name: "Accept",
+				value: "application/json;odata=verbose"
+			});
+			oUploadCollection.addHeaderParameter(oCustomerAcceptToken);
 		}, // Mandotory event to set the header parameter for upload collection.
 
 		onUploadComplete: function(oEvent) {
+			this.getView().getModel().refresh();
+			var fileId = oEvent.mParameters.mParameters.headers.location;
+			var docid = fileId.split("('")[1].replace("')","");
 			var oUploadCollection = sap.ui.getCore().byId("UploadCollection");
-			var oData = oUploadCollection.getModel().getData();
-			var url = sap.ui.require.toUrl("safetysuitezclaimemployee/Attachment_Sample_Files/IdentityProof.png");
-			oData.items.unshift({
+			var oData = oUploadCollection.getModel("InjuryTabModel").getData().items;
+			var url = this.getView().getModel().sServiceUrl + "/Files('" +docid+ "')/$value";
+			var that = this;
+			oData.unshift({
 				"documentId": jQuery.now().toString(), // generate Id,
 				"fileName": oEvent.getParameter("files")[0].fileName,
 				"mimeType": "",
@@ -428,21 +446,14 @@ sap.ui.define([
 				"url": url,
 				"attributes": [{
 					"title": "Uploaded By",
-					"text": "You",
-					"active": false
-				}, {
-					"title": "Uploaded On",
-					"text": new Date(jQuery.now()).toLocaleDateString(),
-					"active": false
-				}, {
-					"title": "File Size",
-					"text": "505000",
+					"text": that.userName,
 					"active": false
 				}]
 			});
-			this.getView().getModel().refresh();
-
+			
+			//sap.ui.getCore().byId("uploadCollectionTable").setUrl(oEvent.mParameters.mParameters.headers.location);
 			// Sets the text to the label
+			this.getView().getModel("InjuryTabModel").refresh();
 			var aItems = sap.ui.getCore().byId("UploadCollection").getItems();
 			sap.ui.getCore().byId("UploadCollection").setNumberOfAttachmentsText("Employee Attachments(" + aItems.length + ")");
 
@@ -453,13 +464,26 @@ sap.ui.define([
 		}, // For file upload process.
 
 		onBeforeUploadStarts: function(oEvent) {
+			//var oUploadCollection = oEvent.getSource();
+			var oModel = this.getView().getModel();
 			// Header Slug
 			var oCustomerHeaderSlug = new UploadCollectionParameter({
 				name: "slug",
-				value: oEvent.getParameter("fileName")
+				value: encodeURIComponent(oEvent.getParameter("fileName"))
 			});
 			oEvent.getParameters().addHeaderParameter(oCustomerHeaderSlug);
-			//sap.m.MessageToast.show("BeforeUploadStarts event triggered.");
+			
+			oModel.refreshSecurityToken();
+			var oHeaders = oModel.oHeaders;
+
+			var sToken = oHeaders['x-csrf-token'];
+			// Header Token
+			var oCustomerHeaderToken = new UploadCollectionParameter({
+				name: "x-csrf-token",
+				value: sToken
+			});
+			oEvent.getParameters().addHeaderParameter(oCustomerHeaderToken);
+			
 		}, //Madotory event for before file upload.
 
 		deleteAttachmentListItems: function(oEvent) {
@@ -601,17 +625,13 @@ sap.ui.define([
 					var tabNo = "7";
 				}
 				if (this.getView().getModel("oInjuryDetailModel")) {
-					if (this.getView().getModel("userDetailModel").getData().UserId === undefined) {
-						this.getView().getModel("userDetailModel").getData().UserId = this.getView().getModel("userDetailModel").getData().Userid;
-					} else if (this.getView().getModel("userDetailModel").getData().Userid === undefined) {
-						this.getView().getModel("userDetailModel").getData().Userid = this.getView().getModel("userDetailModel").getData().UserId;
-					}
+					
 					var payload = {
 						"Confidential": !this.ConfidentialColumnText ? false : true,
 						"Draft": true,
 						"TabNo": tabNo,
 						"Pernr": this.getView().getModel("userDetailModel").getData().Pernr,
-						"Userid": this.getView().getModel("userDetailModel").getData().UserId,
+						"Userid": this.userName,
 						"RegulatoryAuth": "VIC",
 						"Title": InputTitle.getValue(),
 						"FamilyName": InputFamilyName.getValue(),
@@ -697,7 +717,7 @@ sap.ui.define([
 						"Draft": true,
 						"TabNo": tabNo,
 						"Pernr": this.getView().getModel("userDetailModel").getData().Pernr,
-						"Userid": this.getView().getModel("userDetailModel").getData().Userid,
+						"Userid": this.userName,
 						"RegulatoryAuth": "VIC",
 						"Title": InputTitle.getValue(),
 						"FamilyName": InputFamilyName.getValue(),
@@ -811,7 +831,7 @@ sap.ui.define([
 										"Draft": false,
 										"TabNo": tabNo,
 										"Pernr": this.getView().getModel("userDetailModel").getData().Pernr,
-										"Userid": this.getView().getModel("userDetailModel").getData().UserId,
+										"Userid": this.userName,
 										"RegulatoryAuth": "VIC",
 										"Title": InputTitle.getValue(),
 										"FamilyName": InputFamilyName.getValue(),
@@ -897,7 +917,7 @@ sap.ui.define([
 										"Draft": false,
 										"TabNo": tabNo,
 										"Pernr": this.getView().getModel("userDetailModel").getData().Pernr,
-										"Userid": this.getView().getModel("userDetailModel").getData().Userid,
+										"Userid": this.userName,
 										"RegulatoryAuth": "VIC",
 										"Title": InputTitle.getValue(),
 										"FamilyName": InputFamilyName.getValue(),

@@ -274,7 +274,7 @@
 								uploadTerminated="onUploadTerminated" items="{ path: 'InjuryTabModel>/items', templateShareable: false }"
 								numberOfAttachmentsText="{i18n>WizardAttachmentsListTitle}(1)" uploadEnabled="true">
 								<items>
-									<UploadCollectionItem documentId="{InjuryTabModel>documentId}" fileName="{InjuryTabModel>fileName}" mimeType="{InjuryTabModel>mimeType}"
+									<UploadCollectionItem id="uploadCollectionTable" documentId="{InjuryTabModel>documentId}" fileName="{InjuryTabModel>fileName}" mimeType="{InjuryTabModel>mimeType}"
 										thumbnailUrl="{InjuryTabModel>thumbnailUrl}" url="{InjuryTabModel>url}" enableEdit="true" enableDelete="true" visibleDelete="true"
 										visibleEdit="true" attributes="{path : 'InjuryTabModel>attributes', templateShareable : false}"
 										statuses="{path : 'InjuryTabModel>statuses', templateShareable : false}" selected="{InjuryTabModel>selected}">
