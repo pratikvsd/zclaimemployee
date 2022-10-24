@@ -15,6 +15,7 @@ sap.ui.define([
 		onInit: function() {
 			this.userName = 'JPRAKASH';
 			this.WizardTitle = ""; // This is important flag which is used below to close the dialogs
+			this.attachmentsId = [];
 		},
 
 		onAfterRendering: function() {
@@ -410,13 +411,6 @@ sap.ui.define([
 
 		onChange: function(oEvent) {
 			var oUploadCollection = oEvent.getSource();
-			// Header Token
-			/*var oCustomerHeaderToken = new UploadCollectionParameter({
-				name: "x-csrf-token",
-				value: "securityTokenFromModel"
-			});
-			oUploadCollection.addHeaderParameter(oCustomerHeaderToken);*/
-			
 			var oCustomerRequestToken = new UploadCollectionParameter({
 				name: "x-requested-with",
 				value: "X"
@@ -450,7 +444,7 @@ sap.ui.define([
 					"active": false
 				}]
 			});
-			
+			this.attachmentsId.push(docid);
 			//sap.ui.getCore().byId("uploadCollectionTable").setUrl(oEvent.mParameters.mParameters.headers.location);
 			// Sets the text to the label
 			this.getView().getModel("InjuryTabModel").refresh();
@@ -709,7 +703,8 @@ sap.ui.define([
 						"EmpClmForm": InputReturToWorkOue5.getSelectedKey(),
 						"EmpMcertDate": !EmpMcertDate ? "" : EmpMcertDate,
 						"DDate": !dDate ? "" : dDate,
-						"Signature": this.signString
+						"Signature": this.signString,
+						"Attachments" : this.attachmentsId.toString()
 					};
 				} else {
 					var payload = {
@@ -795,7 +790,8 @@ sap.ui.define([
 						"EmpClmForm": InputReturToWorkOue5.getSelectedKey(),
 						"EmpMcertDate": !EmpMcertDate ? "" : EmpMcertDate,
 						"DDate": !dDate ? "" : dDate,
-						"Signature": this.signString
+						"Signature": this.signString,
+						"Attachments" : this.attachmentsId.toString()
 					};
 				}
 
@@ -909,7 +905,8 @@ sap.ui.define([
 										"EmpClmForm": InputReturToWorkOue5.getSelectedKey(),
 										"EmpMcertDate": !EmpMcertDate ? "" : EmpMcertDate,
 										"DDate": !dDate ? "" : dDate,
-										"Signature": this.signString
+										"Signature": this.signString,
+										"Attachments" : this.attachmentsId.toString()
 									};
 								} else {
 									var payload = {
@@ -995,7 +992,8 @@ sap.ui.define([
 										"EmpClmForm": InputReturToWorkOue5.getSelectedKey(),
 										"EmpMcertDate": !EmpMcertDate ? "" : EmpMcertDate,
 										"DDate": !dDate ? "" : dDate,
-										"Signature": this.signString
+										"Signature": this.signString,
+										"Attachments" : this.attachmentsId.toString()
 									};
 								}
 

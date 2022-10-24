@@ -272,7 +272,7 @@
 							<UploadCollection id="UploadCollection" multiple="false" change="onChange" fileDeleted="deleteAttachmentListItems"
 								typeMissmatch="onTypeMissmatch" uploadComplete="onUploadComplete" beforeUploadStarts="onBeforeUploadStarts"
 								uploadTerminated="onUploadTerminated" items="{ path: 'InjuryTabModel>/items', templateShareable: false }"
-								numberOfAttachmentsText="{i18n>WizardAttachmentsListTitle}(1)" uploadEnabled="true">
+								numberOfAttachmentsText="{i18n>WizardAttachmentsListTitle}" uploadEnabled="true">
 								<items>
 									<UploadCollectionItem id="uploadCollectionTable" documentId="{InjuryTabModel>documentId}" fileName="{InjuryTabModel>fileName}" mimeType="{InjuryTabModel>mimeType}"
 										thumbnailUrl="{InjuryTabModel>thumbnailUrl}" url="{InjuryTabModel>url}" enableEdit="true" enableDelete="true" visibleDelete="true"
