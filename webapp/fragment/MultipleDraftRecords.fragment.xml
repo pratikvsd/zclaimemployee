@@ -1,0 +1,46 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:f="sap.f" xmlns:form="sap.ui.layout.form" xmlns:core="sap.ui.core">
+	<Dialog showHeader="false" verticalScrolling="false" contentHeight="90%" contentWidth="90%">
+		<content>
+			<Page showHeader="false">
+				<content>
+					<Table id="MultipleDraftTable" headerText="{i18n>MultipleDraftTableTitle}" selectionChange="onSelectMultipleDraftRecord"
+						class="sapUiResponsiveContentPadding" items="{multipleDraftModel>/}" mode="SingleSelectMaster">
+						<columns>
+							<Column>
+								<Label design="Bold" text="{i18n>MultipleInjuryTableColumnPernr}"/>
+							</Column>
+							<Column>
+								<Label design="Bold" text="{i18n>MultipleInjuryTableColumnIDate}"/>
+							</Column>
+							<Column demandPopin="true" minScreenWidth="Desktop">
+								<Label design="Bold" text="{i18n>MultipleInjuryTableColumnInjDesc}"/>
+							</Column>
+							<Column demandPopin="true" minScreenWidth="Desktop">
+								<Label design="Bold" text="{i18n>MultipleInjuryTableColumnDraftDate}"/>
+							</Column>
+							<Column visible="false"></Column>
+						</columns>
+						<items>
+							<ColumnListItem vAlign="Middle">
+								<cells>
+									<Text text="{multipleDraftModel>Pernr}"/>
+									<Text
+										text="{path:'multipleDraftModel>IDate', type:'sap.ui.model.type.DateTime', formatOptions: { source: { pattern: 'yyyy-MM-ddTHH:mm:ss.msZ' }, pattern: 'MMM dd,yyyy HH:mm:ss' }}"/>
+									<Text text="{multipleDraftModel>BodypartDes}"/>
+									<Text text="{path:'multipleDraftModel>DraftDate', type:'sap.ui.model.type.Date', formatOptions: { source: { pattern: 'yyyy-MM-ddTHH:mm:ss.msZ' }, pattern: 'MMM dd,yyyy HH:mm:ss' }}"/>
+									<Text text="{multipleDraftModel>Draftid}"/>
+								</cells>
+							</ColumnListItem>
+						</items>
+					</Table>
+				</content>
+			</Page>
+		</content>
+		<beginButton>
+			<Button id="contAsDraftBtn" enabled="false" type="Emphasized" text="{i18n>MultipleInjuryTabFooterButtonContAsDraft}" press="openClaimWizard"/>
+		</beginButton>
+		<endButton>
+			<Button id="startNewClaimBtn" type="Emphasized" text="{i18n>MultipleInjuryTabFooterButtonStartNewClaim}" press="openInjuryTab"/>
+		</endButton>
+	</Dialog>
+</core:FragmentDefinition>

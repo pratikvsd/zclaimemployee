@@ -7,70 +7,82 @@ sap.ui.define([
 	"sap/m/WizardRenderer"
 ], function(Controller, UploadCollectionParameter, Device) {
 	"use strict";
-
+	var userDetailModel = new sap.ui.model.json.JSONModel();
+	var AttachmentModel = new sap.ui.model.json.JSONModel();
 	return Controller.extend("safetysuitezclaimemployee.controller.Main", {
 
 		//All the methods have been written in the flow of the application.
 
 		onInit: function() {
+			this.DraftId = "";
 			this.userName = 'JPRAKASH';
 			this.WizardTitle = ""; // This is important flag which is used below to close the dialogs
 			this.attachmentsId = [];
+			this.getView().setModel(userDetailModel, "userDetailModel");
+			this.getView().setModel(AttachmentModel, "AttachmentModel");
 		},
 
 		onAfterRendering: function() {
-			var userDetailModel = new sap.ui.model.json.JSONModel();
+			var draftRecords = [];
 			var that = this;
-			this.getView().getModel().read("/SaveDraftDetailsSet('" + this.userName + "')", {
+			this.getView().getModel().read("/InjuryDetail", {
 				success: function(oData, oResponse) {
-					if (oData !== undefined || oData !== null) {
-						oData.Crdate = new Date(oData.Crdate);
-						oData.DDate = new Date(oData.DDate);
-						oData.ElDateClmfrm = new Date(oData.ElDateClmfrm);
-						oData.EmpClmfrmDate = new Date(oData.EmpClmfrmDate);
-						oData.EmpMcertDate = new Date(oData.EmpMcertDate);
-						oData.IDate = new Date(oData.IDate);
-						oData.Rdate = new Date(oData.Rdate);
-						oData.RtwEmpDate = new Date(oData.RtwEmpDate);
-						oData.Sdate = new Date(oData.Sdate);
-						oData.Startdate = new Date(oData.Startdate);
-						oData.Signature = atob(oData.Signature);
-						userDetailModel.setData(oData);
-						that.getView().setModel(userDetailModel, "userDetailModel");
-						sap.ui.getCore().setModel(userDetailModel, "userDetailModel");
+					draftRecords = oData.results;
+					if (draftRecords.length > 1) {
+						if (!that.MultipleDraftDialog) {
+							that.MultipleDraftDialog = sap.ui.xmlfragment("safetysuitezclaimemployee.fragment.MultipleDraftRecords", that);
+							that.getView().addDependent(that.MultipleDraftDialog);
+						}
+						var multipleDraftModel = new sap.ui.model.json.JSONModel(draftRecords);
+						that.getView().setModel(multipleDraftModel, "multipleDraftModel");
+						that.MultipleDraftDialog.open();
+					} else if (draftRecords.length === 1) {
 						if (!that.DraftDialog) {
 							that.DraftDialog = sap.ui.xmlfragment("safetysuitezclaimemployee.fragment.saveAsDraft", that);
 							that.getView().addDependent(that.DraftDialog);
 						}
 						that.DraftDialog.open();
+						that.DraftId = draftRecords[0].Draftid;
+					} else {
+						that.getView().getModel().read("/UserDetail('" + that.userName + "')", {
+							success: function(userData, userResponse) {
+								if (userData !== undefined || userData !== null) {
+									that.ManagerPernr = userData.ManagerPernr;
+									userDetailModel.setData(userData);
+									that.getView().setModel(userDetailModel, "userDetailModel");
+									sap.ui.getCore().setModel(userDetailModel, "userDetailModel");
+								}
+							},
+							error: function(error) {
+								console.log(error);
+							}
+						});
+
 					}
 				},
 				error: function(error) {
-					that.getView().getModel().read("/UserDetail('" + that.userName + "')", {
-						success: function(oData, oResponse) {
-							if (oData !== undefined || oData !== null) {
-								userDetailModel.setData(oData);
-								that.getView().setModel(userDetailModel, "userDetailModel");
-								sap.ui.getCore().setModel(userDetailModel, "userDetailModel");
-							}
-						},
-						error: function(error) {
-							console.log(error);
-						}
-					});
+
 				}
-			});
-			this.getView().getModel().read("/injuries", {
-				success: function(oData, oResponse) {
-					var injuryTableData = new sap.ui.model.json.JSONModel(oData);
-					that.getView().setModel(injuryTableData, "injuryTableData");
-				},
-				error: function(error) {}
 			});
 
 		}, // Backend call to read the userdetail information
 
 		openInjuryTab: function() {
+			var that = this;
+			if(this.MultipleDraftDialog || this.DraftDialog){
+					this.getView().getModel().read("/UserDetail('" + this.userName + "')", {
+				success: function(oData, oResponse) {
+					if (oData !== undefined || oData !== null) {
+						that.getView().getModel("userDetailModel").setData(oData);
+						that.getView().setModel(userDetailModel, "userDetailModel");
+						that.DraftId = "";
+					}
+				},
+				error: function(error) {
+					console.log(error);
+				}
+			});
+			}
 
 			if (!this.InjuryTabDialog) {
 				this.InjuryTabDialog = sap.ui.xmlfragment("safetysuitezclaimemployee.fragment.InjuryTable", this);
@@ -105,6 +117,7 @@ sap.ui.define([
 		}, // To open the privacy statement dialog.
 
 		openClaimWizard: function(oEvent) {
+			var that = this;
 
 			if (!this.claimWizardDialog) {
 				this.claimWizardDialog = sap.ui.xmlfragment("safetysuitezclaimemployee.fragment.claimWizard", this);
@@ -114,13 +127,143 @@ sap.ui.define([
 			}
 			this.WizardTitle = "StartClaim";
 			this.claimWizardDialog.open();
-			if (this.DraftDialog) {
-				this.DraftDialog.close();
+			this.onSign();
+			if (oEvent.getSource().getId() === "contAsDraftBtn") {
+
+				if (this.MultipleDraftDialog) {
+					this.DraftId = sap.ui.getCore().byId("MultipleDraftTable").getSelectedItem().getCells()[4].getText();
+					var draftid = this.DraftId;
+					var username = this.userName;
+					username = new sap.ui.model.Filter("Userid", "EQ", username);
+					draftid = new sap.ui.model.Filter("Draftid", "EQ", draftid);
+					var filters = [draftid, username];
+					this.getView().getModel().read("/SaveDraftDetailsSet(Userid='" + this.userName + "',Draftid='" + this.DraftId + "')", {
+						success: function(oData, oResponse) {
+							if (oData !== undefined || oData !== null) {
+								oData.Signature = atob(oData.Signature);
+								that.attachmentsId.push(oData.Attachments);
+								that.ManagerPernr = oData.ManagerPernr;
+								var c = document.getElementById("signature-pad");
+								var context = c.getContext("2d");
+								var base_image = new Image();
+								base_image.src = oData.Signature;
+								base_image.onload = function() {
+									context.fillStyle = "#fff";
+									context.strokeStyle = "#444";
+									context.lineWidth = 1.5;
+									context.lineCap = "round";
+									context.fillRect(0, 0, c.width, c.height);
+									context.drawImage(base_image, 0, 0);
+								};
+								if (oData.TabNo !== undefined) {
+									if (oData.TabNo === "1") {
+										sap.ui.getCore().byId("claimFormWizard").setCurrentStep("personalDetailStep");
+										sap.ui.getCore().byId("claimWizardPrevBtn").setVisible(false);
+										sap.ui.getCore().byId("claimWizardNextBtn").setVisible(true);
+									} else if (oData.TabNo === "2") {
+										sap.ui.getCore().byId("claimFormWizard").setCurrentStep("injuryDetailStep");
+									} else if (oData.TabNo === "3") {
+										sap.ui.getCore().byId("claimFormWizard").setCurrentStep("employmentDetailStep");
+									} else if (oData.TabNo === "4") {
+										sap.ui.getCore().byId("claimFormWizard").setCurrentStep("workerEarningStep");
+									} else if (oData.TabNo === "5") {
+										sap.ui.getCore().byId("claimFormWizard").setCurrentStep("returntoWorkStep");
+									} else if (oData.TabNo === "6") {
+										sap.ui.getCore().byId("claimFormWizard").setCurrentStep("workerDecStep");
+									} else if (oData.TabNo === "7") {
+										sap.ui.getCore().byId("claimFormWizard").setCurrentStep("attachmentStep");
+										sap.ui.getCore().byId("claimWizardNextBtn").setVisible(false);
+										sap.ui.getCore().byId("claimWizardPrevBtn").setVisible(true);
+										sap.ui.getCore().byId("claimSubmitBtn").setEnabled(true);
+									}
+								}
+								userDetailModel.setData(oData);
+								that.getView().setModel(userDetailModel, "userDetailModel");
+							}
+						},
+						error: function(error) {
+							console.log(error);
+						}
+					});
+					this.MultipleDraftDialog.close();
+				} else if (this.DraftDialog) {
+					var draftid = this.DraftId;
+					var username = this.userName;
+					username = new sap.ui.model.Filter("Userid", "EQ", username);
+					draftid = new sap.ui.model.Filter("Draftid", "EQ", draftid);
+					var filters = [draftid, username];
+					this.getView().getModel().read("/SaveDraftDetailsSet(Userid='" + this.userName + "',Draftid='" + this.DraftId + "')", {
+						success: function(oData, oResponse) {
+							if (oData !== undefined || oData !== null) {
+								oData.Signature = atob(oData.Signature);
+								that.attachmentsId.push(oData.Attachments);
+								that.ManagerPernr = oData.ManagerPernr;
+								userDetailModel.setData(oData);
+								that.getView().setModel(userDetailModel, "userDetailModel");
+								var c = document.getElementById("signature-pad");
+								var context = c.getContext("2d");
+								var base_image = new Image();
+								base_image.src = oData.Signature;
+								base_image.onload = function() {
+									context.fillStyle = "#fff";
+									context.strokeStyle = "#444";
+									context.lineWidth = 1.5;
+									context.lineCap = "round";
+									context.fillRect(0, 0, c.width, c.height);
+									context.drawImage(base_image, 0, 0);
+								};
+								if (oData.TabNo !== undefined) {
+									if (oData.TabNo === "1") {
+										sap.ui.getCore().byId("claimFormWizard").setCurrentStep("personalDetailStep");
+										sap.ui.getCore().byId("claimWizardPrevBtn").setVisible(false);
+										sap.ui.getCore().byId("claimWizardNextBtn").setVisible(true);
+									} else if (oData.TabNo === "2") {
+										sap.ui.getCore().byId("claimFormWizard").setCurrentStep("injuryDetailStep");
+									} else if (oData.TabNo === "3") {
+										sap.ui.getCore().byId("claimFormWizard").setCurrentStep("employmentDetailStep");
+									} else if (oData.TabNo === "4") {
+										sap.ui.getCore().byId("claimFormWizard").setCurrentStep("workerEarningStep");
+									} else if (oData.TabNo === "5") {
+										sap.ui.getCore().byId("claimFormWizard").setCurrentStep("returntoWorkStep");
+									} else if (oData.TabNo === "6") {
+										sap.ui.getCore().byId("claimFormWizard").setCurrentStep("workerDecStep");
+									} else if (oData.TabNo === "7") {
+										sap.ui.getCore().byId("claimFormWizard").setCurrentStep("attachmentStep");
+										sap.ui.getCore().byId("claimWizardNextBtn").setVisible(false);
+										sap.ui.getCore().byId("claimWizardPrevBtn").setVisible(true);
+										sap.ui.getCore().byId("claimSubmitBtn").setEnabled(true);
+									}
+								}
+							}
+						},
+						error: function(error) {
+							console.log(error);
+						}
+					});
+					this.DraftDialog.close();
+				}
+				this.getView().getModel().read("/Files", {
+					filters: filters,
+					success: function(oData, response) {
+						for (var i = 0; i < oData.results.length; i++) {
+							oData.results[i].url = that.getView().getModel().sServiceUrl + "/Files(ArcDocId='" + oData.results[i].ArcDocId +
+								"',Draftid='',Userid='" + that.userName + "')/$value";
+						}
+						AttachmentModel.setData(oData.results);
+						sap.ui.getCore().byId("UploadCollection").setModel(AttachmentModel, "AttachmentModel");
+
+					},
+					error: function(oError) {
+						debugger;
+					}
+				}); //reading files for draft
+
 			}
 			sap.ui.getCore().byId("UploadCollection").setUploadUrl("/sap/opu/odata/cnetohs/VWA_CLAIM_SRV/Files");
-			
+			sap.ui.getCore().byId("UploadCollection").setModel(AttachmentModel, "AttachmentModel");
 			sap.ui.getCore().byId("claimFormWizard")._getProgressNavigator().ontap = function() {};
-			sap.ui.getCore().byId("claimFormWizard")._scrollHandler = function() {
+			sap.ui.getCore().byId("claimFormWizard")._scrollHandler = function(e) {
+
 				if (this._scrollLocked) {
 					return;
 				}
@@ -139,12 +282,16 @@ sap.ui.define([
 					var wizardStep = currentStepDOM.dataset.sapUi;
 					if (wizardStep === "attachmentStep") {
 						sap.ui.getCore().byId("claimWizardNextBtn").setVisible(false);
+						sap.ui.getCore().byId("claimSubmitBtn").setEnabled(true);
 					} else if (wizardStep === "personalDetailStep") {
+						sap.ui.getCore().byId("claimSubmitBtn").setEnabled(false);
 						sap.ui.getCore().byId("claimWizardPrevBtn").setVisible(false);
 					} else {
+						sap.ui.getCore().byId("claimSubmitBtn").setEnabled(false);
 						sap.ui.getCore().byId("claimWizardNextBtn").setVisible(true);
 						sap.ui.getCore().byId("claimWizardPrevBtn").setVisible(true);
 					}
+					sap.ui.getCore().byId("claimFormWizard").setCurrentStep(wizardStep);
 				}
 
 				var stepHeight = currentStepDOM.clientHeight,
@@ -173,48 +320,7 @@ sap.ui.define([
 					}
 				}
 			};
-			this.onSign();
-			if (oEvent.getSource().getId() === "contAsDraftBtn") {
-				//sap.ui.getCore().byId("InputPersnlDetlState").setValue(this.getView().getModel("userDetailModel").getData().stateId);
-				var c = document.getElementById("signature-pad");
-				var context = c.getContext("2d");
-				var base_image = new Image();
-				base_image.src = this.getView().getModel("userDetailModel").getData().Signature;
-				base_image.onload = function() {
-					context.fillStyle = "#fff";
-					context.strokeStyle = "#444";
-					context.lineWidth = 1.5;
-					context.lineCap = "round";
-					context.fillRect(0, 0, c.width, c.height);
-					context.drawImage(base_image, 0, 0);
-				};
-				
-				
 
-				if (this.getView().getModel("userDetailModel").getData().TabNo !== undefined) {
-					if (this.getView().getModel("userDetailModel").getData().TabNo === "1") {
-						sap.ui.getCore().byId("claimFormWizard").setCurrentStep("personalDetailStep");
-					}
-					if (this.getView().getModel("userDetailModel").getData().TabNo === "2") {
-						sap.ui.getCore().byId("claimFormWizard").setCurrentStep("injuryDetailStep");
-					}
-					if (this.getView().getModel("userDetailModel").getData().TabNo === "3") {
-						sap.ui.getCore().byId("claimFormWizard").setCurrentStep("employmentDetailStep");
-					}
-					if (this.getView().getModel("userDetailModel").getData().TabNo === "4") {
-						sap.ui.getCore().byId("claimFormWizard").setCurrentStep("workerEarningStep");
-					}
-					if (this.getView().getModel("userDetailModel").getData().TabNo === "5") {
-						sap.ui.getCore().byId("claimFormWizard").setCurrentStep("returntoWorkStep");
-					}
-					if (this.getView().getModel("userDetailModel").getData().TabNo === "6") {
-						sap.ui.getCore().byId("claimFormWizard").setCurrentStep("workerDecStep");
-					}
-					if (this.getView().getModel("userDetailModel").getData().TabNo === "7") {
-						sap.ui.getCore().byId("claimFormWizard").setCurrentStep("attachmentStep");
-					}
-				}
-			}
 			if (sap.ui.getCore().byId("claimFormWizard").getCurrentStep() === "personalDetailStep") {
 				sap.ui.getCore().byId("claimWizardPrevBtn").setVisible(false);
 			}
@@ -341,9 +447,11 @@ sap.ui.define([
 
 				sap.ui.getCore().byId("claimWizardNextBtn").setVisible(false);
 				sap.ui.getCore().byId("claimSubmitBtn").setEnabled(true);
+				sap.ui.getCore().byId("claimWizardPrevBtn").setVisible(true);
 
 			} else if (this._oWizard.getCurrentStep() === "personalDetailStep") {
 				sap.ui.getCore().byId("claimWizardPrevBtn").setVisible(false);
+				sap.ui.getCore().byId("claimWizardNextBtn").setVisible(true);
 			} else {
 				sap.ui.getCore().byId("claimWizardNextBtn").setVisible(true);
 				sap.ui.getCore().byId("claimWizardPrevBtn").setVisible(true);
@@ -403,11 +511,14 @@ sap.ui.define([
 			var selectedRow = oiEvent.getSource().getModel().getProperty(path);
 			this.getView().getModel("userDetailModel").getData().BodypartDes = selectedRow.BodypartDes;
 			this.getView().getModel("userDetailModel").getData().InjurytypeDes = selectedRow.InjurytypeDes;
-			this.getView().getModel("userDetailModel").getData().RtwEmpDate = new Date(selectedRow.Rdate);
 			oInjuryDetailModel.setData(selectedRow);
 			this.getView().setModel(oInjuryDetailModel, "oInjuryDetailModel");
 
 		}, // To enable the the button in Injury table on click on row.
+
+		onSelectMultipleDraftRecord: function(oEvent) {
+			sap.ui.getCore().byId("contAsDraftBtn").setEnabled(true);
+		},
 
 		onChange: function(oEvent) {
 			var oUploadCollection = oEvent.getSource();
@@ -416,7 +527,7 @@ sap.ui.define([
 				value: "X"
 			});
 			oUploadCollection.addHeaderParameter(oCustomerRequestToken);
-			
+
 			var oCustomerAcceptToken = new UploadCollectionParameter({
 				name: "Accept",
 				value: "application/json;odata=verbose"
@@ -427,28 +538,30 @@ sap.ui.define([
 		onUploadComplete: function(oEvent) {
 			this.getView().getModel().refresh();
 			var fileId = oEvent.mParameters.mParameters.headers.location;
-			var docid = fileId.split("('")[1].replace("')","");
+			var docid = fileId.split("(")[1].replace(")", "");
 			var oUploadCollection = sap.ui.getCore().byId("UploadCollection");
-			var oData = oUploadCollection.getModel("InjuryTabModel").getData().items;
-			var url = this.getView().getModel().sServiceUrl + "/Files('" +docid+ "')/$value";
+			if (oUploadCollection.getModel("AttachmentModel").getData().length === undefined) {
+				var oData = [];
+			} else {
+				var oData = oUploadCollection.getModel("AttachmentModel").getData();
+			}
+
+			var url = this.getView().getModel().sServiceUrl + "/Files(" + docid + ")/$value";
+			docid = docid.split("='")[1].replace("',Draftid", "");
 			var that = this;
 			oData.unshift({
-				"documentId": jQuery.now().toString(), // generate Id,
-				"fileName": oEvent.getParameter("files")[0].fileName,
-				"mimeType": "",
-				"thumbnailUrl": "",
-				"url": url,
-				"attributes": [{
-					"title": "Uploaded By",
-					"text": that.userName,
-					"active": false
-				}]
+				"ArcDocId": docid,
+				"Filename": oEvent.getParameter("files")[0].fileName,
+				"url": url
 			});
+			if (oUploadCollection.getModel("AttachmentModel").getData().length === undefined) {
+				oUploadCollection.getModel("AttachmentModel").setData(oData);
+			}
 			this.attachmentsId.push(docid);
 			//sap.ui.getCore().byId("uploadCollectionTable").setUrl(oEvent.mParameters.mParameters.headers.location);
 			// Sets the text to the label
-			this.getView().getModel("InjuryTabModel").refresh();
-			var aItems = sap.ui.getCore().byId("UploadCollection").getItems();
+			oUploadCollection.getModel("AttachmentModel").refresh();
+			var aItems = oUploadCollection.getItems();
 			sap.ui.getCore().byId("UploadCollection").setNumberOfAttachmentsText("Employee Attachments(" + aItems.length + ")");
 
 			// delay the success message for to notice onChange message
@@ -458,40 +571,44 @@ sap.ui.define([
 		}, // For file upload process.
 
 		onBeforeUploadStarts: function(oEvent) {
-			//var oUploadCollection = oEvent.getSource();
 			var oModel = this.getView().getModel();
-			// Header Slug
 			var oCustomerHeaderSlug = new UploadCollectionParameter({
 				name: "slug",
 				value: encodeURIComponent(oEvent.getParameter("fileName"))
 			});
 			oEvent.getParameters().addHeaderParameter(oCustomerHeaderSlug);
-			
 			oModel.refreshSecurityToken();
 			var oHeaders = oModel.oHeaders;
-
 			var sToken = oHeaders['x-csrf-token'];
-			// Header Token
 			var oCustomerHeaderToken = new UploadCollectionParameter({
 				name: "x-csrf-token",
 				value: sToken
 			});
 			oEvent.getParameters().addHeaderParameter(oCustomerHeaderToken);
-			
+
 		}, //Madotory event for before file upload.
 
 		deleteAttachmentListItems: function(oEvent) {
 			var sItemToDeleteId = oEvent.getParameter("documentId");
-			var oData = sap.ui.getCore().byId("UploadCollection").getModel().getData();
-			var aItems = jQuery.extend(true, {}, oData).items;
-			jQuery.each(aItems, function(index) {
-				if (aItems[index] && aItems[index].documentId === sItemToDeleteId) {
-					aItems.splice(index, 1);
+			var oData = sap.ui.getCore().byId("UploadCollection").getModel("AttachmentModel").getData();
+			if (oData.length > 0) {
+				for (var i = 0; i < oData.length; i++) {
+					if (oData[i].ArcDocId === sItemToDeleteId) {
+						oData.splice(i, 1);
+						sap.ui.getCore().byId("UploadCollection").getModel("AttachmentModel").refresh();
+						break;
+					}
 				}
-			});
-			sap.ui.getCore().byId("UploadCollection").getModel().setData({
-				"items": aItems
-			});
+			}
+			if (this.attachmentsId.length > 0) {
+				for (var j = 0; j < this.attachmentsId.length; j++) {
+					if (this.attachmentsId[j] === sItemToDeleteId) {
+						this.attachmentsId.splice(j, 1);
+						break;
+					}
+				}
+			}
+			sap.ui.getCore().byId("UploadCollection").getModel("AttachmentModel").setData(oData);
 			var Items = sap.ui.getCore().byId("UploadCollection").getItems();
 			sap.ui.getCore().byId("UploadCollection").setNumberOfAttachmentsText("Employee Attachments(" + Items.length + ")");
 		}, // To delete the files from the attchment list.
@@ -619,7 +736,7 @@ sap.ui.define([
 					var tabNo = "7";
 				}
 				if (this.getView().getModel("oInjuryDetailModel")) {
-					
+
 					var payload = {
 						"Confidential": !this.ConfidentialColumnText ? false : true,
 						"Draft": true,
@@ -704,7 +821,8 @@ sap.ui.define([
 						"EmpMcertDate": !EmpMcertDate ? "" : EmpMcertDate,
 						"DDate": !dDate ? "" : dDate,
 						"Signature": this.signString,
-						"Attachments" : this.attachmentsId.toString()
+						"Attachments": this.attachmentsId.toString(),
+						"Draftid": this.DraftId
 					};
 				} else {
 					var payload = {
@@ -791,7 +909,8 @@ sap.ui.define([
 						"EmpMcertDate": !EmpMcertDate ? "" : EmpMcertDate,
 						"DDate": !dDate ? "" : dDate,
 						"Signature": this.signString,
-						"Attachments" : this.attachmentsId.toString()
+						"Attachments": this.attachmentsId.toString(),
+						"Draftid": this.DraftId
 					};
 				}
 
@@ -906,7 +1025,8 @@ sap.ui.define([
 										"EmpMcertDate": !EmpMcertDate ? "" : EmpMcertDate,
 										"DDate": !dDate ? "" : dDate,
 										"Signature": this.signString,
-										"Attachments" : this.attachmentsId.toString()
+										"Attachments": this.attachmentsId.toString(),
+										"Draftid": this.DraftId
 									};
 								} else {
 									var payload = {
@@ -993,7 +1113,8 @@ sap.ui.define([
 										"EmpMcertDate": !EmpMcertDate ? "" : EmpMcertDate,
 										"DDate": !dDate ? "" : dDate,
 										"Signature": this.signString,
-										"Attachments" : this.attachmentsId.toString()
+										"Attachments": this.attachmentsId.toString(),
+										"Draftid": this.DraftId
 									};
 								}
 
@@ -1001,20 +1122,41 @@ sap.ui.define([
 								var that = this;
 								this.getView().getModel().create("/SaveDraftDetailsSet", payload, {
 									success: function(oData, oResponse) {
-
-										var sSource = that.getView().getModel().sServiceUrl + "/InjuryFormSet('" + that.userName + "')/$value";
-										that.claimWizardDialog.close();
-										if (that.DraftDialog) {
-											that.DraftDialog.close();
+										if (!that.ClaimSubmitDialog) {
+											that.ClaimSubmitDialog = new sap.m.Dialog({
+												type: sap.m.DialogType.Message,
+												title: "Confirm",
+												content: new sap.m.Text({
+													text: oData.Casno + " Claim submitted successfully"
+												}),
+												beginButton: new sap.m.Button({
+													type: sap.m.ButtonType.Emphasized,
+													text: "Ok",
+													press: function() {
+														that.ClaimSubmitDialog.close();
+														var sSource = that.getView().getModel().sServiceUrl + "/InjuryFormSet(Casno='" + oData.Casno + "',Userid='" +
+															that.userName + "')/$value";
+														that.claimWizardDialog.close();
+														if (that.DraftDialog) {
+															that.DraftDialog.close();
+														}
+														if (that.MultipleDraftDialog) {
+															that.MultipleDraftDialog.close();
+														}
+														sap.ui.getCore().byId("claimWizardNextBtn").setVisible(true);
+														sap.ui.getCore().byId("claimSubmitBtn").setEnabled(false);
+														that._oWizard.setCurrentStep("personalDetailStep");
+														that._pdfViewer = new sap.m.PDFViewer();
+														that.getView().addDependent(that._pdfViewer);
+														that._pdfViewer.setSource(sSource);
+														that._pdfViewer.setTitle("Details of Claim Form");
+														that._pdfViewer.open();
+													}
+												})
+											});
+											that.ClaimSubmitDialog.open();
 										}
-										sap.ui.getCore().byId("claimWizardNextBtn").setVisible(true);
-										sap.ui.getCore().byId("claimSubmitBtn").setEnabled(false);
-										that._oWizard.setCurrentStep("personalDetailStep");
-										that._pdfViewer = new sap.m.PDFViewer();
-										that.getView().addDependent(that._pdfViewer);
-										that._pdfViewer.setSource(sSource);
-										that._pdfViewer.setTitle("Details of Claim Form");
-										that._pdfViewer.open();
+
 									},
 									error: function(error) {
 

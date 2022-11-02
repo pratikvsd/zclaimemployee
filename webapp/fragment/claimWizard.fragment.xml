@@ -26,7 +26,7 @@
 									<Label text="{i18n>WizardPersonalDetailFormLabel_Suburb}"/>
 									<Input id="InputSuburb" type="Text" value="{userDetailModel>/Suburb}"/>
 									<Label text="{i18n>WizardPersonalDetailFormLabel_State}"/>
-									<Select id="InputPersnlDetlState" items="{/StateSet}" selectedKey="{userDetailModel>/StateId}" >
+									<Select id="InputPersnlDetlState" items="{/StateSet}" selectedKey="{userDetailModel>/StateId}">
 										<core:Item key="{Statename}" text="{Description}"/>
 									</Select>
 									<Label text="{i18n>WizardPersonalDetailFormLabel_PAFC}"/>
@@ -81,18 +81,18 @@
 									<Input id="InputInjuryPostcode" type="Text" value="{userDetailModel>/PostcodeInj}"/>
 									<Label required="true" text="{i18n>WizardInjuryDetailsFormLabel_InjuryDateTime}"/>
 									<DateTimePicker id="InputInjuryDateTime"
-										value="{path:'userDetailModel>/IDate', type:'sap.ui.model.type.DateTime', formatOptions: { style: 'medium', strictParsing: true}}"
+										value="{path:'userDetailModel>/IDate', type:'sap.ui.model.type.DateTime', formatOptions: { source: { pattern: 'yyyy-MM-ddTHH:mm:ss.msZ' }, pattern: 'MMM dd,yyyy HH:mm:ss' }}"
 										change="checkInputValidation"/>
 									<Label text="{i18n>WizardInjuryDetailsFormLabel_FirstNoticeInjuryCondition}"/>
 									<DateTimePicker id="InputWhenNoticeInjury"
-										value="{path:'userDetailModel>/Crdate', type:'sap.ui.model.type.DateTime', formatOptions: { style: 'medium', strictParsing: true}}"/>
+										value="{path:'userDetailModel>/Crdate', type:'sap.ui.model.type.DateTime', formatOptions: { source: { pattern: 'yyyy-MM-ddTHH:mm:ss.msZ' }, pattern: 'MMM dd,yyyy HH:mm:ss' }}"/>
 									<Label required="true" text="{i18n>WizardInjuryDetailsFormLabel_StoppedWorkDateTime}"/>
 									<DateTimePicker id="InputStoppedWorkDateTIme"
-										value="{path:'userDetailModel>/Sdate', type:'sap.ui.model.type.DateTime', formatOptions: { style: 'medium', strictParsing: true}}"
+										value="{path:'userDetailModel>/Sdate', type:'sap.ui.model.type.DateTime', formatOptions: { source: { pattern: 'yyyy-MM-ddTHH:mm:ss.msZ' }, pattern: 'MMM dd,yyyy HH:mm:ss' }}"
 										change="checkInputValidation"/>
 									<Label text="{i18n>WizardInjuryDetailsFormLabel_ReportInjuryToEmployee}"/>
 									<DateTimePicker id="InputInjuryReportDateTime"
-										value="{path:'userDetailModel>/Rdate', type:'sap.ui.model.type.DateTime', formatOptions: { style: 'medium', strictParsing: true}}"/>
+										value="{path:'userDetailModel>/Rdate', type:'sap.ui.model.type.DateTime', formatOptions: { source: { pattern: 'yyyy-MM-ddTHH:mm:ss.msZ' }, pattern: 'MMM dd,yyyy HH:mm:ss' }}"/>
 									<core:Title text="" level="H5"/>
 									<Label text="{i18n>WizardInjuryDetailsFormLabel_ResposibleManAtWorkplace}"/>
 									<Input id="InputEmployerResponsible" type="Text" value="{userDetailModel>/Name1}"/>
@@ -150,7 +150,7 @@
 									<Input id="InputEmpOccupation" type="Text" value="{userDetailModel>/Usualoccupation}"/>
 									<Label text="{i18n>WizardEmployementDetailsFormLabel_WhenStartWorkingForEmployer}"/>
 									<DatePicker id="InputEmpStartWorkingDate"
-										value="{path:'userDetailModel>/Startdate', type:'sap.ui.model.type.Date', formatOptions: { style: 'medium', strictParsing: true}}"/>
+										value="{path:'userDetailModel>/Startdate', type:'sap.ui.model.type.Date', formatOptions: { source: { pattern: 'yyyy-MM-ddTHH:mm:ss.msZ' }, pattern: 'MMM dd,yyyy' }}"/>
 									<core:Title text="{i18n>WizardEmployementDetailsSecTitle_PleaseSelectAny}" level="H5"/>
 									<Label text="{i18n>WizardEmployementDetailsFormLabel_ADirectorofMyEmployersCompany}"/>
 									<Select id="InputEmpDirectorofMyEmployersComp" selectedKey="{userDetailModel>/Directorcheck}">
@@ -176,6 +176,7 @@
 									<Textarea id="InputEmpOtherEmployment" value="{userDetailModel>/OtherEmployement}"/>
 									<Label required="true" text="{i18n>WizardEmployementDetailsFormLabel_FollowingAppiesToYou}"/>
 									<Select id="InputEmpAppliesToYou" selectedKey="{userDetailModel>/Reasontoapply}" change="checkInputValidation">
+										<core:Item text="" key=""/>
 										<core:Item text="Full-time" key="Full-time"/>
 										<core:Item text="Part-time" key="Part-time"/>
 										<core:Item text="Student" key="Student"/>
@@ -222,9 +223,10 @@
 									<Textarea id="InputReturToWorkQue1" value="{userDetailModel>/RtwDetails}"/>
 									<Label text="{i18n>WizardreturntoWorkFormLabel_ReturnDateQuestion}"/>
 									<DatePicker id="InputReturToWorkDate"
-										value="{path:'userDetailModel>/RtwEmpDate', type:'sap.ui.model.type.Date', formatOptions: { style: 'medium', strictParsing: true}}"/>
+										value="{path:'userDetailModel>/RtwEmpDate', type:'sap.ui.model.type.Date', formatOptions: { source: { pattern: 'yyyy-MM-ddTHH:mm:ss.msZ' }, pattern: 'MMM dd,yyyy' }}"/>
 									<Label text="{i18n>WizardreturntoWorkFormLabel_question2}"/>
 									<Select id="InputReturToWorkOue2" selectedKey="{userDetailModel>/Duties}">
+										<core:Item text="" key=""/>
 										<core:Item text="Full" key="Full"/>
 										<core:Item text="Suitable/Modified" key="Suitable/Modified"/>
 									</Select>
@@ -234,15 +236,16 @@
 									<Textarea id="InputReturToWorkOue4" value="{userDetailModel>/NrtwIdp}"/>
 									<Label text="{i18n>WizardreturntoWorkFormLabel_ClaimFormSubmissionDate}"/>
 									<DatePicker id="InputReturToWorkClaimFormSubmissionDate"
-										value="{path:'userDetailModel>/EmpClmfrmDate', type:'sap.ui.model.type.Date', formatOptions: { style: 'medium', strictParsing: true}}"/>
+										value="{path:'userDetailModel>/EmpClmfrmDate', type:'sap.ui.model.type.Date', formatOptions: { source: { pattern: 'yyyy-MM-ddTHH:mm:ss.msZ' }, pattern: 'MMM dd,yyyy' }}"/>
 									<Label text="{i18n>WizardreturntoWorkFormLabel_question5}"/>
 									<Select id="InputReturToWorkOue5" selectedKey="{userDetailModel>/EmpClmForm}">
+										<core:Item text="" key=""/>
 										<core:Item text="Hand Delivery" key="Hand Delivery"/>
 										<core:Item text="By Post" key="By Post"/>
 									</Select>
 									<Label text="{i18n>WizardreturntoWorkFormLabel_MedicalCertificateSubmissionDate}"/>
 									<DatePicker id="InputReturToWorkMedicalCertificateSubmissionDate"
-										value="{path:'userDetailModel>/EmpMcertDate', type:'sap.ui.model.type.Date', formatOptions: { style: 'medium', strictParsing: true}}"/>
+										value="{path:'userDetailModel>/EmpMcertDate', type:'sap.ui.model.type.Date', formatOptions: { source: { pattern: 'yyyy-MM-ddTHH:mm:ss.msZ' }, pattern: 'MMM dd,yyyy' }}"/>
 								</form:content>
 							</form:SimpleForm>
 						</WizardStep>
@@ -264,27 +267,21 @@
 									</VBox>
 									<core:Title text="{i18n>WizardworkerDecFormmLabel_Date}"/>
 									<DatePicker id="InputDeclarationDate" change="checkInputValidation"
-										value="{path:'userDetailModel>/DDate', type:'sap.ui.model.type.Date', formatOptions: { style: 'medium', strictParsing: true}}"/>
+										value="{path:'userDetailModel>/DDate', type:'sap.ui.model.type.Date', formatOptions: { source: { pattern: 'yyyy-MM-ddTHH:mm:ss.msZ' }, pattern: 'MMM dd,yyyy' }}"/>
 								</form:content>
 							</form:SimpleForm>
 						</WizardStep>
 						<WizardStep id="attachmentStep" title="{i18n>claimFormWizardAttachments}">
 							<UploadCollection id="UploadCollection" multiple="false" change="onChange" fileDeleted="deleteAttachmentListItems"
 								typeMissmatch="onTypeMissmatch" uploadComplete="onUploadComplete" beforeUploadStarts="onBeforeUploadStarts"
-								uploadTerminated="onUploadTerminated" items="{ path: 'InjuryTabModel>/items', templateShareable: false }"
+								uploadTerminated="onUploadTerminated" items="{AttachmentModel>/}"
 								numberOfAttachmentsText="{i18n>WizardAttachmentsListTitle}" uploadEnabled="true">
 								<items>
-									<UploadCollectionItem id="uploadCollectionTable" documentId="{InjuryTabModel>documentId}" fileName="{InjuryTabModel>fileName}" mimeType="{InjuryTabModel>mimeType}"
-										thumbnailUrl="{InjuryTabModel>thumbnailUrl}" url="{InjuryTabModel>url}" enableEdit="true" enableDelete="true" visibleDelete="true"
-										visibleEdit="true" attributes="{path : 'InjuryTabModel>attributes', templateShareable : false}"
-										statuses="{path : 'InjuryTabModel>statuses', templateShareable : false}" selected="{InjuryTabModel>selected}">
-										<attributes>
-											<ObjectAttribute title="{InjuryTabModel>title}" text="{path : 'text', formatter : '.formatAttribute'}" active="{InjuryTabModel>active}"
-												press="onAttributePress"/>
-										</attributes>
-										<statuses>
-											<ObjectStatus title="{InjuryTabModel>title}" text="{InjuryTabModel>text}" state="{InjuryTabModel>state}"/>
-										</statuses>
+									<UploadCollectionItem id="uploadCollectionTable" documentId="{AttachmentModel>ArcDocId}" fileName="{AttachmentModel>Filename}" 
+										url="{AttachmentModel>url}" visibleEdit="false"  enableDelete="true" visibleDelete="true">
+										<!--<attributes>
+											<ObjectAttribute title="{AttachmentModel>title}" text="{AttachmentModel>text}"/>
+										</attributes>-->
 									</UploadCollectionItem>
 								</items>
 							</UploadCollection>
