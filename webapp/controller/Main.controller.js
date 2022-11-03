@@ -16,6 +16,7 @@ sap.ui.define([
 		onInit: function() {
 			this.DraftId = "";
 			this.userName = 'JPRAKASH';
+			//this.userName = sap.ushell.Container.getService("UserInfo").getId();
 			this.WizardTitle = ""; // This is important flag which is used below to close the dialogs
 			this.attachmentsId = [];
 			this.getView().setModel(userDetailModel, "userDetailModel");
@@ -69,19 +70,19 @@ sap.ui.define([
 
 		openInjuryTab: function() {
 			var that = this;
-			if(this.MultipleDraftDialog || this.DraftDialog){
-					this.getView().getModel().read("/UserDetail('" + this.userName + "')", {
-				success: function(oData, oResponse) {
-					if (oData !== undefined || oData !== null) {
-						that.getView().getModel("userDetailModel").setData(oData);
-						that.getView().setModel(userDetailModel, "userDetailModel");
-						that.DraftId = "";
+			if (this.MultipleDraftDialog || this.DraftDialog) {
+				this.getView().getModel().read("/UserDetail('" + this.userName + "')", {
+					success: function(oData, oResponse) {
+						if (oData !== undefined || oData !== null) {
+							that.getView().getModel("userDetailModel").setData(oData);
+							that.getView().setModel(userDetailModel, "userDetailModel");
+							that.DraftId = "";
+						}
+					},
+					error: function(error) {
+						console.log(error);
 					}
-				},
-				error: function(error) {
-					console.log(error);
-				}
-			});
+				});
 			}
 
 			if (!this.InjuryTabDialog) {
@@ -98,9 +99,28 @@ sap.ui.define([
 		}, // To open the initial injury Table dialog.
 
 		onCreateIncidentPress: function(oEvent) {
-			var urlString = document.location.href.split("/");
-			var host = urlString[2];
-			window.open("https://" + host + "/sap/bc/ui5_ui5/ui2/ushell/shells/abap/FioriLaunchpad.html#CNet-MyIncidents", "_blank");
+			//var urlString = document.location.href.split("/");
+			//var host = urlString[2];
+			//window.open("https://" + host + "/sap/bc/ui5_ui5/ui2/ushell/shells/abap/FioriLaunchpad.html#CNet-MyIncidents", "_blank");
+			var oCrossAppNavigator = sap.ushell.Container.getService("CrossApplicationNavigation"); 
+			oCrossAppNavigator.isIntentSupported(["CNet-MyIncidents"])
+				.done(function(aResponses) {
+
+				})
+				.fail(function() {
+					new sap.m.MessageToast("Provide corresponding intent to navigate");
+				});
+			// generate the Hash to display a employee Id
+			var hash = (oCrossAppNavigator && oCrossAppNavigator.hrefForExternal({
+				target: {
+					semanticObject: "CNet",
+					action: "MyIncidents"
+				}
+			})) || ""; 
+			//Generate a  URL for the second application
+			var url = window.location.href.split('#')[0] + hash; 
+			//Navigate to second app
+			sap.m.URLHelper.redirect(url, true); 
 			//window.open("https://sapsdev.c-net.com.au/sap/bc/ui5_ui5/ui2/ushell/shells/abap/FioriLaunchpad.html#CNet-MyIncidents", "_blank");
 		}, //To open create incident app in new window.
 
@@ -353,11 +373,9 @@ sap.ui.define([
 				var InputFamilyName = sap.ui.getCore().byId("InputFamilyName");
 				var InputGivenName = sap.ui.getCore().byId("InputGivenName");
 
-				if (InputTitle.getValue() === "" || InputTitle.getValue() === undefined) {
+				if (InputTitle.getValue() === "" || InputFamilyName.getValue() === "" || InputGivenName.getValue() === "") {
 					InputTitle.setValueState("Error");
-				} else if (InputFamilyName.getValue() === "" || InputFamilyName.getValue() === undefined) {
 					InputFamilyName.setValueState("Error");
-				} else if (InputGivenName.getValue() === "" || InputGivenName.getValue() === undefined) {
 					InputGivenName.setValueState("Error");
 				} else {
 					if (this._oSelectedStep && !this._oSelectedStep.bLast) {
@@ -371,9 +389,8 @@ sap.ui.define([
 			} else if (this._oWizard.getCurrentStep() === "injuryDetailStep") {
 				var InputInjuryDateTime = sap.ui.getCore().byId("InputInjuryDateTime");
 				var InputStoppedWorkDateTIme = sap.ui.getCore().byId("InputStoppedWorkDateTIme");
-				if (InputInjuryDateTime.getValue() === "" || InputInjuryDateTime.getValue() === undefined) {
+				if (InputInjuryDateTime.getValue() === "" || InputStoppedWorkDateTIme.getValue() === "") {
 					InputInjuryDateTime.setValueState("Error");
-				} else if (InputStoppedWorkDateTIme.getValue() === "" || InputStoppedWorkDateTIme.getValue() === undefined) {
 					InputStoppedWorkDateTIme.setValueState("Error");
 				} else {
 					if (this._oSelectedStep && !this._oSelectedStep.bLast) {
@@ -398,9 +415,8 @@ sap.ui.define([
 			} else if (this._oWizard.getCurrentStep() === "workerEarningStep") {
 				var InputWorkerWeeklyShiftAllowence = sap.ui.getCore().byId("InputWorkerWeeklyShiftAllowence");
 				var InputWorkerWeeklyOvertime = sap.ui.getCore().byId("InputWorkerWeeklyOvertime");
-				if (InputWorkerWeeklyShiftAllowence.getValue() === "" || InputWorkerWeeklyShiftAllowence.getValue() === undefined) {
+				if (InputWorkerWeeklyShiftAllowence.getValue() === "" || InputWorkerWeeklyOvertime.getValue() === "") {
 					InputWorkerWeeklyShiftAllowence.setValueState("Error");
-				} else if (InputWorkerWeeklyOvertime.getValue() === "" || InputWorkerWeeklyOvertime.getValue() === undefined) {
 					InputWorkerWeeklyOvertime.setValueState("Error");
 				} else {
 					if (this._oSelectedStep && !this._oSelectedStep.bLast) {
@@ -421,8 +437,8 @@ sap.ui.define([
 					InputDeclarationDate.setValueState("Error");
 				} else if (this.roughString === this.signString) {
 					canvas.style.borderColor = "red";
-				} else {
-					console.log(this.signString);
+				}
+				else {
 					canvas.style.borderColor = "black";
 					if (this._oSelectedStep && !this._oSelectedStep.bLast) {
 						this._oWizard.goToStep(oNextStep, true);
@@ -494,7 +510,6 @@ sap.ui.define([
 				this.InjuryTabDialog.close();
 				sap.ui.getCore().byId("injuryDetailsTable").removeSelections();
 				sap.ui.getCore().byId("injuryTabStartBtn").setEnabled(false);
-				sap.ui.getCore().byId("injuryTabCreateIncBtn").setEnabled(false);
 
 			} else if (this.WizardTitle === "PrivacyDialog") {
 				this.PrivacyStatementDialog.close();
@@ -505,12 +520,11 @@ sap.ui.define([
 
 		onInjuryTableRowSelect: function(oiEvent) {
 			sap.ui.getCore().byId("injuryTabStartBtn").setEnabled(true);
-			sap.ui.getCore().byId("injuryTabCreateIncBtn").setEnabled(true);
 			var oInjuryDetailModel = new sap.ui.model.json.JSONModel();
 			var path = oiEvent.getParameter('listItem').getBindingContext().getPath();
 			var selectedRow = oiEvent.getSource().getModel().getProperty(path);
 			this.getView().getModel("userDetailModel").getData().BodypartDes = selectedRow.BodypartDes;
-			this.getView().getModel("userDetailModel").getData().InjurytypeDes = selectedRow.InjurytypeDes;
+			this.getView().getModel("userDetailModel").getData().InjDesc = selectedRow.InjurytypeDes;
 			oInjuryDetailModel.setData(selectedRow);
 			this.getView().setModel(oInjuryDetailModel, "oInjuryDetailModel");
 
@@ -554,20 +568,13 @@ sap.ui.define([
 				"Filename": oEvent.getParameter("files")[0].fileName,
 				"url": url
 			});
+			this.attachmentsId.push(docid);
 			if (oUploadCollection.getModel("AttachmentModel").getData().length === undefined) {
 				oUploadCollection.getModel("AttachmentModel").setData(oData);
 			}
-			this.attachmentsId.push(docid);
-			//sap.ui.getCore().byId("uploadCollectionTable").setUrl(oEvent.mParameters.mParameters.headers.location);
-			// Sets the text to the label
 			oUploadCollection.getModel("AttachmentModel").refresh();
 			var aItems = oUploadCollection.getItems();
 			sap.ui.getCore().byId("UploadCollection").setNumberOfAttachmentsText("Employee Attachments(" + aItems.length + ")");
-
-			// delay the success message for to notice onChange message
-			setTimeout(function() {
-				sap.m.MessageToast.show("UploadComplete event triggered.");
-			}, 4000);
 		}, // For file upload process.
 
 		onBeforeUploadStarts: function(oEvent) {
@@ -684,6 +691,7 @@ sap.ui.define([
 			var InputReturToWorkOue5 = sap.ui.getCore().byId("InputReturToWorkOue5");
 			var InputReturToWorkMedicalCertificateSubmissionDate = sap.ui.getCore().byId("InputReturToWorkMedicalCertificateSubmissionDate");
 			var InputDeclarationDate = sap.ui.getCore().byId("InputDeclarationDate");
+			var InputInjuryType = sap.ui.getCore().byId("InputInjuryType");
 			var canvas = document.getElementById("signature-pad");
 			this.signString = btoa(encodeURI(canvas.toDataURL('image/jpeg').replace("data:image/jpeg:base64,", "")));
 			if (this.roughString === this.signString) {
@@ -822,7 +830,8 @@ sap.ui.define([
 						"DDate": !dDate ? "" : dDate,
 						"Signature": this.signString,
 						"Attachments": this.attachmentsId.toString(),
-						"Draftid": this.DraftId
+						"Draftid": this.DraftId,
+						"InjDesc" : InputInjuryType.getValue()
 					};
 				} else {
 					var payload = {
@@ -919,7 +928,7 @@ sap.ui.define([
 				this.getView().getModel().create("/SaveDraftDetailsSet", payload, {
 					success: function(oData, oResponse) {
 						that.claimWizardDialog.close();
-						sap.m.MessageBox.success("Draft Saved successfully");
+						sap.m.MessageBox.success(that.getView().getModel("i18n").getResourceBundle().getText("DraftSavedsuccessfully"));
 
 					},
 					error: function(error) {
@@ -932,13 +941,13 @@ sap.ui.define([
 				if (!this.oApproveDialog) {
 					this.oApproveDialog = new sap.m.Dialog({
 						type: sap.m.DialogType.Message,
-						title: "Confirm",
+						title: this.getView().getModel("i18n").getResourceBundle().getText("Confirm"),
 						content: new sap.m.Text({
-							text: "Do you want to submit this claim?"
+							text: this.getView().getModel("i18n").getResourceBundle().getText("comfirmationMessage")
 						}),
 						beginButton: new sap.m.Button({
 							type: sap.m.ButtonType.Emphasized,
-							text: "Submit",
+							text: this.getView().getModel("i18n").getResourceBundle().getText("Submit"),
 							press: function() {
 								if (this.getView().getModel("oInjuryDetailModel")) {
 									var payload = {
@@ -1122,19 +1131,11 @@ sap.ui.define([
 								var that = this;
 								this.getView().getModel().create("/SaveDraftDetailsSet", payload, {
 									success: function(oData, oResponse) {
-										if (!that.ClaimSubmitDialog) {
-											that.ClaimSubmitDialog = new sap.m.Dialog({
-												type: sap.m.DialogType.Message,
-												title: "Confirm",
-												content: new sap.m.Text({
-													text: oData.Casno + " Claim submitted successfully"
-												}),
-												beginButton: new sap.m.Button({
-													type: sap.m.ButtonType.Emphasized,
-													text: "Ok",
-													press: function() {
-														that.ClaimSubmitDialog.close();
-														var sSource = that.getView().getModel().sServiceUrl + "/InjuryFormSet(Casno='" + oData.Casno + "',Userid='" +
+										sap.m.MessageBox.success(
+											oData.Casno + " "+ that.getView().getModel("i18n").getResourceBundle().getText("ClaimSuccessMessage"), {
+												actions: ["Manage Products", sap.m.MessageBox.Action.CLOSE],
+												onClose: function(sAction) {
+													var sSource = that.getView().getModel().sServiceUrl + "/InjuryFormSet(Casno='" + oData.Casno + "',Userid='" +
 															that.userName + "')/$value";
 														that.claimWizardDialog.close();
 														if (that.DraftDialog) {
@@ -1149,14 +1150,11 @@ sap.ui.define([
 														that._pdfViewer = new sap.m.PDFViewer();
 														that.getView().addDependent(that._pdfViewer);
 														that._pdfViewer.setSource(sSource);
-														that._pdfViewer.setTitle("Details of Claim Form");
+														that._pdfViewer.setTitle(that.getView().getModel("i18n").getResourceBundle().getText("SamrtFormTitle"));
 														that._pdfViewer.open();
-													}
-												})
-											});
-											that.ClaimSubmitDialog.open();
-										}
-
+												}
+											}
+										);
 									},
 									error: function(error) {
 
@@ -1166,7 +1164,7 @@ sap.ui.define([
 							}.bind(this)
 						}),
 						endButton: new sap.m.Button({
-							text: "Cancel",
+							text: that.getView().getModel("i18n").getResourceBundle().getText("WizardFooterCancelBtn"),
 							press: function() {
 								this.oApproveDialog.close();
 							}.bind(this)
@@ -1295,7 +1293,6 @@ sap.ui.define([
 			var canvas = document.getElementById("signature-pad");
 			var context = canvas.getContext("2d");
 			context.clearRect(0, 0, canvas.width, canvas.height);
-
 			/*var signaturePad = new SignaturePad(document.getElementById('signature-pad'), {
 				  backgroundColor: '#ffffff',
 				  penColor: 'rgb(0, 0, 0)',
@@ -1321,7 +1318,26 @@ sap.ui.define([
 				this.ManagerPernr = oEvent.getSource().getSelectedKey();
 			}
 
-		}
+		}, // Validation for mandatory fields it empty
+
+		onChangeCheckLength: function(oEvent) {
+				if (oEvent.getSource().getId() === "InputPostCode" || oEvent.getSource().getId() === "InputInjuryPostcode" || oEvent.getSource().getId() ===
+					"InputEmpOrgPostcode") {
+					if (oEvent.getSource().getValue().length > 4) {
+						oEvent.getSource().setValue(oEvent.getSource().getValue().slice(0, -1));
+					}
+				} else if (oEvent.getSource().getId() === "InputMobile" || oEvent.getSource().getId() === "InputWork") {
+					if (oEvent.getSource().getValue().length > 10) {
+						oEvent.getSource().setValue(oEvent.getSource().getValue().slice(0, -1));
+					}
+				} else if (oEvent.getSource().getId() === "InputWorkerQue1" || oEvent.getSource().getId() === "InputWorkerQue3" || oEvent.getSource()
+					.getId() === "InputWorkerQue4" || oEvent.getSource().getId() === "InputWorkerWeeklyShiftAllowence" || oEvent.getSource().getId() ===
+					"InputWorkerWeeklyOvertime") {
+					if (oEvent.getSource().getValue().length > 3) {
+						oEvent.getSource().setValue(oEvent.getSource().getValue().slice(0, -1));
+					}
+				}
+			} // Validation for maxLength for type=number input fields
 
 	});
 });

@@ -7,9 +7,6 @@
 						class="sapUiResponsiveContentPadding" items="{multipleDraftModel>/}" mode="SingleSelectMaster">
 						<columns>
 							<Column>
-								<Label design="Bold" text="{i18n>MultipleInjuryTableColumnPernr}"/>
-							</Column>
-							<Column>
 								<Label design="Bold" text="{i18n>MultipleInjuryTableColumnIDate}"/>
 							</Column>
 							<Column demandPopin="true" minScreenWidth="Desktop">
@@ -23,7 +20,6 @@
 						<items>
 							<ColumnListItem vAlign="Middle">
 								<cells>
-									<Text text="{multipleDraftModel>Pernr}"/>
 									<Text
 										text="{path:'multipleDraftModel>IDate', type:'sap.ui.model.type.DateTime', formatOptions: { source: { pattern: 'yyyy-MM-ddTHH:mm:ss.msZ' }, pattern: 'MMM dd,yyyy HH:mm:ss' }}"/>
 									<Text text="{multipleDraftModel>BodypartDes}"/>
