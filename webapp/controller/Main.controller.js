@@ -151,7 +151,7 @@ sap.ui.define([
 			if (oEvent.getSource().getId() === "contAsDraftBtn") {
 
 				if (this.MultipleDraftDialog) {
-					this.DraftId = sap.ui.getCore().byId("MultipleDraftTable").getSelectedItem().getCells()[4].getText();
+					this.DraftId = sap.ui.getCore().byId("MultipleDraftTable").getSelectedItem().getCells()[3].getText();
 					var draftid = this.DraftId;
 					var username = this.userName;
 					username = new sap.ui.model.Filter("Userid", "EQ", username);
