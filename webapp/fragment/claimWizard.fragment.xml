@@ -41,11 +41,14 @@
 									<Label text="{i18n>WizardPersonalDetailFormLabel_Work}"/>
 									<Input id="InputWork" type="Number" liveChange="onChangeCheckLength" value="{userDetailModel>/WorkN}"/>
 									<Label text="{i18n>WizardPersonalDetailFormLabel_Home}"/>
-									<Input id="InputHome" value="{userDetailModel>/Home}"/>
+									<Input id="InputHome" type="Number" liveChange="onChangeCheckLength" value="{userDetailModel>/Home}"/>
 									<Label text="{i18n>WizardPersonalDetailFormLabel_Email}"/>
 									<Input id="InputEmail" type="Text" value="{userDetailModel>/Email}"/>
 									<Label text="{i18n>WizardPersonalDetailFormLabel_question1}"/>
-									<TextArea id="InputPersnlDetlQue1" value="{userDetailModel>/Agree}"/>
+									<Select id="InputPersnlDetlQue1" selectedKey="{userDetailModel>/Agree}">
+										<core:Item key="I do not agree" text="I do not agree"/>
+										<core:Item key="I agree" text="I agree"/>
+									</Select>
 									<Label text="{i18n>WizardPersonalDetailFormLabel_question2}"/>
 									<Input id="InputPersnlDetlQue2" type="Text" value="{userDetailModel>/Language}"/>
 									<Label text="{i18n>WizardPersonalDetailFormLabel_question3}"/>

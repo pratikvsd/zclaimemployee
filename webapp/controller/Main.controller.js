@@ -21,12 +21,10 @@ sap.ui.define([
 			this.attachmentsId = [];
 			this.getView().setModel(userDetailModel, "userDetailModel");
 			this.getView().setModel(AttachmentModel, "AttachmentModel");
-		},
-
-		onAfterRendering: function() {
 			var draftRecords = [];
 			var that = this;
-			this.getView().getModel().read("/InjuryDetail", {
+			var oModel = new sap.ui.model.odata.v2.ODataModel("/sap/opu/odata/cnetohs/VWA_CLAIM_SRV");
+			oModel.read("/InjuryDetail", {
 				success: function(oData, oResponse) {
 					draftRecords = oData.results;
 					if (draftRecords.length > 1) {
@@ -45,7 +43,7 @@ sap.ui.define([
 						that.DraftDialog.open();
 						that.DraftId = draftRecords[0].Draftid;
 					} else {
-						that.getView().getModel().read("/UserDetail('" + that.userName + "')", {
+						oModel.read("/UserDetail('" + that.userName + "')", {
 							success: function(userData, userResponse) {
 								if (userData !== undefined || userData !== null) {
 									that.ManagerPernr = userData.ManagerPernr;
@@ -65,8 +63,7 @@ sap.ui.define([
 
 				}
 			});
-
-		}, // Backend call to read the userdetail information
+		},
 
 		openInjuryTab: function() {
 			var that = this;
@@ -161,6 +158,7 @@ sap.ui.define([
 						success: function(oData, oResponse) {
 							if (oData !== undefined || oData !== null) {
 								oData.Signature = atob(oData.Signature);
+								oData.Attachments = oData.Attachments.split(",");
 								that.attachmentsId.push(oData.Attachments);
 								that.ManagerPernr = oData.ManagerPernr;
 								var c = document.getElementById("signature-pad");
@@ -216,6 +214,7 @@ sap.ui.define([
 						success: function(oData, oResponse) {
 							if (oData !== undefined || oData !== null) {
 								oData.Signature = atob(oData.Signature);
+								oData.Attachments = oData.Attachments.split(",");
 								that.attachmentsId.push(oData.Attachments);
 								that.ManagerPernr = oData.ManagerPernr;
 								userDetailModel.setData(oData);
@@ -279,6 +278,8 @@ sap.ui.define([
 				}); //reading files for draft
 
 			}
+			if(this.DraftDialog){this.DraftDialog.close();}
+			if(this.MultipleDraftDialog){this.MultipleDraftDialog.close();}
 			sap.ui.getCore().byId("UploadCollection").setUploadUrl("/sap/opu/odata/cnetohs/VWA_CLAIM_SRV/Files");
 			sap.ui.getCore().byId("UploadCollection").setModel(AttachmentModel, "AttachmentModel");
 			sap.ui.getCore().byId("claimFormWizard")._getProgressNavigator().ontap = function() {};
@@ -390,8 +391,16 @@ sap.ui.define([
 				var InputInjuryDateTime = sap.ui.getCore().byId("InputInjuryDateTime");
 				var InputStoppedWorkDateTIme = sap.ui.getCore().byId("InputStoppedWorkDateTIme");
 				if (InputInjuryDateTime.getValue() === "" || InputStoppedWorkDateTIme.getValue() === "") {
-					InputInjuryDateTime.setValueState("Error");
-					InputStoppedWorkDateTIme.setValueState("Error");
+					if(InputInjuryDateTime.getValue() === "" && InputStoppedWorkDateTIme.getValue() === ""){
+						InputInjuryDateTime.setValueState("Error");
+						InputStoppedWorkDateTIme.setValueState("Error");
+					}
+					else if(InputInjuryDateTime.getValue() === ""){
+						InputInjuryDateTime.setValueState("Error");
+					}
+					else if(InputStoppedWorkDateTIme.getValue() === ""){
+						InputStoppedWorkDateTIme.setValueState("Error");
+					}
 				} else {
 					if (this._oSelectedStep && !this._oSelectedStep.bLast) {
 						this._oWizard.goToStep(oNextStep, true);
@@ -416,8 +425,17 @@ sap.ui.define([
 				var InputWorkerWeeklyShiftAllowence = sap.ui.getCore().byId("InputWorkerWeeklyShiftAllowence");
 				var InputWorkerWeeklyOvertime = sap.ui.getCore().byId("InputWorkerWeeklyOvertime");
 				if (InputWorkerWeeklyShiftAllowence.getValue() === "" || InputWorkerWeeklyOvertime.getValue() === "") {
-					InputWorkerWeeklyShiftAllowence.setValueState("Error");
-					InputWorkerWeeklyOvertime.setValueState("Error");
+					if(InputWorkerWeeklyShiftAllowence.getValue() === "" && InputWorkerWeeklyOvertime.getValue() === ""){
+						InputWorkerWeeklyShiftAllowence.setValueState("Error");
+						InputWorkerWeeklyOvertime.setValueState("Error");
+					}
+					else if(InputWorkerWeeklyShiftAllowence.getValue() === ""){
+						InputWorkerWeeklyShiftAllowence.setValueState("Error");
+					}
+					else if(InputWorkerWeeklyOvertime.getValue() === ""){
+						InputWorkerWeeklyOvertime.setValueState("Error");
+					}
+					
 				} else {
 					if (this._oSelectedStep && !this._oSelectedStep.bLast) {
 						this._oWizard.goToStep(oNextStep, true);
@@ -556,6 +574,7 @@ sap.ui.define([
 			var oUploadCollection = sap.ui.getCore().byId("UploadCollection");
 			if (oUploadCollection.getModel("AttachmentModel").getData().length === undefined) {
 				var oData = [];
+				this.attachmentsId[0] = [];
 			} else {
 				var oData = oUploadCollection.getModel("AttachmentModel").getData();
 			}
@@ -568,7 +587,7 @@ sap.ui.define([
 				"Filename": oEvent.getParameter("files")[0].fileName,
 				"url": url
 			});
-			this.attachmentsId.push(docid);
+			this.attachmentsId[0].push(docid);
 			if (oUploadCollection.getModel("AttachmentModel").getData().length === undefined) {
 				oUploadCollection.getModel("AttachmentModel").setData(oData);
 			}
@@ -607,10 +626,10 @@ sap.ui.define([
 					}
 				}
 			}
-			if (this.attachmentsId.length > 0) {
-				for (var j = 0; j < this.attachmentsId.length; j++) {
-					if (this.attachmentsId[j] === sItemToDeleteId) {
-						this.attachmentsId.splice(j, 1);
+			if (this.attachmentsId[0].length > 0) {
+				for (var j = 0; j < this.attachmentsId[0].length; j++) {
+					if (this.attachmentsId[0][j] === sItemToDeleteId) {
+						this.attachmentsId[0].splice(j, 1);
 						break;
 					}
 				}
@@ -697,32 +716,32 @@ sap.ui.define([
 			if (this.roughString === this.signString) {
 				this.signString = "";
 			}
-			if (InputInjuryDateTime.getDateValue() !== undefined || InputInjuryDateTime.getDateValue() !== null) {
+			if (InputInjuryDateTime.getValue() !== "" || InputInjuryDateTime.getDateValue() !== null) {
 				var finDate = new Date(InputInjuryDateTime.getDateValue()).toISOString();
 			}
-			if (InputWhenNoticeInjury.getDateValue() !== undefined || InputWhenNoticeInjury.getDateValue() !== null) {
+			if (InputWhenNoticeInjury.getValue() !== "" || InputWhenNoticeInjury.getDateValue() !== null) {
 				var crDate = new Date(InputWhenNoticeInjury.getDateValue()).toISOString();
 			}
-			if (InputStoppedWorkDateTIme.getDateValue() !== undefined || InputStoppedWorkDateTIme.getDateValue() !== null) {
+			if (InputStoppedWorkDateTIme.getValue() !== "" || InputStoppedWorkDateTIme.getDateValue() !== null) {
 				var sDate = new Date(InputStoppedWorkDateTIme.getDateValue()).toISOString();
 			}
-			if (InputInjuryReportDateTime.getDateValue() !== undefined || InputInjuryReportDateTime.getDateValue() !== null) {
+			if (InputInjuryReportDateTime.getValue() !== "" || InputInjuryReportDateTime.getDateValue() !== null) {
 				var rDate = new Date(InputInjuryReportDateTime.getDateValue()).toISOString();
 			}
-			if (InputDeclarationDate.getDateValue() !== undefined || InputDeclarationDate.getDateValue() !== null) {
+			if (InputDeclarationDate.getValue() !== "" || InputDeclarationDate.getDateValue() !== null) {
 				var dDate = new Date(InputDeclarationDate.getDateValue()).toISOString();
 			}
 			if (InputEmpStartWorkingDate.getDateValue() !== undefined || InputEmpStartWorkingDate.getDateValue() !== null) {
 				var startDate = new Date(InputEmpStartWorkingDate.getDateValue()).toISOString();
 			}
-			if (InputReturToWorkDate.getDateValue() !== undefined || InputReturToWorkDate.getDateValue() !== null) {
+			if (InputReturToWorkDate.getValue() !== "" || InputReturToWorkDate.getDateValue() !== null) {
 				var returnToWorkDate = new Date(InputReturToWorkDate.getDateValue()).toISOString();
 			}
-			if (InputReturToWorkClaimFormSubmissionDate.getDateValue() !== undefined || InputReturToWorkClaimFormSubmissionDate.getDateValue() !==
+			if (InputReturToWorkClaimFormSubmissionDate.getValue() !== "" || InputReturToWorkClaimFormSubmissionDate.getDateValue() !==
 				null) {
 				var EmpClmfrmDate = new Date(InputReturToWorkClaimFormSubmissionDate.getDateValue()).toISOString();
 			}
-			if (InputReturToWorkMedicalCertificateSubmissionDate.getDateValue() !== undefined ||
+			if (InputReturToWorkMedicalCertificateSubmissionDate.getValue() !== "" ||
 				InputReturToWorkMedicalCertificateSubmissionDate.getDateValue() !== null) {
 				var EmpMcertDate = new Date(InputReturToWorkMedicalCertificateSubmissionDate.getDateValue()).toISOString();
 			}
@@ -767,7 +786,7 @@ sap.ui.define([
 						"WorkN": InputWork.getValue(),
 						"Home": InputHome.getValue(),
 						"Email": InputEmail.getValue(),
-						"Agree": InputPersnlDetlQue1.getValue(),
+						"Agree": InputPersnlDetlQue1.getSelectedKey(),
 						"Language": InputPersnlDetlQue2.getValue(),
 						"Communication": InputPersnlDetlQue3.getValue(),
 						"BodypartDes": InputInjuryBodyPart.getValue(),
@@ -856,7 +875,7 @@ sap.ui.define([
 						"WorkN": InputWork.getValue(),
 						"Home": InputHome.getValue(),
 						"Email": InputEmail.getValue(),
-						"Agree": InputPersnlDetlQue1.getValue(),
+						"Agree": InputPersnlDetlQue1.getSelectedKey(),
 						"Language": InputPersnlDetlQue2.getValue(),
 						"Communication": InputPersnlDetlQue3.getValue(),
 						"BodypartDes": InputInjuryBodyPart.getValue(),
@@ -972,7 +991,7 @@ sap.ui.define([
 										"WorkN": InputWork.getValue(),
 										"Home": InputHome.getValue(),
 										"Email": InputEmail.getValue(),
-										"Agree": InputPersnlDetlQue1.getValue(),
+										"Agree": InputPersnlDetlQue1.getSelectedKey(),
 										"Language": InputPersnlDetlQue2.getValue(),
 										"Communication": InputPersnlDetlQue3.getValue(),
 										"BodypartDes": InputInjuryBodyPart.getValue(),
@@ -1060,7 +1079,7 @@ sap.ui.define([
 										"WorkN": InputWork.getValue(),
 										"Home": InputHome.getValue(),
 										"Email": InputEmail.getValue(),
-										"Agree": InputPersnlDetlQue1.getValue(),
+										"Agree": InputPersnlDetlQue1.getSelectedKey(),
 										"Language": InputPersnlDetlQue2.getValue(),
 										"Communication": InputPersnlDetlQue3.getValue(),
 										"BodypartDes": InputInjuryBodyPart.getValue(),
@@ -1133,17 +1152,11 @@ sap.ui.define([
 									success: function(oData, oResponse) {
 										sap.m.MessageBox.success(
 											oData.Casno + " "+ that.getView().getModel("i18n").getResourceBundle().getText("ClaimSuccessMessage"), {
-												actions: ["Manage Products", sap.m.MessageBox.Action.CLOSE],
+												actions: [that.getView().getModel("i18n").getResourceBundle().getText("ok")],
 												onClose: function(sAction) {
 													var sSource = that.getView().getModel().sServiceUrl + "/InjuryFormSet(Casno='" + oData.Casno + "',Userid='" +
 															that.userName + "')/$value";
 														that.claimWizardDialog.close();
-														if (that.DraftDialog) {
-															that.DraftDialog.close();
-														}
-														if (that.MultipleDraftDialog) {
-															that.MultipleDraftDialog.close();
-														}
 														sap.ui.getCore().byId("claimWizardNextBtn").setVisible(true);
 														sap.ui.getCore().byId("claimSubmitBtn").setEnabled(false);
 														that._oWizard.setCurrentStep("personalDetailStep");
@@ -1164,7 +1177,7 @@ sap.ui.define([
 							}.bind(this)
 						}),
 						endButton: new sap.m.Button({
-							text: that.getView().getModel("i18n").getResourceBundle().getText("WizardFooterCancelBtn"),
+							text: this.getView().getModel("i18n").getResourceBundle().getText("WizardFooterCancelBtn"),
 							press: function() {
 								this.oApproveDialog.close();
 							}.bind(this)
@@ -1326,7 +1339,7 @@ sap.ui.define([
 					if (oEvent.getSource().getValue().length > 4) {
 						oEvent.getSource().setValue(oEvent.getSource().getValue().slice(0, -1));
 					}
-				} else if (oEvent.getSource().getId() === "InputMobile" || oEvent.getSource().getId() === "InputWork") {
+				} else if (oEvent.getSource().getId() === "InputMobile" || oEvent.getSource().getId() === "InputWork" || oEvent.getSource().getId() === "InputHome") {
 					if (oEvent.getSource().getValue().length > 10) {
 						oEvent.getSource().setValue(oEvent.getSource().getValue().slice(0, -1));
 					}
