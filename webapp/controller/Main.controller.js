@@ -519,6 +519,7 @@ sap.ui.define([
 				oEvent.getSource().getParent().close();
 			} else if (this.WizardTitle === "StartClaim") {
 				this.claimWizardDialog.close();
+				this.InputFieldsClear();
 				sap.ui.getCore().byId("claimWizardNextBtn").setVisible(true);
 				sap.ui.getCore().byId("claimSubmitBtn").setEnabled(false);
 				sap.ui.getCore().byId("claimFormWizard").setCurrentStep("personalDetailStep");
@@ -544,6 +545,7 @@ sap.ui.define([
 			this.getView().getModel("userDetailModel").getData().InjDesc = selectedRow.InjurytypeDes;
 			oInjuryDetailModel.setData(selectedRow);
 			this.getView().setModel(oInjuryDetailModel, "oInjuryDetailModel");
+			this.getView().getModel("userDetailModel").refresh();
 
 		}, // To enable the the button in Injury table on click on row.
 
@@ -947,67 +949,7 @@ sap.ui.define([
 					success: function(oData, oResponse) {
 						that.claimWizardDialog.close();
 						sap.m.MessageBox.success(that.getView().getModel("i18n").getResourceBundle().getText("DraftSavedsuccessfully"));
-						InputFamilyName.setValue("");
-						InputGivenName.setValue("");
-						InputDob.setValue("");
-						InputGender.setValue("");
-						InputAddress.setValue("");
-						InputSuburb.setValue("");
-						InputPersnlDetlState.setSelectedKey("");
-						InputPostalAddress.setValue("");
-						InputPostCode.setValue("");
-						InputMaidenName.setValue("");
-						InputMobile.setValue("");
-						InputWork.setValue("");
-						InputHome.setValue("");
-						InputEmail.setValue("");
-						InputPersnlDetlQue2.setValue("");
-						InputPersnlDetlQue3.setValue("");
-						InputInjuryBodyPart.setValue("");
-						InputHowWereYouInjured.setValue("");
-						InputWhatTaskWhenInjured.setValue("");
-						InputAreaOfWorksite.setValue("");
-						InputAddressofIncident.setValue("");
-						InputInjurySuburb.setValue("");
-						InputInjuryState.setSelectedKey("");
-						InputInjuryPostcode.setValue("");
-						InputEmployerResponsible.setValue("");
-						InputInjuryPoliceStationReported.setValue("");
-						InputRegNoOfVehicles.setValue("");
-						InputVehicleState.setSelectedKey("");
-						InputInjuryQue1.setValue("");
-						InputInjuryQue2.setValue("");
-						InputInjuryQue3.setValue("");
-						InputInjuryQue4.setValue("");
-						InputInjuryQue5.setValue("");
-						InputEmpNameOfOrg.setValue("");
-						InputEmpStreetAdd.setValue("");
-						InputEmpOrgState.setValue("");
-						InputEmpOrgSuburb.setValue("");
-						InputEmpOrgPostcode.setValue("");
-						InputEmpNameAndContact.setValue("");
-						InputEmpOccupation.setValue("");
-						InputEmpOtherEmployment.setValue("");
-						InputWorkerQue1.setValue("");
-						InputWorkerQue2.setValue("");
-						InputWorkerQue3.setValue("");
-						InputWorkerQue4.setValue("");
-						InputWorkerWeeklyShiftAllowence.setValue("");
-						InputWorkerWeeklyOvertime.setValue("");
-						InputReturToWorkQue1.setValue("");
-						InputReturToWorkOue2.setSelectedKey("");
-						InputReturToWorkOue3.setValue("");
-						InputReturToWorkOue4.setValue("");
-						InputReturToWorkOue5.setSelectedKey("");
-						InputInjuryDateTime.setValue("");
-						InputWhenNoticeInjury.setValue("");
-						InputStoppedWorkDateTIme.setValue("");
-						InputInjuryReportDateTime.setValue("");
-						InputDeclarationDate.setValue("");
-						InputEmpStartWorkingDate.setValue("");
-						InputReturToWorkDate.setValue("");
-						InputReturToWorkClaimFormSubmissionDate.setValue("");
-						InputReturToWorkMedicalCertificateSubmissionDate.setValue("");
+						that.InputFieldsClear();
 
 					},
 					error: function(error) {
@@ -1210,67 +1152,10 @@ sap.ui.define([
 								var that = this;
 								this.getView().getModel().create("/SaveDraftDetailsSet", payload, {
 									success: function(oData, oResponse) {
-										InputFamilyName.setValue("");
-										InputGivenName.setValue("");
-										InputDob.setValue("");
-										InputGender.setValue("");
-										InputAddress.setValue("");
-										InputSuburb.setValue("");
-										InputPersnlDetlState.setSelectedKey("");
-										InputPostalAddress.setValue("");
-										InputPostCode.setValue("");
-										InputMaidenName.setValue("");
-										InputMobile.setValue("");
-										InputWork.setValue("");
-										InputHome.setValue("");
-										InputEmail.setValue("");
-										InputPersnlDetlQue2.setValue("");
-										InputPersnlDetlQue3.setValue("");
-										InputInjuryBodyPart.setValue("");
-										InputHowWereYouInjured.setValue("");
-										InputWhatTaskWhenInjured.setValue("");
-										InputAreaOfWorksite.setValue("");
-										InputAddressofIncident.setValue("");
-										InputInjurySuburb.setValue("");
-										InputInjuryState.setSelectedKey("");
-										InputInjuryPostcode.setValue("");
-										InputEmployerResponsible.setValue("");
-										InputInjuryPoliceStationReported.setValue("");
-										InputRegNoOfVehicles.setValue("");
-										InputVehicleState.setSelectedKey("");
-										InputInjuryQue1.setValue("");
-										InputInjuryQue2.setValue("");
-										InputInjuryQue3.setValue("");
-										InputInjuryQue4.setValue("");
-										InputInjuryQue5.setValue("");
-										InputEmpNameOfOrg.setValue("");
-										InputEmpStreetAdd.setValue("");
-										InputEmpOrgState.setValue("");
-										InputEmpOrgSuburb.setValue("");
-										InputEmpOrgPostcode.setValue("");
-										InputEmpNameAndContact.setValue("");
-										InputEmpOccupation.setValue("");
-										InputEmpOtherEmployment.setValue("");
-										InputWorkerQue1.setValue("");
-										InputWorkerQue2.setValue("");
-										InputWorkerQue3.setValue("");
-										InputWorkerQue4.setValue("");
-										InputWorkerWeeklyShiftAllowence.setValue("");
-										InputWorkerWeeklyOvertime.setValue("");
-										InputReturToWorkQue1.setValue("");
-										InputReturToWorkOue2.setSelectedKey("");
-										InputReturToWorkOue3.setValue("");
-										InputReturToWorkOue4.setValue("");
-										InputReturToWorkOue5.setSelectedKey("");
-										InputInjuryDateTime.setValue("");
-										InputWhenNoticeInjury.setValue("");
-										InputStoppedWorkDateTIme.setValue("");
-										InputInjuryReportDateTime.setValue("");
-										InputDeclarationDate.setValue("");
-										InputEmpStartWorkingDate.setValue("");
-										InputReturToWorkDate.setValue("");
-										InputReturToWorkClaimFormSubmissionDate.setValue("");
-										InputReturToWorkMedicalCertificateSubmissionDate.setValue("");
+										that.InputFieldsClear();
+										if(oData.Casno === undefined){
+											oData.Casno = "";
+										}
 										sap.m.MessageBox.success(
 											oData.Casno + " " + that.getView().getModel("i18n").getResourceBundle().getText("ClaimSuccessMessage"), {
 												actions: [that.getView().getModel("i18n").getResourceBundle().getText("ok")],
@@ -1455,24 +1340,88 @@ sap.ui.define([
 		}, // Validation for mandatory fields it empty
 
 		onChangeCheckLength: function(oEvent) {
-				if (oEvent.getSource().getId() === "InputPostCode" || oEvent.getSource().getId() === "InputInjuryPostcode" || oEvent.getSource().getId() ===
-					"InputEmpOrgPostcode") {
-					if (oEvent.getSource().getValue().length > 4) {
-						oEvent.getSource().setValue(oEvent.getSource().getValue().slice(0, -1));
-					}
-				} else if (oEvent.getSource().getId() === "InputMobile" || oEvent.getSource().getId() === "InputWork" || oEvent.getSource().getId() ===
-					"InputHome") {
-					if (oEvent.getSource().getValue().length > 10) {
-						oEvent.getSource().setValue(oEvent.getSource().getValue().slice(0, -1));
-					}
-				} else if (oEvent.getSource().getId() === "InputWorkerQue1" || oEvent.getSource().getId() === "InputWorkerQue3" || oEvent.getSource()
-					.getId() === "InputWorkerQue4" || oEvent.getSource().getId() === "InputWorkerWeeklyShiftAllowence" || oEvent.getSource().getId() ===
-					"InputWorkerWeeklyOvertime") {
-					if (oEvent.getSource().getValue().length > 3) {
-						oEvent.getSource().setValue(oEvent.getSource().getValue().slice(0, -1));
-					}
+			if (oEvent.getSource().getId() === "InputPostCode" || oEvent.getSource().getId() === "InputInjuryPostcode" || oEvent.getSource().getId() ===
+				"InputEmpOrgPostcode") {
+				if (oEvent.getSource().getValue().length > 4) {
+					oEvent.getSource().setValue(oEvent.getSource().getValue().slice(0, -1));
 				}
-			} // Validation for maxLength for type=number input fields
+			} else if (oEvent.getSource().getId() === "InputMobile" || oEvent.getSource().getId() === "InputWork" || oEvent.getSource().getId() ===
+				"InputHome") {
+				if (oEvent.getSource().getValue().length > 10) {
+					oEvent.getSource().setValue(oEvent.getSource().getValue().slice(0, -1));
+				}
+			} else if (oEvent.getSource().getId() === "InputWorkerQue1" || oEvent.getSource().getId() === "InputWorkerQue3" || oEvent.getSource()
+				.getId() === "InputWorkerQue4" || oEvent.getSource().getId() === "InputWorkerWeeklyShiftAllowence" || oEvent.getSource().getId() ===
+				"InputWorkerWeeklyOvertime") {
+				if (oEvent.getSource().getValue().length > 3) {
+					oEvent.getSource().setValue(oEvent.getSource().getValue().slice(0, -1));
+				}
+			}
+		}, // Validation for maxLength for type=number input fields
+
+		InputFieldsClear: function() {
+		/*	sap.ui.getCore().byId("InputFamilyName").setValue("");
+			sap.ui.getCore().byId("InputGivenName").setValue("");
+			sap.ui.getCore().byId("InputDob").setValue("");
+			sap.ui.getCore().byId("InputGender").setValue("");*/
+			sap.ui.getCore().byId("InputAddress").setValue("");
+			sap.ui.getCore().byId("InputSuburb").setValue("");
+			sap.ui.getCore().byId("InputPersnlDetlState").setSelectedKey("");
+			sap.ui.getCore().byId("InputPostalAddress").setValue("");
+			sap.ui.getCore().byId("InputPostCode").setValue("");
+			sap.ui.getCore().byId("InputMaidenName").setValue("");
+			sap.ui.getCore().byId("InputMobile").setValue("");
+			sap.ui.getCore().byId("InputWork").setValue("");
+			sap.ui.getCore().byId("InputHome").setValue("");
+			sap.ui.getCore().byId("InputEmail").setValue("");
+			sap.ui.getCore().byId("InputPersnlDetlQue2").setValue("");
+			sap.ui.getCore().byId("InputPersnlDetlQue3").setValue("");
+			sap.ui.getCore().byId("InputInjuryBodyPart").setValue("");
+			sap.ui.getCore().byId("InputHowWereYouInjured").setValue("");
+			sap.ui.getCore().byId("InputWhatTaskWhenInjured").setValue("");
+			sap.ui.getCore().byId("InputAreaOfWorksite").setValue("");
+			sap.ui.getCore().byId("InputAddressofIncident").setValue("");
+			sap.ui.getCore().byId("InputInjurySuburb").setValue("");
+			sap.ui.getCore().byId("InputInjuryState").setSelectedKey("");
+			sap.ui.getCore().byId("InputInjuryPostcode").setValue("");
+			sap.ui.getCore().byId("InputEmployerResponsible").setValue("");
+			sap.ui.getCore().byId("InputInjuryPoliceStationReported").setValue("");
+			sap.ui.getCore().byId("InputRegNoOfVehicles").setValue("");
+			sap.ui.getCore().byId("InputVehicleState").setSelectedKey("");
+			sap.ui.getCore().byId("InputInjuryQue1").setValue("");
+			sap.ui.getCore().byId("InputInjuryQue2").setValue("");
+			sap.ui.getCore().byId("InputInjuryQue3").setValue("");
+			sap.ui.getCore().byId("InputInjuryQue4").setValue("");
+			sap.ui.getCore().byId("InputInjuryQue5").setValue("");
+			sap.ui.getCore().byId("InputEmpNameOfOrg").setValue("");
+			sap.ui.getCore().byId("InputEmpStreetAdd").setValue("");
+			sap.ui.getCore().byId("InputEmpOrgState").setValue("");
+			sap.ui.getCore().byId("InputEmpOrgSuburb").setValue("");
+			sap.ui.getCore().byId("InputEmpOrgPostcode").setValue("");
+			sap.ui.getCore().byId("InputEmpNameAndContact").setValue("");
+			sap.ui.getCore().byId("InputEmpOccupation").setValue("");
+			sap.ui.getCore().byId("InputEmpOtherEmployment").setValue("");
+			sap.ui.getCore().byId("InputWorkerQue1").setValue("");
+			sap.ui.getCore().byId("InputWorkerQue2").setValue("");
+			sap.ui.getCore().byId("InputWorkerQue3").setValue("");
+			sap.ui.getCore().byId("InputWorkerQue4").setValue("");
+			sap.ui.getCore().byId("InputWorkerWeeklyShiftAllowence").setValue("");
+			sap.ui.getCore().byId("InputWorkerWeeklyOvertime").setValue("");
+			sap.ui.getCore().byId("InputReturToWorkQue1").setValue("");
+			sap.ui.getCore().byId("InputReturToWorkOue2").setSelectedKey("");
+			sap.ui.getCore().byId("InputReturToWorkOue3").setValue("");
+			sap.ui.getCore().byId("InputReturToWorkOue4").setValue("");
+			sap.ui.getCore().byId("InputReturToWorkOue5").setSelectedKey("");
+			sap.ui.getCore().byId("InputInjuryDateTime").setValue("");
+			sap.ui.getCore().byId("InputWhenNoticeInjury").setValue("");
+			sap.ui.getCore().byId("InputStoppedWorkDateTIme").setValue("");
+			sap.ui.getCore().byId("InputInjuryReportDateTime").setValue("");
+			sap.ui.getCore().byId("InputDeclarationDate").setValue("");
+			sap.ui.getCore().byId("InputEmpStartWorkingDate").setValue("");
+			sap.ui.getCore().byId("InputReturToWorkDate").setValue("");
+			sap.ui.getCore().byId("InputReturToWorkClaimFormSubmissionDate").setValue("");
+			sap.ui.getCore().byId("InputReturToWorkMedicalCertificateSubmissionDate").setValue("");
+		}
 
 	});
 });

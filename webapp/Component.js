@@ -22,6 +22,16 @@ sap.ui.define([
 
 			// set the device model
 			this.setModel(models.createDeviceModel(), "device");
+			var oUserModel = new sap.ui.model.json.JSONModel();
+            if (sap.ushell.Container) {
+                this._UserID = sap.ushell.Container.getService("UserInfo").getId();
+            } else {
+                this._UserID = "JPRAKASH";
+            }
+            oUserModel.setData({
+                "UserId" : this._UserID
+            });
+            sap.ui.getCore().setModel(oUserModel, "userModel");
 		}
 	});
 });
