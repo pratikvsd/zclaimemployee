@@ -99,7 +99,7 @@ sap.ui.define([
 			//var urlString = document.location.href.split("/");
 			//var host = urlString[2];
 			//window.open("https://" + host + "/sap/bc/ui5_ui5/ui2/ushell/shells/abap/FioriLaunchpad.html#CNet-MyIncidents", "_blank");
-			var oCrossAppNavigator = sap.ushell.Container.getService("CrossApplicationNavigation"); 
+			var oCrossAppNavigator = sap.ushell.Container.getService("CrossApplicationNavigation");
 			oCrossAppNavigator.isIntentSupported(["CNet-MyIncidents"])
 				.done(function(aResponses) {
 
@@ -113,11 +113,11 @@ sap.ui.define([
 					semanticObject: "CNet",
 					action: "MyIncidents"
 				}
-			})) || ""; 
+			})) || "";
 			//Generate a  URL for the second application
-			var url = window.location.href.split('#')[0] + hash; 
+			var url = window.location.href.split('#')[0] + hash;
 			//Navigate to second app
-			sap.m.URLHelper.redirect(url, true); 
+			sap.m.URLHelper.redirect(url, true);
 			//window.open("https://sapsdev.c-net.com.au/sap/bc/ui5_ui5/ui2/ushell/shells/abap/FioriLaunchpad.html#CNet-MyIncidents", "_blank");
 		}, //To open create incident app in new window.
 
@@ -273,13 +273,17 @@ sap.ui.define([
 
 					},
 					error: function(oError) {
-						debugger;
+
 					}
 				}); //reading files for draft
 
 			}
-			if(this.DraftDialog){this.DraftDialog.close();}
-			if(this.MultipleDraftDialog){this.MultipleDraftDialog.close();}
+			if (this.DraftDialog) {
+				this.DraftDialog.close();
+			}
+			if (this.MultipleDraftDialog) {
+				this.MultipleDraftDialog.close();
+			}
 			sap.ui.getCore().byId("UploadCollection").setUploadUrl("/sap/opu/odata/cnetohs/VWA_CLAIM_SRV/Files");
 			sap.ui.getCore().byId("UploadCollection").setModel(AttachmentModel, "AttachmentModel");
 			sap.ui.getCore().byId("claimFormWizard")._getProgressNavigator().ontap = function() {};
@@ -391,14 +395,12 @@ sap.ui.define([
 				var InputInjuryDateTime = sap.ui.getCore().byId("InputInjuryDateTime");
 				var InputStoppedWorkDateTIme = sap.ui.getCore().byId("InputStoppedWorkDateTIme");
 				if (InputInjuryDateTime.getValue() === "" || InputStoppedWorkDateTIme.getValue() === "") {
-					if(InputInjuryDateTime.getValue() === "" && InputStoppedWorkDateTIme.getValue() === ""){
+					if (InputInjuryDateTime.getValue() === "" && InputStoppedWorkDateTIme.getValue() === "") {
 						InputInjuryDateTime.setValueState("Error");
 						InputStoppedWorkDateTIme.setValueState("Error");
-					}
-					else if(InputInjuryDateTime.getValue() === ""){
+					} else if (InputInjuryDateTime.getValue() === "") {
 						InputInjuryDateTime.setValueState("Error");
-					}
-					else if(InputStoppedWorkDateTIme.getValue() === ""){
+					} else if (InputStoppedWorkDateTIme.getValue() === "") {
 						InputStoppedWorkDateTIme.setValueState("Error");
 					}
 				} else {
@@ -425,17 +427,15 @@ sap.ui.define([
 				var InputWorkerWeeklyShiftAllowence = sap.ui.getCore().byId("InputWorkerWeeklyShiftAllowence");
 				var InputWorkerWeeklyOvertime = sap.ui.getCore().byId("InputWorkerWeeklyOvertime");
 				if (InputWorkerWeeklyShiftAllowence.getValue() === "" || InputWorkerWeeklyOvertime.getValue() === "") {
-					if(InputWorkerWeeklyShiftAllowence.getValue() === "" && InputWorkerWeeklyOvertime.getValue() === ""){
+					if (InputWorkerWeeklyShiftAllowence.getValue() === "" && InputWorkerWeeklyOvertime.getValue() === "") {
 						InputWorkerWeeklyShiftAllowence.setValueState("Error");
 						InputWorkerWeeklyOvertime.setValueState("Error");
-					}
-					else if(InputWorkerWeeklyShiftAllowence.getValue() === ""){
+					} else if (InputWorkerWeeklyShiftAllowence.getValue() === "") {
 						InputWorkerWeeklyShiftAllowence.setValueState("Error");
-					}
-					else if(InputWorkerWeeklyOvertime.getValue() === ""){
+					} else if (InputWorkerWeeklyOvertime.getValue() === "") {
 						InputWorkerWeeklyOvertime.setValueState("Error");
 					}
-					
+
 				} else {
 					if (this._oSelectedStep && !this._oSelectedStep.bLast) {
 						this._oWizard.goToStep(oNextStep, true);
@@ -455,8 +455,7 @@ sap.ui.define([
 					InputDeclarationDate.setValueState("Error");
 				} else if (this.roughString === this.signString) {
 					canvas.style.borderColor = "red";
-				}
-				else {
+				} else {
 					canvas.style.borderColor = "black";
 					if (this._oSelectedStep && !this._oSelectedStep.bLast) {
 						this._oWizard.goToStep(oNextStep, true);
@@ -850,7 +849,7 @@ sap.ui.define([
 						"Signature": this.signString,
 						"Attachments": this.attachmentsId.toString(),
 						"Draftid": this.DraftId,
-						"InjDesc" : InputInjuryType.getValue()
+						"InjDesc": InputInjuryType.getValue()
 					};
 				} else {
 					var payload = {
@@ -948,10 +947,71 @@ sap.ui.define([
 					success: function(oData, oResponse) {
 						that.claimWizardDialog.close();
 						sap.m.MessageBox.success(that.getView().getModel("i18n").getResourceBundle().getText("DraftSavedsuccessfully"));
+						InputFamilyName.setValue("");
+						InputGivenName.setValue("");
+						InputDob.setValue("");
+						InputGender.setValue("");
+						InputAddress.setValue("");
+						InputSuburb.setValue("");
+						InputPersnlDetlState.setSelectedKey("");
+						InputPostalAddress.setValue("");
+						InputPostCode.setValue("");
+						InputMaidenName.setValue("");
+						InputMobile.setValue("");
+						InputWork.setValue("");
+						InputHome.setValue("");
+						InputEmail.setValue("");
+						InputPersnlDetlQue2.setValue("");
+						InputPersnlDetlQue3.setValue("");
+						InputInjuryBodyPart.setValue("");
+						InputHowWereYouInjured.setValue("");
+						InputWhatTaskWhenInjured.setValue("");
+						InputAreaOfWorksite.setValue("");
+						InputAddressofIncident.setValue("");
+						InputInjurySuburb.setValue("");
+						InputInjuryState.setSelectedKey("");
+						InputInjuryPostcode.setValue("");
+						InputEmployerResponsible.setValue("");
+						InputInjuryPoliceStationReported.setValue("");
+						InputRegNoOfVehicles.setValue("");
+						InputVehicleState.setSelectedKey("");
+						InputInjuryQue1.setValue("");
+						InputInjuryQue2.setValue("");
+						InputInjuryQue3.setValue("");
+						InputInjuryQue4.setValue("");
+						InputInjuryQue5.setValue("");
+						InputEmpNameOfOrg.setValue("");
+						InputEmpStreetAdd.setValue("");
+						InputEmpOrgState.setValue("");
+						InputEmpOrgSuburb.setValue("");
+						InputEmpOrgPostcode.setValue("");
+						InputEmpNameAndContact.setValue("");
+						InputEmpOccupation.setValue("");
+						InputEmpOtherEmployment.setValue("");
+						InputWorkerQue1.setValue("");
+						InputWorkerQue2.setValue("");
+						InputWorkerQue3.setValue("");
+						InputWorkerQue4.setValue("");
+						InputWorkerWeeklyShiftAllowence.setValue("");
+						InputWorkerWeeklyOvertime.setValue("");
+						InputReturToWorkQue1.setValue("");
+						InputReturToWorkOue2.setSelectedKey("");
+						InputReturToWorkOue3.setValue("");
+						InputReturToWorkOue4.setValue("");
+						InputReturToWorkOue5.setSelectedKey("");
+						InputInjuryDateTime.setValue("");
+						InputWhenNoticeInjury.setValue("");
+						InputStoppedWorkDateTIme.setValue("");
+						InputInjuryReportDateTime.setValue("");
+						InputDeclarationDate.setValue("");
+						InputEmpStartWorkingDate.setValue("");
+						InputReturToWorkDate.setValue("");
+						InputReturToWorkClaimFormSubmissionDate.setValue("");
+						InputReturToWorkMedicalCertificateSubmissionDate.setValue("");
 
 					},
 					error: function(error) {
-						debugger;
+
 						that.claimWizardDialog.close();
 					}
 				});
@@ -1150,21 +1210,82 @@ sap.ui.define([
 								var that = this;
 								this.getView().getModel().create("/SaveDraftDetailsSet", payload, {
 									success: function(oData, oResponse) {
+										InputFamilyName.setValue("");
+										InputGivenName.setValue("");
+										InputDob.setValue("");
+										InputGender.setValue("");
+										InputAddress.setValue("");
+										InputSuburb.setValue("");
+										InputPersnlDetlState.setSelectedKey("");
+										InputPostalAddress.setValue("");
+										InputPostCode.setValue("");
+										InputMaidenName.setValue("");
+										InputMobile.setValue("");
+										InputWork.setValue("");
+										InputHome.setValue("");
+										InputEmail.setValue("");
+										InputPersnlDetlQue2.setValue("");
+										InputPersnlDetlQue3.setValue("");
+										InputInjuryBodyPart.setValue("");
+										InputHowWereYouInjured.setValue("");
+										InputWhatTaskWhenInjured.setValue("");
+										InputAreaOfWorksite.setValue("");
+										InputAddressofIncident.setValue("");
+										InputInjurySuburb.setValue("");
+										InputInjuryState.setSelectedKey("");
+										InputInjuryPostcode.setValue("");
+										InputEmployerResponsible.setValue("");
+										InputInjuryPoliceStationReported.setValue("");
+										InputRegNoOfVehicles.setValue("");
+										InputVehicleState.setSelectedKey("");
+										InputInjuryQue1.setValue("");
+										InputInjuryQue2.setValue("");
+										InputInjuryQue3.setValue("");
+										InputInjuryQue4.setValue("");
+										InputInjuryQue5.setValue("");
+										InputEmpNameOfOrg.setValue("");
+										InputEmpStreetAdd.setValue("");
+										InputEmpOrgState.setValue("");
+										InputEmpOrgSuburb.setValue("");
+										InputEmpOrgPostcode.setValue("");
+										InputEmpNameAndContact.setValue("");
+										InputEmpOccupation.setValue("");
+										InputEmpOtherEmployment.setValue("");
+										InputWorkerQue1.setValue("");
+										InputWorkerQue2.setValue("");
+										InputWorkerQue3.setValue("");
+										InputWorkerQue4.setValue("");
+										InputWorkerWeeklyShiftAllowence.setValue("");
+										InputWorkerWeeklyOvertime.setValue("");
+										InputReturToWorkQue1.setValue("");
+										InputReturToWorkOue2.setSelectedKey("");
+										InputReturToWorkOue3.setValue("");
+										InputReturToWorkOue4.setValue("");
+										InputReturToWorkOue5.setSelectedKey("");
+										InputInjuryDateTime.setValue("");
+										InputWhenNoticeInjury.setValue("");
+										InputStoppedWorkDateTIme.setValue("");
+										InputInjuryReportDateTime.setValue("");
+										InputDeclarationDate.setValue("");
+										InputEmpStartWorkingDate.setValue("");
+										InputReturToWorkDate.setValue("");
+										InputReturToWorkClaimFormSubmissionDate.setValue("");
+										InputReturToWorkMedicalCertificateSubmissionDate.setValue("");
 										sap.m.MessageBox.success(
-											oData.Casno + " "+ that.getView().getModel("i18n").getResourceBundle().getText("ClaimSuccessMessage"), {
+											oData.Casno + " " + that.getView().getModel("i18n").getResourceBundle().getText("ClaimSuccessMessage"), {
 												actions: [that.getView().getModel("i18n").getResourceBundle().getText("ok")],
 												onClose: function(sAction) {
 													var sSource = that.getView().getModel().sServiceUrl + "/InjuryFormSet(Casno='" + oData.Casno + "',Userid='" +
-															that.userName + "')/$value";
-														that.claimWizardDialog.close();
-														sap.ui.getCore().byId("claimWizardNextBtn").setVisible(true);
-														sap.ui.getCore().byId("claimSubmitBtn").setEnabled(false);
-														that._oWizard.setCurrentStep("personalDetailStep");
-														that._pdfViewer = new sap.m.PDFViewer();
-														that.getView().addDependent(that._pdfViewer);
-														that._pdfViewer.setSource(sSource);
-														that._pdfViewer.setTitle(that.getView().getModel("i18n").getResourceBundle().getText("SamrtFormTitle"));
-														that._pdfViewer.open();
+														that.userName + "')/$value";
+													that.claimWizardDialog.close();
+													sap.ui.getCore().byId("claimWizardNextBtn").setVisible(true);
+													sap.ui.getCore().byId("claimSubmitBtn").setEnabled(false);
+													that._oWizard.setCurrentStep("personalDetailStep");
+													that._pdfViewer = new sap.m.PDFViewer();
+													that.getView().addDependent(that._pdfViewer);
+													that._pdfViewer.setSource(sSource);
+													that._pdfViewer.setTitle(that.getView().getModel("i18n").getResourceBundle().getText("SamrtFormTitle"));
+													that._pdfViewer.open();
 												}
 											}
 										);
@@ -1339,7 +1460,8 @@ sap.ui.define([
 					if (oEvent.getSource().getValue().length > 4) {
 						oEvent.getSource().setValue(oEvent.getSource().getValue().slice(0, -1));
 					}
-				} else if (oEvent.getSource().getId() === "InputMobile" || oEvent.getSource().getId() === "InputWork" || oEvent.getSource().getId() === "InputHome") {
+				} else if (oEvent.getSource().getId() === "InputMobile" || oEvent.getSource().getId() === "InputWork" || oEvent.getSource().getId() ===
+					"InputHome") {
 					if (oEvent.getSource().getValue().length > 10) {
 						oEvent.getSource().setValue(oEvent.getSource().getValue().slice(0, -1));
 					}

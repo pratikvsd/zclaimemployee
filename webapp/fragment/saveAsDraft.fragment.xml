@@ -2,7 +2,7 @@
 	xmlns:layout="sap.ui.layout">
 	<Dialog title="Draft Record">
 		<content>
-			<Text class="sapUiLargeMargin" text="You have one record pending in save as draft. Would youl like to continue as draft?"/>
+			<Text class="sapUiLargeMargin" text="{i18n>contasdraftmsg}"/>
 		</content>
 		<beginButton>
 			<Button id="contAsDraftBtn" type="Emphasized" text="Continue as draft" press="openClaimWizard"/>
