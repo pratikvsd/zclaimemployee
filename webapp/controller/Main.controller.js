@@ -17,15 +17,15 @@ sap.ui.define([
 		onInit: function() {
 			this.DraftId = "";
 			var oUserModel = new sap.ui.model.json.JSONModel();
-            if (sap.ushell.Container) {
-                this.userName = sap.ushell.Container.getService("UserInfo").getId();
-            } else {
-                this.userName = "JPRAKASH";
-            }
-            oUserModel.setData({
-                "UserId" : this._UserID
-            });
-            sap.ui.getCore().setModel(oUserModel, "userModel");
+			if (sap.ushell.Container) {
+				this.userName = sap.ushell.Container.getService("UserInfo").getId();
+			} else {
+				this.userName = "JPRAKASH";
+			}
+			oUserModel.setData({
+				"UserId": this._UserID
+			});
+			sap.ui.getCore().setModel(oUserModel, "userModel");
 			this.WizardTitle = ""; // This is important flag which is used below to close the dialogs
 			this.attachmentsId = [];
 			this.getView().setModel(userDetailModel, "userDetailModel");
@@ -175,6 +175,9 @@ sap.ui.define([
 								that.attachmentsId.push(oData.Attachments);
 								that.ManagerPernr = oData.ManagerPernr;
 								var c = document.getElementById("signature-pad");
+								var signaturePad = new SignaturePad(document.getElementById('signature-pad'), {
+									backgroundColor: '#FFFFFF'
+								});
 								var context = c.getContext("2d");
 								var base_image = new Image();
 								base_image.src = oData.Signature;
@@ -233,6 +236,9 @@ sap.ui.define([
 								userDetailModel.setData(oData);
 								that.getView().setModel(userDetailModel, "userDetailModel");
 								var c = document.getElementById("signature-pad");
+								var signaturePad = new SignaturePad(document.getElementById('signature-pad'), {
+									backgroundColor: '#FFFFFF'
+								})
 								var context = c.getContext("2d");
 								var base_image = new Image();
 								base_image.src = oData.Signature;
@@ -1209,9 +1215,6 @@ sap.ui.define([
 
 		onSign: function() {
 			var canvas = document.getElementById("signature-pad");
-			var signaturePad = new SignaturePad(document.getElementById('signature-pad'), {
-				backgroundColor: '#FFFFFF'
-			})
 			var context = canvas.getContext("2d");
 			canvas.width = 200;
 			canvas.height = 200;
@@ -1325,7 +1328,9 @@ sap.ui.define([
 			var canvas = document.getElementById("signature-pad");
 			var context = canvas.getContext("2d");
 			context.clearRect(0, 0, canvas.width, canvas.height);
-			this.onSign();
+			var signaturePad = new SignaturePad(document.getElementById('signature-pad'), {
+				backgroundColor: '#FFFFFF'
+			})
 		},
 
 		onOpenHelpPopup: function(oEvent) {
