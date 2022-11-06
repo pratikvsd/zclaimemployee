@@ -16,8 +16,16 @@ sap.ui.define([
 
 		onInit: function() {
 			this.DraftId = "";
-			this.userName = 'JPRAKASH';
-			//this.userName = sap.ushell.Container.getService("UserInfo").getId();
+			var oUserModel = new sap.ui.model.json.JSONModel();
+            if (sap.ushell.Container) {
+                this.userName = sap.ushell.Container.getService("UserInfo").getId();
+            } else {
+                this.userName = "JPRAKASH";
+            }
+            oUserModel.setData({
+                "UserId" : this._UserID
+            });
+            sap.ui.getCore().setModel(oUserModel, "userModel");
 			this.WizardTitle = ""; // This is important flag which is used below to close the dialogs
 			this.attachmentsId = [];
 			this.getView().setModel(userDetailModel, "userDetailModel");
@@ -1201,12 +1209,15 @@ sap.ui.define([
 
 		onSign: function() {
 			var canvas = document.getElementById("signature-pad");
+			var signaturePad = new SignaturePad(document.getElementById('signature-pad'), {
+				backgroundColor: '#FFFFFF'
+			})
 			var context = canvas.getContext("2d");
 			canvas.width = 200;
 			canvas.height = 200;
 			context.fillStyle = "#fff";
 			context.strokeStyle = "#444";
-			context.lineWidth = 1.5;
+			context.lineWidth = 3.5;
 			context.lineCap = "round";
 			context.fillRect(0, 0, canvas.width, canvas.height);
 			var disableSave = true;
@@ -1314,11 +1325,7 @@ sap.ui.define([
 			var canvas = document.getElementById("signature-pad");
 			var context = canvas.getContext("2d");
 			context.clearRect(0, 0, canvas.width, canvas.height);
-			var signaturePad = new SignaturePad(document.getElementById('signature-pad'), {
-				  backgroundColor: '#ffffff',
-				  penColor: 'rgb(0, 0, 0)',
-				  penWidth : '1'
-			})
+			this.onSign();
 		},
 
 		onOpenHelpPopup: function(oEvent) {
