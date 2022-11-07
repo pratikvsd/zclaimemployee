@@ -175,9 +175,6 @@ sap.ui.define([
 								that.attachmentsId.push(oData.Attachments);
 								that.ManagerPernr = oData.ManagerPernr;
 								var c = document.getElementById("signature-pad");
-								var signaturePad = new SignaturePad(document.getElementById('signature-pad'), {
-									backgroundColor: '#FFFFFF'
-								});
 								var context = c.getContext("2d");
 								var base_image = new Image();
 								base_image.src = oData.Signature;
@@ -236,9 +233,6 @@ sap.ui.define([
 								userDetailModel.setData(oData);
 								that.getView().setModel(userDetailModel, "userDetailModel");
 								var c = document.getElementById("signature-pad");
-								var signaturePad = new SignaturePad(document.getElementById('signature-pad'), {
-									backgroundColor: '#FFFFFF'
-								})
 								var context = c.getContext("2d");
 								var base_image = new Image();
 								base_image.src = oData.Signature;
@@ -1215,6 +1209,9 @@ sap.ui.define([
 
 		onSign: function() {
 			var canvas = document.getElementById("signature-pad");
+			var signaturePad = new SignaturePad(canvas, {
+				backgroundColor: '#FFFFFF'
+			});
 			var context = canvas.getContext("2d");
 			canvas.width = 200;
 			canvas.height = 200;
@@ -1328,9 +1325,7 @@ sap.ui.define([
 			var canvas = document.getElementById("signature-pad");
 			var context = canvas.getContext("2d");
 			context.clearRect(0, 0, canvas.width, canvas.height);
-			var signaturePad = new SignaturePad(document.getElementById('signature-pad'), {
-				backgroundColor: '#FFFFFF'
-			})
+			this.onSign();
 		},
 
 		onOpenHelpPopup: function(oEvent) {
