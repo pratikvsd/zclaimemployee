@@ -3,9 +3,10 @@ sap.ui.define([
 	"sap/m/UploadCollectionParameter",
 	"sap/m/Wizard-dbg",
 	"sap/ui/Device",
+	"safetysuitezclaimemployee/libs/signature_pad",
 	"sap/m/WizardProgressNavigator",
 	"sap/m/WizardRenderer"
-], function(Controller, UploadCollectionParameter, Device) {
+], function(Controller, UploadCollectionParameter, Device, signaturePad) {
 	"use strict";
 	var userDetailModel = new sap.ui.model.json.JSONModel();
 	var AttachmentModel = new sap.ui.model.json.JSONModel();
@@ -16,16 +17,11 @@ sap.ui.define([
 
 		onInit: function() {
 			this.DraftId = "";
-			var oUserModel = new sap.ui.model.json.JSONModel();
 			if (sap.ushell.Container) {
 				this.userName = sap.ushell.Container.getService("UserInfo").getId();
 			} else {
 				this.userName = "JPRAKASH";
 			}
-			oUserModel.setData({
-				"UserId": this._UserID
-			});
-			sap.ui.getCore().setModel(oUserModel, "userModel");
 			this.WizardTitle = ""; // This is important flag which is used below to close the dialogs
 			this.attachmentsId = [];
 			this.getView().setModel(userDetailModel, "userDetailModel");
@@ -1217,7 +1213,7 @@ sap.ui.define([
 			canvas.height = 200;
 			context.fillStyle = "#fff";
 			context.strokeStyle = "#444";
-			context.lineWidth = 3.5;
+			context.lineWidth = 1.5;
 			context.lineCap = "round";
 			context.fillRect(0, 0, canvas.width, canvas.height);
 			var disableSave = true;
