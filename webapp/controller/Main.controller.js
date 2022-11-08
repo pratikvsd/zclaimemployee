@@ -1177,6 +1177,14 @@ sap.ui.define([
 													that._pdfViewer.setSource(sSource);
 													that._pdfViewer.setTitle(that.getView().getModel("i18n").getResourceBundle().getText("SamrtFormTitle"));
 													that._pdfViewer.open();
+													setTimeout(namefunction, 5000);
+													function namefunction(){
+														document.querySelector("#viewer").shadowRoot.querySelector("#toolbar").shadowRoot.querySelector("#title").innerText = "";
+													}
+														
+													
+													
+
 												}
 											}
 										);
@@ -1426,6 +1434,9 @@ sap.ui.define([
 			sap.ui.getCore().byId("InputReturToWorkDate").setValue("");
 			sap.ui.getCore().byId("InputReturToWorkClaimFormSubmissionDate").setValue("");
 			sap.ui.getCore().byId("InputReturToWorkMedicalCertificateSubmissionDate").setValue("");
+			sap.ui.getCore().byId("UploadCollection").destroyItems();
+			var Items = sap.ui.getCore().byId("UploadCollection").getItems();
+			sap.ui.getCore().byId("UploadCollection").setNumberOfAttachmentsText("Employee Attachments(" + Items.length + ")");
 		}
 
 	});
