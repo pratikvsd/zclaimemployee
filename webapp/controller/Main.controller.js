@@ -1,3 +1,4 @@
+jQuery.sap.require("safetysuitezclaimemployee.libs.canvas2image");
 sap.ui.define([
 	"sap/ui/core/mvc/Controller",
 	"sap/m/UploadCollectionParameter",
@@ -149,11 +150,15 @@ sap.ui.define([
 				this.claimWizardDialog = sap.ui.xmlfragment("safetysuitezclaimemployee.fragment.claimWizard", this);
 				this.getView().addDependent(this.claimWizardDialog);
 				sap.ui.getCore().byId("html").setContent("<canvas id='signature-pad' width='200px' height='200px' class='signature-pad'></canvas>");
-
 			}
 			this.WizardTitle = "StartClaim";
 			this.claimWizardDialog.open();
-			this.onSign();
+			var canvas = document.getElementById("signature-pad");
+						this.signaturePad = new SignaturePad(canvas, {
+						backgroundColor: 'rgba(255, 255, 255, 1)',
+        				penColor: 'rgb(0, 0, 0)'
+						});
+			//this.onSign();
 			if (oEvent.getSource().getId() === "contAsDraftBtn") {
 
 				if (this.MultipleDraftDialog) {
@@ -455,11 +460,10 @@ sap.ui.define([
 				}
 			} else if (this._oWizard.getCurrentStep() === "workerDecStep") {
 				var canvas = document.getElementById("signature-pad");
-				this.signString = btoa(encodeURI(canvas.toDataURL('image/jpeg').replace("data:image/jpeg:base64,", "")));
 				var InputDeclarationDate = sap.ui.getCore().byId("InputDeclarationDate");
 				if (InputDeclarationDate.getValue() === "" || InputDeclarationDate.getValue() === undefined) {
 					InputDeclarationDate.setValueState("Error");
-				} else if (this.roughString === this.signString) {
+				} else if (this.signaturePad.isEmpty()) {
 					canvas.style.borderColor = "red";
 				} else {
 					canvas.style.borderColor = "black";
@@ -719,7 +723,10 @@ sap.ui.define([
 			var InputDeclarationDate = sap.ui.getCore().byId("InputDeclarationDate");
 			var InputInjuryType = sap.ui.getCore().byId("InputInjuryType");
 			var canvas = document.getElementById("signature-pad");
-			this.signString = btoa(encodeURI(canvas.toDataURL('image/jpeg').replace("data:image/jpeg:base64,", "")));
+			 var oBMP = Canvas2Image.convertToBMP(canvas);
+        	var str = oBMP.src;
+        	this.signString = str.replace("data:image/bmp;base64,", "");
+			//this.signString = btoa(encodeURI(canvas.toDataURL('image/jpeg').replace("data:image/jpeg:base64,", "")));
 			if (this.roughString === this.signString) {
 				this.signString = "";
 			}
@@ -1211,7 +1218,7 @@ sap.ui.define([
 
 		}, // Submit and save as draft button functionality
 
-		onSign: function() {
+		/*onSign: function() {
 			var canvas = document.getElementById("signature-pad");
 			var signaturePad = new SignaturePad(canvas, {
 				backgroundColor: '#FFFFFF'
@@ -1323,13 +1330,14 @@ sap.ui.define([
 				canvas.addEventListener('mousedown', on_mousedown, false);
 			}
 
-		},
+		},*/
 
 		clearButton: function(oEvent) {
-			var canvas = document.getElementById("signature-pad");
+			/*var canvas = document.getElementById("signature-pad");
 			var context = canvas.getContext("2d");
-			context.clearRect(0, 0, canvas.width, canvas.height);
-			this.onSign();
+			context.clearRect(0, 0, canvas.width, canvas.height);*/
+			//this.onSign();
+			this.signaturePad.clear();
 		},
 
 		onOpenHelpPopup: function(oEvent) {
