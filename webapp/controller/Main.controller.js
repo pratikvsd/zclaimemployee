@@ -154,6 +154,7 @@ sap.ui.define([
 						backgroundColor: 'rgba(255, 255, 255, 1)',
         				penColor: 'rgb(0, 0, 0)'
 						});
+			
 			//this.onSign();
 			if (oEvent.getSource().getId() === "contAsDraftBtn") {
 
@@ -168,6 +169,7 @@ sap.ui.define([
 						success: function(oData, oResponse) {
 							if (oData !== undefined || oData !== null) {
 								oData.Signature = "data:image/bmp;base64,"+oData.Signature;
+								that.signaturePad._isEmpty = false;
 								oData.Attachments = oData.Attachments.split(",");
 								that.attachmentsId.push(oData.Attachments);
 								that.ManagerPernr = oData.ManagerPernr;
@@ -224,6 +226,7 @@ sap.ui.define([
 						success: function(oData, oResponse) {
 							if (oData !== undefined || oData !== null) {
 								oData.Signature = "data:image/bmp;base64,"+oData.Signature;
+								that.signaturePad._isEmpty = false;
 								oData.Attachments = oData.Attachments.split(",");
 								that.attachmentsId.push(oData.Attachments);
 								that.ManagerPernr = oData.ManagerPernr;
@@ -459,7 +462,7 @@ sap.ui.define([
 				var InputDeclarationDate = sap.ui.getCore().byId("InputDeclarationDate");
 				if (InputDeclarationDate.getValue() === "" || InputDeclarationDate.getValue() === undefined) {
 					InputDeclarationDate.setValueState("Error");
-				} else if (this.signaturePad.isEmpty()) {
+				} else if (this.signaturePad._isEmpty) {
 					canvas.style.borderColor = "red";
 				} else {
 					canvas.style.borderColor = "black";
