@@ -69,10 +69,6 @@ sap.ui.define([
 
 				}
 			});
-			// roughString variable is used for storing the string of blank signature box and its used below for validation.
-			this.roughString =
-				"ZGF0YTppbWFnZS9qcGVnO2Jhc2U2NCwvOWovNEFBUVNrWkpSZ0FCQVFBQUFRQUJBQUQvNGdJb1NVTkRYMUJTVDBaSlRFVUFBUUVBQUFJWUFBQUFBQVF3QUFCdGJuUnlVa2RDSUZoWldpQUFBQUFBQUFBQUFBQUFBQUJoWTNOd0FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFRQUE5dFlBQVFBQUFBRFRMUUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBbGtaWE5qQUFBQThBQUFBSFJ5V0ZsYUFBQUJaQUFBQUJSbldGbGFBQUFCZUFBQUFCUmlXRmxhQUFBQmpBQUFBQlJ5VkZKREFBQUJvQUFBQUNoblZGSkRBQUFCb0FBQUFDaGlWRkpEQUFBQm9BQUFBQ2gzZEhCMEFBQUJ5QUFBQUJSamNISjBBQUFCM0FBQUFEeHRiSFZqQUFBQUFBQUFBQUVBQUFBTVpXNVZVd0FBQUZnQUFBQWNBSE1BVWdCSEFFSUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFGaFpXaUFBQUFBQUFBQnZvZ0FBT1BVQUFBT1FXRmxhSUFBQUFBQUFBR0taQUFDM2hRQUFHTnBZV1ZvZ0FBQUFBQUFBSktBQUFBK0VBQUMyejNCaGNtRUFBQUFBQUFRQUFBQUNabVlBQVBLbkFBQU5XUUFBRTlBQUFBcGJBQUFBQUFBQUFBQllXVm9nQUFBQUFBQUE5dFlBQVFBQUFBRFRMVzFzZFdNQUFBQUFBQUFBQVFBQUFBeGxibFZUQUFBQUlBQUFBQndBUndCdkFHOEFad0JzQUdVQUlBQkpBRzRBWXdBdUFDQUFNZ0F3QURFQU52L2JBRU1BQXdJQ0FnSUNBd0lDQWdNREF3TUVCZ1FFQkFRRUNBWUdCUVlKQ0FvS0NRZ0pDUW9NRHd3S0N3NExDUWtORVEwT0R4QVFFUkFLREJJVEVoQVREeEFRRVAvYkFFTUJBd01EQkFNRUNBUUVDQkFMQ1FzUUVCQVFFQkFRRUJBUUVCQVFFQkFRRUJBUUVCQVFFQkFRRUJBUUVCQVFFQkFRRUJBUUVCQVFFQkFRRUJBUUVCQVFFUC9BQUJFSUFNZ0F5QU1CSWdBQ0VRRURFUUgveEFBVkFBRUJBQUFBQUFBQUFBQUFBQUFBQUFBQUNmL0VBQlFRQVFBQUFBQUFBQUFBQUFBQUFBQUFBQUQveEFBVUFRRUFBQUFBQUFBQUFBQUFBQUFBQUFBQS84UUFGQkVCQUFBQUFBQUFBQUFBQUFBQUFBQUFBUC9hQUF3REFRQUNFUU1SQUQ4QXFtQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUQvOWs9";
-
 		},
 
 		openInjuryTab: function() {
@@ -171,7 +167,7 @@ sap.ui.define([
 					this.getView().getModel().read("/SaveDraftDetailsSet(Userid='" + this.userName + "',Draftid='" + this.DraftId + "')", {
 						success: function(oData, oResponse) {
 							if (oData !== undefined || oData !== null) {
-								oData.Signature = atob(oData.Signature);
+								oData.Signature = "data:image/bmp;base64,"+oData.Signature;
 								oData.Attachments = oData.Attachments.split(",");
 								that.attachmentsId.push(oData.Attachments);
 								that.ManagerPernr = oData.ManagerPernr;
@@ -227,7 +223,7 @@ sap.ui.define([
 					this.getView().getModel().read("/SaveDraftDetailsSet(Userid='" + this.userName + "',Draftid='" + this.DraftId + "')", {
 						success: function(oData, oResponse) {
 							if (oData !== undefined || oData !== null) {
-								oData.Signature = atob(oData.Signature);
+								oData.Signature = "data:image/bmp;base64,"+oData.Signature;
 								oData.Attachments = oData.Attachments.split(",");
 								that.attachmentsId.push(oData.Attachments);
 								that.ManagerPernr = oData.ManagerPernr;
@@ -723,13 +719,10 @@ sap.ui.define([
 			var InputDeclarationDate = sap.ui.getCore().byId("InputDeclarationDate");
 			var InputInjuryType = sap.ui.getCore().byId("InputInjuryType");
 			var canvas = document.getElementById("signature-pad");
-			 var oBMP = Canvas2Image.convertToBMP(canvas);
+			var oBMP = Canvas2Image.convertToBMP(canvas);
         	var str = oBMP.src;
         	this.signString = str.replace("data:image/bmp;base64,", "");
-			//this.signString = btoa(encodeURI(canvas.toDataURL('image/jpeg').replace("data:image/jpeg:base64,", "")));
-			if (this.roughString === this.signString) {
-				this.signString = "";
-			}
+		
 			if (InputInjuryDateTime.getValue() !== "" || InputInjuryDateTime.getDateValue() !== null) {
 				var finDate = new Date(InputInjuryDateTime.getDateValue()).toISOString();
 			}
