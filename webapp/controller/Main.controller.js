@@ -727,16 +727,16 @@ sap.ui.define([
         	this.signString = str.replace("data:image/bmp;base64,", "");
 		
 			if (InputInjuryDateTime.getValue() !== "" || InputInjuryDateTime.getDateValue() !== null) {
-				var finDate = new Date(InputInjuryDateTime.getDateValue()).toISOString();
+				var finDate = new Date(InputInjuryDateTime.getValue()).toISOString();
 			}
 			if (InputWhenNoticeInjury.getValue() !== "" || InputWhenNoticeInjury.getDateValue() !== null) {
-				var crDate = new Date(InputWhenNoticeInjury.getDateValue()).toISOString();
+				var crDate = new Date(InputWhenNoticeInjury.getValue()).toISOString();
 			}
 			if (InputStoppedWorkDateTIme.getValue() !== "" || InputStoppedWorkDateTIme.getDateValue() !== null) {
-				var sDate = new Date(InputStoppedWorkDateTIme.getDateValue()).toISOString();
+				var sDate = new Date(InputStoppedWorkDateTIme.getValue()).toISOString();
 			}
 			if (InputInjuryReportDateTime.getValue() !== "" || InputInjuryReportDateTime.getDateValue() !== null) {
-				var rDate = new Date(InputInjuryReportDateTime.getDateValue()).toISOString();
+				var rDate = new Date(InputInjuryReportDateTime.getValue()).toISOString();
 			}
 			if (InputDeclarationDate.getValue() !== "" || InputDeclarationDate.getDateValue() !== null) {
 				var dDate = new Date(InputDeclarationDate.getDateValue()).toISOString();
