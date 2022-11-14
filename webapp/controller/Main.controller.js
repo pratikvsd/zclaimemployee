@@ -130,6 +130,7 @@ sap.ui.define([
 		openPrivacyStatementTab: function() {
 			this.ConfidentialColumnText = sap.ui.getCore().byId("injuryDetailsTable").getSelectedItem().getCells()[5].getText();
 			this.InjurTypeNumber = sap.ui.getCore().byId("injuryDetailsTable").getSelectedItem().getCells()[6].getText();
+			this.Casno = sap.ui.getCore().byId("injuryDetailsTable").getSelectedItem().getCells()[8].getText();
 			if (!this.PrivacyStatementDialog) {
 				this.PrivacyStatementDialog = sap.ui.xmlfragment("safetysuitezclaimemployee.fragment.PrivacyStatement", this);
 				this.getView().addDependent(this.PrivacyStatementDialog);
@@ -168,6 +169,7 @@ sap.ui.define([
 					this.getView().getModel().read("/SaveDraftDetailsSet(Userid='" + this.userName + "',Draftid='" + this.DraftId + "')", {
 						success: function(oData, oResponse) {
 							if (oData !== undefined || oData !== null) {
+								that.Casno = oData.Casno;
 								oData.Signature = "data:image/bmp;base64,"+oData.Signature;
 								that.signaturePad._isEmpty = false;
 								oData.Attachments = oData.Attachments.split(",");
@@ -225,6 +227,7 @@ sap.ui.define([
 					this.getView().getModel().read("/SaveDraftDetailsSet(Userid='" + this.userName + "',Draftid='" + this.DraftId + "')", {
 						success: function(oData, oResponse) {
 							if (oData !== undefined || oData !== null) {
+								that.Casno = oData.Casno;
 								oData.Signature = "data:image/bmp;base64,"+oData.Signature;
 								that.signaturePad._isEmpty = false;
 								oData.Attachments = oData.Attachments.split(",");
@@ -801,7 +804,7 @@ sap.ui.define([
 						"Communication": InputPersnlDetlQue3.getValue(),
 						"BodypartDes": InputInjuryBodyPart.getValue(),
 						"Bodypart": this.getView().getModel("oInjuryDetailModel").getData().Bodypart,
-						"Casno": this.getView().getModel("oInjuryDetailModel").getData().InjuryNumber,
+						"Casno": this.Casno,
 						"Maininjury": this.getView().getModel("oInjuryDetailModel").getData().Maininjury,
 						"Injurytypevcode": this.getView().getModel("oInjuryDetailModel").getData().Injurytypevcode,
 						"Side": this.getView().getModel("oInjuryDetailModel").getData().Side,
@@ -890,7 +893,7 @@ sap.ui.define([
 						"Communication": InputPersnlDetlQue3.getValue(),
 						"BodypartDes": InputInjuryBodyPart.getValue(),
 						"Bodypart": this.getView().getModel("userDetailModel").getData().Bodypart,
-						"Casno": this.getView().getModel("userDetailModel").getData().InjuryNumber,
+						"Casno": this.Casno,
 						"Maininjury": this.getView().getModel("userDetailModel").getData().Maininjury,
 						"Injurytypevcode": this.getView().getModel("userDetailModel").getData().Injurytypevcode,
 						"Side": this.getView().getModel("userDetailModel").getData().Side,
@@ -1007,7 +1010,7 @@ sap.ui.define([
 										"Communication": InputPersnlDetlQue3.getValue(),
 										"BodypartDes": InputInjuryBodyPart.getValue(),
 										"Bodypart": this.getView().getModel("oInjuryDetailModel").getData().Bodypart,
-										"Casno": this.getView().getModel("oInjuryDetailModel").getData().InjuryNumber,
+										"Casno": this.Casno,
 										"Maininjury": this.getView().getModel("oInjuryDetailModel").getData().Maininjury,
 										"Injurytypevcode": this.getView().getModel("oInjuryDetailModel").getData().Injurytypevcode,
 										"Side": this.getView().getModel("oInjuryDetailModel").getData().Side,
@@ -1095,7 +1098,7 @@ sap.ui.define([
 										"Communication": InputPersnlDetlQue3.getValue(),
 										"BodypartDes": InputInjuryBodyPart.getValue(),
 										"Bodypart": this.getView().getModel("userDetailModel").getData().Bodypart,
-										"Casno": this.getView().getModel("userDetailModel").getData().InjuryNumber,
+										"Casno": this.Casno,
 										"Maininjury": this.getView().getModel("userDetailModel").getData().Maininjury,
 										"Injurytypevcode": this.getView().getModel("userDetailModel").getData().Injurytypevcode,
 										"Side": this.getView().getModel("userDetailModel").getData().Side,
@@ -1180,14 +1183,7 @@ sap.ui.define([
 													that._pdfViewer.setSource(sSource);
 													that._pdfViewer.setTitle(that.getView().getModel("i18n").getResourceBundle().getText("SamrtFormTitle"));
 													that._pdfViewer.open();
-													setTimeout(namefunction, 5000);
-													function namefunction(){
-														document.querySelector("#viewer").shadowRoot.querySelector("#toolbar").shadowRoot.querySelector("#title").innerText = "";
-													}
-														
-													
-													
-
+												
 												}
 											}
 										);

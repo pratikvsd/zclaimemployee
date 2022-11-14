@@ -40,6 +40,8 @@
 								</Column>
 								<Column visible="false">
 								</Column>
+								<Column visible="false">
+								</Column>
 							</columns>
 							<items>
 								<ColumnListItem vAlign="Middle">
@@ -52,6 +54,7 @@
 										<Text text="{Confidential}"/>
 										<Text text="{Injurytype}"/>
 										<Text text="{Rdate}{Rtime}"/>
+										<Text text="{Casno}"/>
 									</cells>
 								</ColumnListItem>
 							</items>
