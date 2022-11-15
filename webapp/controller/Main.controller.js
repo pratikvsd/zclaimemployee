@@ -1169,7 +1169,7 @@ sap.ui.define([
 											oData.Casno = "";
 										}
 										sap.m.MessageBox.success(
-											oData.Casno + " " + that.getView().getModel("i18n").getResourceBundle().getText("ClaimSuccessMessage"), {
+											that.getView().getModel("i18n").getResourceBundle().getText("ClaimSuccessMessage")+ " " + oData.Casno , {
 												actions: [that.getView().getModel("i18n").getResourceBundle().getText("ok")],
 												onClose: function(sAction) {
 													var sSource = that.getView().getModel().sServiceUrl + "/InjuryFormSet(Casno='" + oData.Casno + "',Userid='" +
