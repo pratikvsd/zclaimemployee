@@ -151,11 +151,11 @@ sap.ui.define([
 			this.WizardTitle = "StartClaim";
 			this.claimWizardDialog.open();
 			var canvas = document.getElementById("signature-pad");
-						this.signaturePad = new SignaturePad(canvas, {
-						backgroundColor: 'rgba(255, 255, 255, 1)',
-        				penColor: 'rgb(0, 0, 0)'
-						});
-			
+			this.signaturePad = new SignaturePad(canvas, {
+				backgroundColor: 'rgba(255, 255, 255, 1)',
+				penColor: 'rgb(0, 0, 0)'
+			});
+
 			//this.onSign();
 			if (oEvent.getSource().getId() === "contAsDraftBtn") {
 
@@ -170,7 +170,7 @@ sap.ui.define([
 						success: function(oData, oResponse) {
 							if (oData !== undefined || oData !== null) {
 								that.Casno = oData.Casno;
-								oData.Signature = "data:image/bmp;base64,"+oData.Signature;
+								oData.Signature = "data:image/bmp;base64," + oData.Signature;
 								that.signaturePad._isEmpty = false;
 								oData.Attachments = oData.Attachments.split(",");
 								that.attachmentsId.push(oData.Attachments);
@@ -193,14 +193,24 @@ sap.ui.define([
 										sap.ui.getCore().byId("claimWizardPrevBtn").setVisible(false);
 										sap.ui.getCore().byId("claimWizardNextBtn").setVisible(true);
 									} else if (oData.TabNo === "2") {
+										sap.ui.getCore().byId("claimWizardPrevBtn").setVisible(true);
+										sap.ui.getCore().byId("claimWizardNextBtn").setVisible(true);
 										sap.ui.getCore().byId("claimFormWizard").setCurrentStep("injuryDetailStep");
 									} else if (oData.TabNo === "3") {
+										sap.ui.getCore().byId("claimWizardPrevBtn").setVisible(true);
+										sap.ui.getCore().byId("claimWizardNextBtn").setVisible(true);
 										sap.ui.getCore().byId("claimFormWizard").setCurrentStep("employmentDetailStep");
 									} else if (oData.TabNo === "4") {
+										sap.ui.getCore().byId("claimWizardPrevBtn").setVisible(true);
+										sap.ui.getCore().byId("claimWizardNextBtn").setVisible(true);
 										sap.ui.getCore().byId("claimFormWizard").setCurrentStep("workerEarningStep");
 									} else if (oData.TabNo === "5") {
+										sap.ui.getCore().byId("claimWizardPrevBtn").setVisible(true);
+										sap.ui.getCore().byId("claimWizardNextBtn").setVisible(true);
 										sap.ui.getCore().byId("claimFormWizard").setCurrentStep("returntoWorkStep");
 									} else if (oData.TabNo === "6") {
+										sap.ui.getCore().byId("claimWizardPrevBtn").setVisible(true);
+										sap.ui.getCore().byId("claimWizardNextBtn").setVisible(true);
 										sap.ui.getCore().byId("claimFormWizard").setCurrentStep("workerDecStep");
 									} else if (oData.TabNo === "7") {
 										sap.ui.getCore().byId("claimFormWizard").setCurrentStep("attachmentStep");
@@ -228,7 +238,7 @@ sap.ui.define([
 						success: function(oData, oResponse) {
 							if (oData !== undefined || oData !== null) {
 								that.Casno = oData.Casno;
-								oData.Signature = "data:image/bmp;base64,"+oData.Signature;
+								oData.Signature = "data:image/bmp;base64," + oData.Signature;
 								that.signaturePad._isEmpty = false;
 								oData.Attachments = oData.Attachments.split(",");
 								that.attachmentsId.push(oData.Attachments);
@@ -253,14 +263,24 @@ sap.ui.define([
 										sap.ui.getCore().byId("claimWizardPrevBtn").setVisible(false);
 										sap.ui.getCore().byId("claimWizardNextBtn").setVisible(true);
 									} else if (oData.TabNo === "2") {
+										sap.ui.getCore().byId("claimWizardPrevBtn").setVisible(true);
+										sap.ui.getCore().byId("claimWizardNextBtn").setVisible(true);
 										sap.ui.getCore().byId("claimFormWizard").setCurrentStep("injuryDetailStep");
 									} else if (oData.TabNo === "3") {
+										sap.ui.getCore().byId("claimWizardPrevBtn").setVisible(true);
+										sap.ui.getCore().byId("claimWizardNextBtn").setVisible(true);
 										sap.ui.getCore().byId("claimFormWizard").setCurrentStep("employmentDetailStep");
 									} else if (oData.TabNo === "4") {
+										sap.ui.getCore().byId("claimWizardPrevBtn").setVisible(true);
+										sap.ui.getCore().byId("claimWizardNextBtn").setVisible(true);
 										sap.ui.getCore().byId("claimFormWizard").setCurrentStep("workerEarningStep");
 									} else if (oData.TabNo === "5") {
+										sap.ui.getCore().byId("claimWizardPrevBtn").setVisible(true);
+										sap.ui.getCore().byId("claimWizardNextBtn").setVisible(true);
 										sap.ui.getCore().byId("claimFormWizard").setCurrentStep("returntoWorkStep");
 									} else if (oData.TabNo === "6") {
+										sap.ui.getCore().byId("claimWizardPrevBtn").setVisible(true);
+										sap.ui.getCore().byId("claimWizardNextBtn").setVisible(true);
 										sap.ui.getCore().byId("claimFormWizard").setCurrentStep("workerDecStep");
 									} else if (oData.TabNo === "7") {
 										sap.ui.getCore().byId("claimFormWizard").setCurrentStep("attachmentStep");
@@ -726,37 +746,36 @@ sap.ui.define([
 			var InputInjuryType = sap.ui.getCore().byId("InputInjuryType");
 			var canvas = document.getElementById("signature-pad");
 			var oBMP = Canvas2Image.convertToBMP(canvas);
-        	var str = oBMP.src;
-        	this.signString = str.replace("data:image/bmp;base64,", "");
-		
-			if (InputInjuryDateTime.getValue() !== "" || InputInjuryDateTime.getDateValue() !== null) {
+			var str = oBMP.src;
+			this.signString = str.replace("data:image/bmp;base64,", "");
+
+			if (InputInjuryDateTime.getValue() !== "") {
 				var finDate = new Date(InputInjuryDateTime.getValue()).toISOString();
 			}
-			if (InputWhenNoticeInjury.getValue() !== "" || InputWhenNoticeInjury.getDateValue() !== null) {
+			if (InputWhenNoticeInjury.getValue() !== "") {
 				var crDate = new Date(InputWhenNoticeInjury.getValue()).toISOString();
 			}
-			if (InputStoppedWorkDateTIme.getValue() !== "" || InputStoppedWorkDateTIme.getDateValue() !== null) {
+			if (InputStoppedWorkDateTIme.getValue() !== "") {
 				var sDate = new Date(InputStoppedWorkDateTIme.getValue()).toISOString();
 			}
-			if (InputInjuryReportDateTime.getValue() !== "" || InputInjuryReportDateTime.getDateValue() !== null) {
+			if (InputInjuryReportDateTime.getValue() !== "") {
 				var rDate = new Date(InputInjuryReportDateTime.getValue()).toISOString();
 			}
-			if (InputDeclarationDate.getValue() !== "" || InputDeclarationDate.getDateValue() !== null) {
-				var dDate = new Date(InputDeclarationDate.getDateValue()).toISOString();
+			if (InputDeclarationDate.getValue() !== "") {
+				var dDate = new Date(InputDeclarationDate.getValue()).toLocaleDateString("fr-CA",{year:"numeric", month:"2-digit", day:"2-digit"});
 			}
-			if (InputEmpStartWorkingDate.getDateValue() !== undefined || InputEmpStartWorkingDate.getDateValue() !== null) {
-				var startDate = new Date(InputEmpStartWorkingDate.getDateValue()).toISOString();
+			if (InputEmpStartWorkingDate.getValue() !== "") {
+				var startDate = new Date(InputEmpStartWorkingDate.getValue()).toLocaleDateString("fr-CA",{year:"numeric", month:"2-digit", day:"2-digit"});
 			}
-			if (InputReturToWorkDate.getValue() !== "" || InputReturToWorkDate.getDateValue() !== null) {
-				var returnToWorkDate = new Date(InputReturToWorkDate.getDateValue()).toISOString();
+			if (InputReturToWorkDate.getValue() !== "") {
+				var returnToWorkDate = new Date(InputReturToWorkDate.getValue()).toLocaleDateString("fr-CA",{year:"numeric", month:"2-digit", day:"2-digit"});
 			}
-			if (InputReturToWorkClaimFormSubmissionDate.getValue() !== "" || InputReturToWorkClaimFormSubmissionDate.getDateValue() !==
-				null) {
-				var EmpClmfrmDate = new Date(InputReturToWorkClaimFormSubmissionDate.getDateValue()).toISOString();
+			if (InputReturToWorkClaimFormSubmissionDate.getValue() !== "") {
+				var EmpClmfrmDate = new Date(InputReturToWorkClaimFormSubmissionDate.getValue()).toLocaleDateString("fr-CA",{year:"numeric", month:"2-digit", day:"2-digit"});
 			}
 			if (InputReturToWorkMedicalCertificateSubmissionDate.getValue() !== "" ||
 				InputReturToWorkMedicalCertificateSubmissionDate.getDateValue() !== null) {
-				var EmpMcertDate = new Date(InputReturToWorkMedicalCertificateSubmissionDate.getDateValue()).toISOString();
+				var EmpMcertDate = new Date(InputReturToWorkMedicalCertificateSubmissionDate.getValue()).toLocaleDateString("fr-CA",{year:"numeric", month:"2-digit", day:"2-digit"});
 			}
 			if (oEvent.getSource().getId() === "claimDraftBtn") {
 
@@ -1169,7 +1188,7 @@ sap.ui.define([
 											oData.Casno = "";
 										}
 										sap.m.MessageBox.success(
-											that.getView().getModel("i18n").getResourceBundle().getText("ClaimSuccessMessage")+ " " + oData.Casno , {
+											that.getView().getModel("i18n").getResourceBundle().getText("ClaimSuccessMessage") + " " + oData.Casno, {
 												actions: [that.getView().getModel("i18n").getResourceBundle().getText("ok")],
 												onClose: function(sAction) {
 													var sSource = that.getView().getModel().sServiceUrl + "/InjuryFormSet(Casno='" + oData.Casno + "',Userid='" +
@@ -1183,7 +1202,7 @@ sap.ui.define([
 													that._pdfViewer.setSource(sSource);
 													that._pdfViewer.setTitle(that.getView().getModel("i18n").getResourceBundle().getText("SamrtFormTitle"));
 													that._pdfViewer.open();
-												
+
 												}
 											}
 										);
@@ -1441,3 +1460,4 @@ sap.ui.define([
 
 	});
 });
+//# sourceURL=https://sapsdev.c-net.com.au/sap/bc/ui5_ui5/cnetohs/ui5_lodgeclaim/~00DE589A553ADFB23977319BB28A86FC~5/controller/Main.controller.js?eval
