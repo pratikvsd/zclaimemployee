@@ -1,5 +1,5 @@
 <core:FragmentDefinition xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:f="sap.f" xmlns:form="sap.ui.layout.form" xmlns:core="sap.ui.core">
-	<Dialog showHeader="false" verticalScrolling="false" contentHeight="90%" contentWidth="90%">
+	<Dialog showHeader="false" verticalScrolling="false" contentHeight="90%" contentWidth="90%" id="DraftDialog">
 		<content>
 			<Page showHeader="false">
 				<content>
@@ -23,20 +23,23 @@
 									<Text
 										text="{path:'multipleDraftModel>IDate', type:'sap.ui.model.type.DateTime', formatOptions: { source: { pattern: 'yyyy-MM-ddTHH:mm:ss.msZ' }, pattern: 'MMM dd,yyyy HH:mm:ss' }}"/>
 									<Text text="{multipleDraftModel>BodypartDes}"/>
-									<Text text="{path:'multipleDraftModel>DraftDate', type:'sap.ui.model.type.Date', formatOptions: { source: { pattern: 'yyyy-MM-ddTHH:mm:ss.msZ' }, pattern: 'MMM dd,yyyy' }}"/>
+									<Text
+										text="{path:'multipleDraftModel>DraftDate', type:'sap.ui.model.type.Date', formatOptions: { source: { pattern: 'yyyy-MM-ddTHH:mm:ss.msZ' }, pattern: 'MMM dd,yyyy' }}"/>
 									<Text text="{multipleDraftModel>Draftid}"/>
 								</cells>
 							</ColumnListItem>
 						</items>
 					</Table>
 				</content>
+				<footer>
+					<OverflowToolbar>
+						<Button id="DraftCancelBtn" text="{i18n>WizardFooterCancelBtn}" icon="sap-icon://sys-cancel-2" type="Reject" press="handleWizardCancel"></Button>
+						<ToolbarSpacer/>
+						<Button id="contAsDraftBtn" enabled="false" type="Emphasized" text="Continue as draft" press="openClaimWizard"/>
+						<Button id="startNewClaimBtn" type="Emphasized" text="Start new claim" press="openInjuryTab"/>
+					</OverflowToolbar>
+				</footer>
 			</Page>
 		</content>
-		<beginButton>
-			<Button id="contAsDraftBtn" enabled="false" type="Emphasized" text="{i18n>MultipleInjuryTabFooterButtonContAsDraft}" press="openClaimWizard"/>
-		</beginButton>
-		<endButton>
-			<Button id="startNewClaimBtn" type="Emphasized" text="{i18n>MultipleInjuryTabFooterButtonStartNewClaim}" press="openInjuryTab"/>
-		</endButton>
 	</Dialog>
 </core:FragmentDefinition>

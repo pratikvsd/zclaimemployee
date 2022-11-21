@@ -47,7 +47,7 @@
 								<ColumnListItem vAlign="Middle">
 									<cells>
 										<Text text="{InjuryDes}"/>
-										<Text text="{Date}"/>
+										<Text text="{path:'Idate', type:'sap.ui.model.type.DateTime', formatOptions: { source: { pattern: 'yyyy-MM-ddTHH:mm:ss.msZ' }, pattern: 'MMM dd,yyyy HH:mm:ss' }}"/>
 										<Text text="{BodypartDes}"/>
 										<Text text="{Side}"/>
 										<Text text="{InjurytypeDes}"/>

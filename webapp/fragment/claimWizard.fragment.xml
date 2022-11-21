@@ -12,11 +12,11 @@
 								<form:content>
 									<core:Title text="" level="H5"/>
 									<Label required="true" text="{i18n>WizardPersonalDetailFormLabel_Title}"/>
-									<Input id="InputTitle" enabled="false" value="Mr"/>
+									<Input id="InputTitle" enabled="false" value="Mr" valueStateText="{i18n>TitleErrorMessage}"/>
 									<Label required="true" text="{i18n>WizardPersonalDetailFormLabel_FamilyName}"/>
-									<Input id="InputFamilyName" type="Text" enabled="false" value="{userDetailModel>/FamilyName}"/>
+									<Input id="InputFamilyName" type="Text" enabled="false" value="{userDetailModel>/FamilyName}" valueStateText="{i18n>FamilynameErrorMessage}"/>
 									<Label required="true" text="{i18n>WizardPersonalDetailFormLabel_GivenName}"/>
-									<Input id="InputGivenName" type="Text" enabled="false" value="{userDetailModel>/Conname}"/>
+									<Input id="InputGivenName" type="Text" enabled="false" value="{userDetailModel>/Conname}" valueStateText="{i18n>GivenNameErrorMessage}"/>
 									<Label text="{i18n>WizardPersonalDetailFormLabel_DOB}"/>
 									<Input id="InputDob" enabled="false" value="{userDetailModel>/Dateofbirth}"/>
 									<Label text="{i18n>WizardPersonalDetailFormLabel_Gender}"/>
@@ -83,18 +83,18 @@
 									<Label text="{i18n>WizardInjuryDetailsFormLabel_Postcode}"/>
 									<Input id="InputInjuryPostcode" type="Number" liveChange="onChangeCheckLength" value="{userDetailModel>/PostcodeInj}"/>
 									<Label required="true" text="{i18n>WizardInjuryDetailsFormLabel_InjuryDateTime}"/>
-									<DateTimePicker id="InputInjuryDateTime"
+									<DateTimePicker id="InputInjuryDateTime" maxDate="{userDetailModel>/MaxDate}" valueStateText="{i18n>InjuryDateErrorMessage}"
 										value="{path:'userDetailModel>/IDate', type:'sap.ui.model.type.DateTime', formatOptions: { source: { pattern: 'yyyy-MM-ddTHH:mm:ss.msZ' }, pattern: 'MMM dd,yyyy HH:mm:ss' }}"
-										change="checkInputValidation"/>
+										change="checkInputValidation" initialFocusedDateValue="{userDetailModel>/MaxDate}"/>
 									<Label text="{i18n>WizardInjuryDetailsFormLabel_FirstNoticeInjuryCondition}"/>
-									<DateTimePicker id="InputWhenNoticeInjury"
+									<DateTimePicker id="InputWhenNoticeInjury" maxDate="{userDetailModel>/MaxDate}" initialFocusedDateValue="{userDetailModel>/MaxDate}"
 										value="{path:'userDetailModel>/Crdate', type:'sap.ui.model.type.DateTime', formatOptions: { source: { pattern: 'yyyy-MM-ddTHH:mm:ss.msZ' }, pattern: 'MMM dd,yyyy HH:mm:ss' }}"/>
 									<Label required="true" text="{i18n>WizardInjuryDetailsFormLabel_StoppedWorkDateTime}"/>
-									<DateTimePicker id="InputStoppedWorkDateTIme"
+									<DateTimePicker id="InputStoppedWorkDateTIme" maxDate="{userDetailModel>/MaxDate}" initialFocusedDateValue="{userDetailModel>/MaxDate}"
 										value="{path:'userDetailModel>/Sdate', type:'sap.ui.model.type.DateTime', formatOptions: { source: { pattern: 'yyyy-MM-ddTHH:mm:ss.msZ' }, pattern: 'MMM dd,yyyy HH:mm:ss' }}"
-										change="checkInputValidation"/>
+										change="checkInputValidation" valueStateText="{i18n>StoppedWorkDateErrorMessage}"/>
 									<Label text="{i18n>WizardInjuryDetailsFormLabel_ReportInjuryToEmployee}"/>
-									<DateTimePicker id="InputInjuryReportDateTime"
+									<DateTimePicker id="InputInjuryReportDateTime" maxDate="{userDetailModel>/MaxDate}" initialFocusedDateValue="{userDetailModel>/MaxDate}"
 										value="{path:'userDetailModel>/Rdate', type:'sap.ui.model.type.DateTime', formatOptions: { source: { pattern: 'yyyy-MM-ddTHH:mm:ss.msZ' }, pattern: 'MMM dd,yyyy HH:mm:ss' }}"/>
 									<core:Title text="" level="H5"/>
 									<Label text="{i18n>WizardInjuryDetailsFormLabel_ResposibleManAtWorkplace}"/>
@@ -136,9 +136,9 @@
 								<form:content>
 									<core:Title text="" level="H5"/>
 									<Label text="{i18n>WizardEmployementDetailsFormLabel_NameofOrg}"/>
-									<Input id="InputEmpNameOfOrg" value="{userDetailModel>/Orgname}"/>
+									<Input id="InputEmpNameOfOrg" value="{userDetailModel>/Orgname}" enabled="false"/>
 									<Label text="{i18n>WizardEmployementDetailsFormLabel_AddressOfUsualWorkplace}"/>
-									<Textarea id="InputEmpStreetAdd" value="{userDetailModel>/EmpStreetAdd}"/>
+									<Textarea id="InputEmpStreetAdd" value="{userDetailModel>/EmpStreetAdd}" enabled="false"/>
 									<Label text="{i18n>WizardEmployementDetailsFormLabel_Suburb}"/>
 									<Input id="InputEmpOrgSuburb" type="Text" value="{userDetailModel>/EmpSuburb}"/>
 									<Label text="{i18n>WizardEmployementDetailsFormLabel_State}"/>
@@ -152,7 +152,7 @@
 									<Label text="{i18n>WizardEmployementDetailsFormLabel_UsualOccupation}"/>
 									<Input id="InputEmpOccupation" type="Text" value="{userDetailModel>/Usualoccupation}"/>
 									<Label text="{i18n>WizardEmployementDetailsFormLabel_WhenStartWorkingForEmployer}"/>
-									<DatePicker id="InputEmpStartWorkingDate"
+									<DatePicker id="InputEmpStartWorkingDate" maxDate="{userDetailModel>/MaxDate}" initialFocusedDateValue="{userDetailModel>/MaxDate}"
 										value="{path:'userDetailModel>/Startdate', type:'sap.ui.model.type.Date', formatOptions: { source: { pattern: 'yyyy-MM-ddTHH:mm:ss.msZ' }, pattern: 'MMM dd,yyyy' }}"/>
 									<core:Title text="{i18n>WizardEmployementDetailsSecTitle_PleaseSelectAny}" level="H5"/>
 									<Label text="{i18n>WizardEmployementDetailsFormLabel_ADirectorofMyEmployersCompany}"/>
@@ -178,7 +178,7 @@
 									<Label text="{i18n>WizardEmployementDetailsFormLabel_question1}"/>
 									<Textarea id="InputEmpOtherEmployment" value="{userDetailModel>/OtherEmployement}"/>
 									<Label required="true" text="{i18n>WizardEmployementDetailsFormLabel_FollowingAppiesToYou}"/>
-									<Select id="InputEmpAppliesToYou" selectedKey="{userDetailModel>/Reasontoapply}" change="checkInputValidation">
+									<Select id="InputEmpAppliesToYou" selectedKey="{userDetailModel>/Reasontoapply}" change="checkInputValidation" valueStateText="{i18n>FollowingAppiesToYouErrorMessage}">
 										<core:Item text="" key=""/>
 										<core:Item text="Full-time" key="Full-time"/>
 										<core:Item text="Part-time" key="Part-time"/>
@@ -211,9 +211,9 @@
 									<Label text="{i18n>WizardworkerEarningFormLabel_question4}"/>
 									<Input id="InputWorkerQue4" type="Number" liveChange="onChangeCheckLength" value="{userDetailModel>/WpePtaxWkEr}"/>
 									<Label required="true" text="{i18n>WizardworkerEarningFormLabel_WeeklyShiftAllowence}"/>
-									<Input id="InputWorkerWeeklyShiftAllowence" liveChange="onChangeCheckLength" type="Number" value="{userDetailModel>/WpeWklyAllw}" change="checkInputValidation"/>
+									<Input id="InputWorkerWeeklyShiftAllowence" liveChange="onChangeCheckLength" type="Number" value="{userDetailModel>/WpeWklyAllw}" change="checkInputValidation" valueStateText="{i18n>WeeklyShiftAllowenceErrorMessage}"/>
 									<Label required="true" text="{i18n>WizardworkerEarningFormLabel_WeeklyOvertime}"/>
-									<Input id="InputWorkerWeeklyOvertime" liveChange="onChangeCheckLength" type="Number" value="{userDetailModel>/WpeWostd}" change="checkInputValidation"/>
+									<Input id="InputWorkerWeeklyOvertime" liveChange="onChangeCheckLength" type="Number" value="{userDetailModel>/WpeWostd}" change="checkInputValidation" valueStateText="{i18n>WeeklyOvertimeErrorMessage}"/>
 								</form:content>
 							</form:SimpleForm>
 						</WizardStep>
@@ -225,7 +225,7 @@
 									<Label text="{i18n>WizardreturntoWorkFormLabel_question1}"/>
 									<Textarea id="InputReturToWorkQue1" value="{userDetailModel>/RtwDetails}"/>
 									<Label text="{i18n>WizardreturntoWorkFormLabel_ReturnDateQuestion}"/>
-									<DatePicker id="InputReturToWorkDate"
+									<DatePicker id="InputReturToWorkDate" maxDate="{userDetailModel>/MaxDate}" initialFocusedDateValue="{userDetailModel>/MaxDate}"
 										value="{path:'userDetailModel>/RtwEmpDate', type:'sap.ui.model.type.Date', formatOptions: { source: { pattern: 'yyyy-MM-ddTHH:mm:ss.msZ' }, pattern: 'MMM dd,yyyy' }}"/>
 									<Label text="{i18n>WizardreturntoWorkFormLabel_question2}"/>
 									<Select id="InputReturToWorkOue2" selectedKey="{userDetailModel>/Duties}">
@@ -238,7 +238,7 @@
 									<Label text="{i18n>WizardreturntoWorkFormLabel_question4}"/>
 									<Textarea id="InputReturToWorkOue4" value="{userDetailModel>/NrtwIdp}"/>
 									<Label text="{i18n>WizardreturntoWorkFormLabel_ClaimFormSubmissionDate}"/>
-									<DatePicker id="InputReturToWorkClaimFormSubmissionDate"
+									<DatePicker id="InputReturToWorkClaimFormSubmissionDate" maxDate="{userDetailModel>/MaxDate}" initialFocusedDateValue="{userDetailModel>/MaxDate}"
 										value="{path:'userDetailModel>/EmpClmfrmDate', type:'sap.ui.model.type.Date', formatOptions: { source: { pattern: 'yyyy-MM-ddTHH:mm:ss.msZ' }, pattern: 'MMM dd,yyyy' }}"/>
 									<Label text="{i18n>WizardreturntoWorkFormLabel_question5}"/>
 									<Select id="InputReturToWorkOue5" selectedKey="{userDetailModel>/EmpClmForm}">
@@ -247,7 +247,7 @@
 										<core:Item text="By Post" key="By Post"/>
 									</Select>
 									<Label text="{i18n>WizardreturntoWorkFormLabel_MedicalCertificateSubmissionDate}"/>
-									<DatePicker id="InputReturToWorkMedicalCertificateSubmissionDate"
+									<DatePicker id="InputReturToWorkMedicalCertificateSubmissionDate" maxDate="{userDetailModel>/MaxDate}" initialFocusedDateValue="{userDetailModel>/MaxDate}"
 										value="{path:'userDetailModel>/EmpMcertDate', type:'sap.ui.model.type.Date', formatOptions: { source: { pattern: 'yyyy-MM-ddTHH:mm:ss.msZ' }, pattern: 'MMM dd,yyyy' }}"/>
 								</form:content>
 							</form:SimpleForm>
@@ -269,8 +269,8 @@
 										</HBox>
 									</VBox>
 									<core:Title text="{i18n>WizardworkerDecFormmLabel_Date}"/>
-									<DatePicker id="InputDeclarationDate" change="checkInputValidation"
-										value="{path:'userDetailModel>/DDate', type:'sap.ui.model.type.Date', formatOptions: { source: { pattern: 'yyyy-MM-ddTHH:mm:ss.msZ' }, pattern: 'MMM dd,yyyy' }}"/>
+									<DatePicker id="InputDeclarationDate" change="checkInputValidation" maxDate="{userDetailModel>/MaxDate}" initialFocusedDateValue="{userDetailModel>/MaxDate}"
+									 valueStateText="{i18n>DeclarationDateErrorMessage}" value="{path:'userDetailModel>/DDate', type:'sap.ui.model.type.Date', formatOptions: { source: { pattern: 'yyyy-MM-ddTHH:mm:ss.msZ' }, pattern: 'MMM dd,yyyy' }}"/>
 								</form:content>
 							</form:SimpleForm>
 						</WizardStep>

@@ -52,6 +52,7 @@ sap.ui.define([
 						oModel.read("/UserDetail('" + that.userName + "')", {
 							success: function(userData, userResponse) {
 								if (userData !== undefined || userData !== null) {
+									userData.MaxDate = new Date();
 									that.ManagerPernr = userData.ManagerPernr;
 									userDetailModel.setData(userData);
 									that.getView().setModel(userDetailModel, "userDetailModel");
@@ -77,6 +78,7 @@ sap.ui.define([
 				this.getView().getModel().read("/UserDetail('" + this.userName + "')", {
 					success: function(oData, oResponse) {
 						if (oData !== undefined || oData !== null) {
+							oData.MaxDate = new Date();
 							that.getView().getModel("userDetailModel").setData(oData);
 							that.getView().setModel(userDetailModel, "userDetailModel");
 							that.DraftId = "";
@@ -169,6 +171,7 @@ sap.ui.define([
 					this.getView().getModel().read("/SaveDraftDetailsSet(Userid='" + this.userName + "',Draftid='" + this.DraftId + "')", {
 						success: function(oData, oResponse) {
 							if (oData !== undefined || oData !== null) {
+								oData.MaxDate = new Date();
 								that.Casno = oData.Casno;
 								oData.Signature = "data:image/bmp;base64," + oData.Signature;
 								that.signaturePad._isEmpty = false;
@@ -237,6 +240,7 @@ sap.ui.define([
 					this.getView().getModel().read("/SaveDraftDetailsSet(Userid='" + this.userName + "',Draftid='" + this.DraftId + "')", {
 						success: function(oData, oResponse) {
 							if (oData !== undefined || oData !== null) {
+								oData.MaxDate = new Date();
 								that.Casno = oData.Casno;
 								oData.Signature = "data:image/bmp;base64," + oData.Signature;
 								that.signaturePad._isEmpty = false;
@@ -549,7 +553,8 @@ sap.ui.define([
 		handleWizardCancel: function(oEvent) {
 			if (oEvent.getSource().getParent().getId() === "confidentialPopupDialog") {
 				oEvent.getSource().getParent().close();
-			} else if (this.WizardTitle === "StartClaim") {
+			}
+			else if (this.WizardTitle === "StartClaim") {
 				this.claimWizardDialog.close();
 				this.InputFieldsClear();
 				sap.ui.getCore().byId("claimWizardNextBtn").setVisible(true);
@@ -565,6 +570,15 @@ sap.ui.define([
 				this.PrivacyStatementDialog.close();
 				this.WizardTitle = "InjuryTab";
 			}
+			
+			if (this.DraftDialog || this.MultipleDraftDialog){
+				if(this.DraftDialog){
+					this.DraftDialog.close();
+				}
+				else if(this.MultipleDraftDialog){
+					this.MultipleDraftDialog.close();
+				}
+			}
 
 		}, // General method for closing the popup dialogs. 
 
@@ -575,6 +589,7 @@ sap.ui.define([
 			var selectedRow = oiEvent.getSource().getModel().getProperty(path);
 			this.getView().getModel("userDetailModel").getData().BodypartDes = selectedRow.BodypartDes;
 			this.getView().getModel("userDetailModel").getData().InjDesc = selectedRow.InjurytypeDes;
+			this.getView().getModel("userDetailModel").getData().IDate = selectedRow.Idate;
 			oInjuryDetailModel.setData(selectedRow);
 			this.getView().setModel(oInjuryDetailModel, "oInjuryDetailModel");
 			this.getView().getModel("userDetailModel").refresh();
@@ -970,7 +985,8 @@ sap.ui.define([
 						"DDate": !dDate ? "" : dDate,
 						"Signature": this.signString,
 						"Attachments": this.attachmentsId.toString(),
-						"Draftid": this.DraftId
+						"Draftid": this.DraftId,
+						"InjDesc": InputInjuryType.getValue()
 					};
 				}
 
@@ -1087,7 +1103,8 @@ sap.ui.define([
 										"DDate": !dDate ? "" : dDate,
 										"Signature": this.signString,
 										"Attachments": this.attachmentsId.toString(),
-										"Draftid": this.DraftId
+										"Draftid": this.DraftId,
+										"InjDesc": InputInjuryType.getValue()
 									};
 								} else {
 									var payload = {
@@ -1175,7 +1192,8 @@ sap.ui.define([
 										"DDate": !dDate ? "" : dDate,
 										"Signature": this.signString,
 										"Attachments": this.attachmentsId.toString(),
-										"Draftid": this.DraftId
+										"Draftid": this.DraftId,
+										"InjDesc": InputInjuryType.getValue()
 									};
 								}
 
@@ -1228,120 +1246,6 @@ sap.ui.define([
 			}
 
 		}, // Submit and save as draft button functionality
-
-		/*onSign: function() {
-			var canvas = document.getElementById("signature-pad");
-			var signaturePad = new SignaturePad(canvas, {
-				backgroundColor: '#FFFFFF'
-			});
-			var context = canvas.getContext("2d");
-			canvas.width = 200;
-			canvas.height = 200;
-			context.fillStyle = "#fff";
-			context.strokeStyle = "#444";
-			context.lineWidth = 1.5;
-			context.lineCap = "round";
-			context.fillRect(0, 0, canvas.width, canvas.height);
-			var disableSave = true;
-			var pixels = [];
-			var cpixels = [];
-			var xyLast = {};
-			var xyAddLast = {};
-			var calculate = false; { //functions
-				function remove_event_listeners() {
-					canvas.removeEventListener('mousemove', on_mousemove, false);
-					canvas.removeEventListener('mouseup', on_mouseup, false);
-					canvas.removeEventListener('touchmove', on_mousemove, false);
-					canvas.removeEventListener('touchend', on_mouseup, false);
-
-					document.body.removeEventListener('mouseup', on_mouseup, false);
-					document.body.removeEventListener('touchend', on_mouseup, false);
-				}
-
-				function get_coords(e) {
-					var x, y;
-
-					if (e.changedTouches && e.changedTouches[0]) {
-						var canvasArea = canvas.getBoundingClientRect();
-						var offsety = canvasArea.top || 0;
-						var offsetx = canvasArea.left || 0;
-
-						x = e.changedTouches[0].pageX - offsetx;
-						y = e.changedTouches[0].pageY - offsety;
-					} else if (e.layerX || 0 == e.layerX) {
-						x = e.layerX;
-						y = e.layerY;
-					} else if (e.offsetX || 0 == e.offsetX) {
-						x = e.offsetX;
-						y = e.offsetY;
-					}
-
-					return {
-						x: x,
-						y: y
-					};
-				};
-
-				function on_mousedown(e) {
-					e.preventDefault();
-					e.stopPropagation();
-
-					canvas.addEventListener('mouseup', on_mouseup, false);
-					canvas.addEventListener('mousemove', on_mousemove, false);
-					canvas.addEventListener('touchend', on_mouseup, false);
-					canvas.addEventListener('touchmove', on_mousemove, false);
-					document.body.addEventListener('mouseup', on_mouseup, false);
-					document.body.addEventListener('touchend', on_mouseup, false);
-
-					var empty = false;
-					var xy = get_coords(e);
-					context.beginPath();
-					pixels.push('moveStart');
-					context.moveTo(xy.x, xy.y);
-					pixels.push(xy.x, xy.y);
-					xyLast = xy;
-				};
-
-				function on_mousemove(e, finish) {
-					e.preventDefault();
-					e.stopPropagation();
-
-					var xy = get_coords(e);
-					var xyAdd = {
-						x: (xyLast.x + xy.x) / 2,
-						y: (xyLast.y + xy.y) / 2
-					};
-
-					if (calculate) {
-						var xLast = (xyAddLast.x + xyLast.x + xyAdd.x) / 3;
-						var yLast = (xyAddLast.y + xyLast.y + xyAdd.y) / 3;
-						pixels.push(xLast, yLast);
-					} else {
-						calculate = true;
-					}
-
-					context.quadraticCurveTo(xyLast.x, xyLast.y, xyAdd.x, xyAdd.y);
-					pixels.push(xyAdd.x, xyAdd.y);
-					context.stroke();
-					context.beginPath();
-					context.moveTo(xyAdd.x, xyAdd.y);
-					xyAddLast = xyAdd;
-					xyLast = xy;
-
-				};
-
-				function on_mouseup(e) {
-					remove_event_listeners();
-					disableSave = false;
-					context.stroke();
-					pixels.push('e');
-					calculate = false;
-				};
-				canvas.addEventListener('touchstart', on_mousedown, false);
-				canvas.addEventListener('mousedown', on_mousedown, false);
-			}
-
-		},*/
 
 		clearButton: function(oEvent) {
 			/*var canvas = document.getElementById("signature-pad");

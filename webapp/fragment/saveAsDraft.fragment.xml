@@ -1,14 +1,20 @@
 <core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:f="sap.f" xmlns:form="sap.ui.layout.form" xmlns:u="sap.ui.unified"
 	xmlns:layout="sap.ui.layout">
-	<Dialog title="Draft Record">
+	<Dialog id="DraftDialog" showHeader="false" verticalScrolling="false" contentHeight="20%" contentWidth="40%">
 		<content>
+			<Page showHeader="false" enableScrolling="false">
+			<content>
 			<Text class="sapUiLargeMargin" text="{i18n>contasdraftmsg}"/>
 		</content>
-		<beginButton>
-			<Button id="contAsDraftBtn" type="Emphasized" text="Continue as draft" press="openClaimWizard"/>
-		</beginButton>
-		<endButton>
-			<Button id="startNewClaimBtn" type="Emphasized" text="Start new claim" press="openInjuryTab"/>
-		</endButton>
+		<footer>
+			<OverflowToolbar>
+					<Button id="DraftCancelBtn" text="{i18n>WizardFooterCancelBtn}" icon="sap-icon://sys-cancel-2" type="Reject" press="handleWizardCancel"></Button>
+					<ToolbarSpacer/>
+					<Button id="contAsDraftBtn" type="Emphasized" text="Continue as draft" press="openClaimWizard"/>
+					<Button id="startNewClaimBtn" type="Emphasized" text="Start new claim" press="openInjuryTab"/>
+				</OverflowToolbar>
+		</footer>
+		</Page>
+		</content>
 	</Dialog>
 </core:FragmentDefinition>
