@@ -171,6 +171,10 @@ sap.ui.define([
 					this.getView().getModel().read("/SaveDraftDetailsSet(Userid='" + this.userName + "',Draftid='" + this.DraftId + "')", {
 						success: function(oData, oResponse) {
 							if (oData !== undefined || oData !== null) {
+								oData.IDate = new Date(oData.IDate);
+								oData.Rdate = new Date(oData.Rdate);
+								oData.Sdate = new Date(oData.Sdate);
+								oData.Crdate = new Date(oData.Crdate);
 								oData.MaxDate = new Date();
 								that.Casno = oData.Casno;
 								oData.Signature = "data:image/bmp;base64," + oData.Signature;
@@ -240,6 +244,10 @@ sap.ui.define([
 					this.getView().getModel().read("/SaveDraftDetailsSet(Userid='" + this.userName + "',Draftid='" + this.DraftId + "')", {
 						success: function(oData, oResponse) {
 							if (oData !== undefined || oData !== null) {
+								oData.IDate = new Date(oData.IDate);
+								oData.Rdate = new Date(oData.Rdate);
+								oData.Sdate = new Date(oData.Sdate);
+								oData.Crdate = new Date(oData.Crdate);
 								oData.MaxDate = new Date();
 								that.Casno = oData.Casno;
 								oData.Signature = "data:image/bmp;base64," + oData.Signature;
@@ -589,7 +597,7 @@ sap.ui.define([
 			var selectedRow = oiEvent.getSource().getModel().getProperty(path);
 			this.getView().getModel("userDetailModel").getData().BodypartDes = selectedRow.BodypartDes;
 			this.getView().getModel("userDetailModel").getData().InjDesc = selectedRow.InjurytypeDes;
-			this.getView().getModel("userDetailModel").getData().IDate = selectedRow.Idate;
+			this.getView().getModel("userDetailModel").getData().IDate = new Date(selectedRow.Idate);
 			oInjuryDetailModel.setData(selectedRow);
 			this.getView().setModel(oInjuryDetailModel, "oInjuryDetailModel");
 			this.getView().getModel("userDetailModel").refresh();
@@ -765,16 +773,16 @@ sap.ui.define([
 			this.signString = str.replace("data:image/bmp;base64,", "");
 
 			if (InputInjuryDateTime.getValue() !== "") {
-				var finDate = new Date(InputInjuryDateTime.getValue()).toISOString();
+				var finDate = new Date(InputInjuryDateTime.getValue()).toLocaleString();
 			}
 			if (InputWhenNoticeInjury.getValue() !== "") {
-				var crDate = new Date(InputWhenNoticeInjury.getValue()).toISOString();
+				var crDate = new Date(InputWhenNoticeInjury.getValue()).toLocaleString();
 			}
 			if (InputStoppedWorkDateTIme.getValue() !== "") {
-				var sDate = new Date(InputStoppedWorkDateTIme.getValue()).toISOString();
+				var sDate = new Date(InputStoppedWorkDateTIme.getValue()).toISOString().toLocaleString();
 			}
 			if (InputInjuryReportDateTime.getValue() !== "") {
-				var rDate = new Date(InputInjuryReportDateTime.getValue()).toISOString();
+				var rDate = new Date(InputInjuryReportDateTime.getValue()).toISOString().toLocaleString();
 			}
 			if (InputDeclarationDate.getValue() !== "") {
 				var dDate = new Date(InputDeclarationDate.getValue()).toLocaleDateString("fr-CA",{year:"numeric", month:"2-digit", day:"2-digit"});
