@@ -779,10 +779,10 @@ sap.ui.define([
 				var crDate = new Date(InputWhenNoticeInjury.getValue()).toLocaleString();
 			}
 			if (InputStoppedWorkDateTIme.getValue() !== "") {
-				var sDate = new Date(InputStoppedWorkDateTIme.getValue()).toISOString().toLocaleString();
+				var sDate = new Date(InputStoppedWorkDateTIme.getValue()).toLocaleString();
 			}
 			if (InputInjuryReportDateTime.getValue() !== "") {
-				var rDate = new Date(InputInjuryReportDateTime.getValue()).toISOString().toLocaleString();
+				var rDate = new Date(InputInjuryReportDateTime.getValue()).toLocaleString();
 			}
 			if (InputDeclarationDate.getValue() !== "") {
 				var dDate = new Date(InputDeclarationDate.getValue()).toLocaleDateString("fr-CA",{year:"numeric", month:"2-digit", day:"2-digit"});
