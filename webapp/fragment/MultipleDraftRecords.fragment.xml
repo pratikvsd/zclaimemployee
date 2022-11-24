@@ -21,7 +21,7 @@
 							<ColumnListItem vAlign="Middle">
 								<cells>
 									<Text
-										text="{path:'multipleDraftModel>IDate', type:'sap.ui.model.type.DateTime', formatOptions: { source: { pattern: 'yyyy-MM-ddTHH:mm:ss.msZ' }, pattern: 'MMM dd,yyyy HH:mm:ss' }}"/>
+										text="{path:'multipleDraftModel>IDate', type:'sap.ui.model.type.DateTime', formatOptions: { source: { pattern: 'MM/dd/yyyy, HH:mm:ss a' }, pattern: 'MMM d,y, h:mm:ss a' }}"/>
 									<Text text="{multipleDraftModel>BodypartDes}"/>
 									<Text
 										text="{path:'multipleDraftModel>DraftDate', type:'sap.ui.model.type.Date', formatOptions: { source: { pattern: 'yyyy-MM-ddTHH:mm:ss.msZ' }, pattern: 'MMM dd,yyyy' }}"/>
