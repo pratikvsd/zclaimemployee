@@ -171,10 +171,10 @@ sap.ui.define([
 					this.getView().getModel().read("/SaveDraftDetailsSet(Userid='" + this.userName + "',Draftid='" + this.DraftId + "')", {
 						success: function(oData, oResponse) {
 							if (oData !== undefined || oData !== null) {
-								oData.IDate = new Date(oData.IDate);
+								/*oData.IDate = new Date(oData.IDate);
 								oData.Rdate = new Date(oData.Rdate);
 								oData.Sdate = new Date(oData.Sdate);
-								oData.Crdate = new Date(oData.Crdate);
+								oData.Crdate = new Date(oData.Crdate);*/
 								oData.MaxDate = new Date();
 								that.Casno = oData.Casno;
 								oData.Signature = "data:image/bmp;base64," + oData.Signature;
@@ -227,7 +227,7 @@ sap.ui.define([
 									}
 								}
 								userDetailModel.setData(oData);
-								that.getView().setModel(userDetailModel, "userDetailModel");
+								that.getView().getModel("userDetailModel").refresh();
 							}
 						},
 						error: function(error) {
@@ -244,10 +244,10 @@ sap.ui.define([
 					this.getView().getModel().read("/SaveDraftDetailsSet(Userid='" + this.userName + "',Draftid='" + this.DraftId + "')", {
 						success: function(oData, oResponse) {
 							if (oData !== undefined || oData !== null) {
-								oData.IDate = new Date(oData.IDate);
+								/*oData.IDate = new Date(oData.IDate);
 								oData.Rdate = new Date(oData.Rdate);
 								oData.Sdate = new Date(oData.Sdate);
-								oData.Crdate = new Date(oData.Crdate);
+								oData.Crdate = new Date(oData.Crdate);*/
 								oData.MaxDate = new Date();
 								that.Casno = oData.Casno;
 								oData.Signature = "data:image/bmp;base64," + oData.Signature;
@@ -256,7 +256,7 @@ sap.ui.define([
 								that.attachmentsId.push(oData.Attachments);
 								that.ManagerPernr = oData.ManagerPernr;
 								userDetailModel.setData(oData);
-								that.getView().setModel(userDetailModel, "userDetailModel");
+								that.getView().getModel("userDetailModel").refresh();
 								var c = document.getElementById("signature-pad");
 								var context = c.getContext("2d");
 								var base_image = new Image();
@@ -597,7 +597,7 @@ sap.ui.define([
 			var selectedRow = oiEvent.getSource().getModel().getProperty(path);
 			this.getView().getModel("userDetailModel").getData().BodypartDes = selectedRow.BodypartDes;
 			this.getView().getModel("userDetailModel").getData().InjDesc = selectedRow.InjurytypeDes;
-			this.getView().getModel("userDetailModel").getData().IDate = new Date(selectedRow.Idate);
+			this.getView().getModel("userDetailModel").getData().IDate = new Date(selectedRow.Idate).toLocaleString('fr-BE',{hour12:false});
 			oInjuryDetailModel.setData(selectedRow);
 			this.getView().setModel(oInjuryDetailModel, "oInjuryDetailModel");
 			this.getView().getModel("userDetailModel").refresh();
@@ -773,16 +773,16 @@ sap.ui.define([
 			this.signString = str.replace("data:image/bmp;base64,", "");
 
 			if (InputInjuryDateTime.getValue() !== "") {
-				var finDate = new Date(InputInjuryDateTime.getValue()).toLocaleString();
+				var finDate = new Date(InputInjuryDateTime.getValue()).toLocaleString('fr-BE',{hour12:false});
 			}
 			if (InputWhenNoticeInjury.getValue() !== "") {
-				var crDate = new Date(InputWhenNoticeInjury.getValue()).toLocaleString();
+				var crDate = new Date(InputWhenNoticeInjury.getValue()).toLocaleString('fr-BE',{hour12:false});
 			}
 			if (InputStoppedWorkDateTIme.getValue() !== "") {
-				var sDate = new Date(InputStoppedWorkDateTIme.getValue()).toLocaleString();
+				var sDate = new Date(InputStoppedWorkDateTIme.getValue()).toLocaleString('fr-BE',{hour12:false});
 			}
 			if (InputInjuryReportDateTime.getValue() !== "") {
-				var rDate = new Date(InputInjuryReportDateTime.getValue()).toLocaleString();
+				var rDate = new Date(InputInjuryReportDateTime.getValue()).toLocaleString('fr-BE',{hour12:false});
 			}
 			if (InputDeclarationDate.getValue() !== "") {
 				var dDate = new Date(InputDeclarationDate.getValue()).toLocaleDateString("fr-CA",{year:"numeric", month:"2-digit", day:"2-digit"});

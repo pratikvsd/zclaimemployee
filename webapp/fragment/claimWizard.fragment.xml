@@ -84,18 +84,18 @@
 									<Input id="InputInjuryPostcode" type="Number" liveChange="onChangeCheckLength" value="{userDetailModel>/PostcodeInj}"/>
 									<Label required="true" text="{i18n>WizardInjuryDetailsFormLabel_InjuryDateTime}"/>
 									<DateTimePicker id="InputInjuryDateTime" maxDate="{userDetailModel>/MaxDate}" valueStateText="{i18n>DateErrorMessage}" 
-										value="{path:'userDetailModel>/IDate', type:'sap.ui.model.type.DateTime', formatOptions: {pattern:'MMM d,y, h:mm:ss a' }}"
+										value="{path:'userDetailModel>/IDate', type:'sap.ui.model.type.DateTime', formatOptions: {source:{pattern:'dd/MM/yyyy HH:mm:ss'}, pattern:'MMM dd,yyyy HH:mm:ss' }}"
 										change="checkInputValidation" initialFocusedDateValue="{userDetailModel>/MaxDate}"/>
 									<Label text="{i18n>WizardInjuryDetailsFormLabel_FirstNoticeInjuryCondition}"/>
 									<DateTimePicker id="InputWhenNoticeInjury" maxDate="{userDetailModel>/MaxDate}" initialFocusedDateValue="{userDetailModel>/MaxDate}"
-										value="{path:'userDetailModel>/Crdate', type:'sap.ui.model.type.DateTime', formatOptions: {pattern:'MMM d,y, h:mm:ss a' }}"/>
+										value="{path:'userDetailModel>/Crdate', type:'sap.ui.model.type.DateTime', formatOptions: {source:{pattern:'dd/MM/yyyy HH:mm:ss'}, pattern:'MMM dd,yyyy HH:mm:ss' }}"/>
 									<Label required="true" text="{i18n>WizardInjuryDetailsFormLabel_StoppedWorkDateTime}"/>
 									<DateTimePicker id="InputStoppedWorkDateTIme" maxDate="{userDetailModel>/MaxDate}" initialFocusedDateValue="{userDetailModel>/MaxDate}"
-										value="{path:'userDetailModel>/Sdate', type:'sap.ui.model.type.DateTime', formatOptions: {pattern:'MMM d,y, h:mm:ss a' }}"
+										value="{path:'userDetailModel>/Sdate', type:'sap.ui.model.type.DateTime', formatOptions: {source:{pattern:'dd/MM/yyyy HH:mm:ss'}, pattern:'MMM dd,yyyy HH:mm:ss' }}"
 										change="checkInputValidation" valueStateText="{i18n>DateErrorMessage}"/>
 									<Label text="{i18n>WizardInjuryDetailsFormLabel_ReportInjuryToEmployee}"/>
 									<DateTimePicker id="InputInjuryReportDateTime" maxDate="{userDetailModel>/MaxDate}" initialFocusedDateValue="{userDetailModel>/MaxDate}"
-										value="{path:'userDetailModel>/Rdate', type:'sap.ui.model.type.DateTime', formatOptions: {pattern:'MMM d,y, h:mm:ss a' }}"/>
+										value="{path:'userDetailModel>/Rdate', type:'sap.ui.model.type.DateTime', formatOptions: {source:{ pattern:'dd/MM/yyyy HH:mm:ss'}, pattern:'MMM dd,yyyy HH:mm:ss' }}"/>
 									<core:Title text="" level="H5"/>
 									<Label text="{i18n>WizardInjuryDetailsFormLabel_ResposibleManAtWorkplace}"/>
 									<Input id="InputEmployerResponsible" type="Text" value="{userDetailModel>/Name1}"/>
