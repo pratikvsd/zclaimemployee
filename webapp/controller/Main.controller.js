@@ -1228,6 +1228,7 @@ sap.ui.define([
 													that._pdfViewer.setSource(sSource);
 													that._pdfViewer.setTitle(that.getView().getModel("i18n").getResourceBundle().getText("SamrtFormTitle"));
 													that._pdfViewer.open();
+													that.getView().getModel().refresh();
 
 												}
 											}
