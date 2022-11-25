@@ -785,20 +785,20 @@ sap.ui.define([
 				var rDate = new Date(InputInjuryReportDateTime.getValue()).toLocaleString('fr-BE',{hour12:false});
 			}
 			if (InputDeclarationDate.getValue() !== "") {
-				var dDate = new Date(InputDeclarationDate.getValue()).toLocaleDateString("fr-CA",{year:"numeric", month:"2-digit", day:"2-digit"});
+				var dDate = new Date(InputDeclarationDate.getValue()).toLocaleDateString("fr-BE",{year:"numeric", month:"2-digit", day:"2-digit"});
 			}
 			if (InputEmpStartWorkingDate.getValue() !== "") {
-				var startDate = new Date(InputEmpStartWorkingDate.getValue()).toLocaleDateString("fr-CA",{year:"numeric", month:"2-digit", day:"2-digit"});
+				var startDate = new Date(InputEmpStartWorkingDate.getValue()).toLocaleDateString("fr-BE",{year:"numeric", month:"2-digit", day:"2-digit"});
 			}
 			if (InputReturToWorkDate.getValue() !== "") {
-				var returnToWorkDate = new Date(InputReturToWorkDate.getValue()).toLocaleDateString("fr-CA",{year:"numeric", month:"2-digit", day:"2-digit"});
+				var returnToWorkDate = new Date(InputReturToWorkDate.getValue()).toLocaleDateString("fr-BE",{year:"numeric", month:"2-digit", day:"2-digit"});
 			}
 			if (InputReturToWorkClaimFormSubmissionDate.getValue() !== "") {
-				var EmpClmfrmDate = new Date(InputReturToWorkClaimFormSubmissionDate.getValue()).toLocaleDateString("fr-CA",{year:"numeric", month:"2-digit", day:"2-digit"});
+				var EmpClmfrmDate = new Date(InputReturToWorkClaimFormSubmissionDate.getValue()).toLocaleDateString("fr-BE",{year:"numeric", month:"2-digit", day:"2-digit"});
 			}
 			if (InputReturToWorkMedicalCertificateSubmissionDate.getValue() !== "" ||
 				InputReturToWorkMedicalCertificateSubmissionDate.getDateValue() !== null) {
-				var EmpMcertDate = new Date(InputReturToWorkMedicalCertificateSubmissionDate.getValue()).toLocaleDateString("fr-CA",{year:"numeric", month:"2-digit", day:"2-digit"});
+				var EmpMcertDate = new Date(InputReturToWorkMedicalCertificateSubmissionDate.getValue()).toLocaleDateString("fr-BE",{year:"numeric", month:"2-digit", day:"2-digit"});
 			}
 			if (oEvent.getSource().getId() === "claimDraftBtn") {
 

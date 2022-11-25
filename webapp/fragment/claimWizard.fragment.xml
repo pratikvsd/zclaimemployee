@@ -154,7 +154,7 @@
 									<Input id="InputEmpOccupation" type="Text" value="{userDetailModel>/Usualoccupation}"/>
 									<Label text="{i18n>WizardEmployementDetailsFormLabel_WhenStartWorkingForEmployer}"/>
 									<DatePicker id="InputEmpStartWorkingDate" maxDate="{userDetailModel>/MaxDate}" initialFocusedDateValue="{userDetailModel>/MaxDate}"
-										value="{path:'userDetailModel>/Startdate', type:'sap.ui.model.type.Date', formatOptions: { source: { pattern: 'yyyy-MM-ddTHH:mm:ss.msZ' }, pattern: 'MMM dd,yyyy' }}"/>
+										value="{path:'userDetailModel>/Startdate', type:'sap.ui.model.type.Date', formatOptions: { source: { pattern: 'dd/MM/yyyy' }, pattern: 'MMM dd,yyyy' }}"/>
 									<core:Title text="{i18n>WizardEmployementDetailsSecTitle_PleaseSelectAny}" level="H5"/>
 									<Label text="{i18n>WizardEmployementDetailsFormLabel_ADirectorofMyEmployersCompany}"/>
 									<Select id="InputEmpDirectorofMyEmployersComp" selectedKey="{userDetailModel>/Directorcheck}">
@@ -227,7 +227,7 @@
 									<Textarea id="InputReturToWorkQue1" value="{userDetailModel>/RtwDetails}"/>
 									<Label text="{i18n>WizardreturntoWorkFormLabel_ReturnDateQuestion}"/>
 									<DatePicker id="InputReturToWorkDate" maxDate="{userDetailModel>/MaxDate}" initialFocusedDateValue="{userDetailModel>/MaxDate}"
-										value="{path:'userDetailModel>/RtwEmpDate', type:'sap.ui.model.type.Date', formatOptions: { source: { pattern: 'yyyy-MM-ddTHH:mm:ss.msZ' }, pattern: 'MMM dd,yyyy' }}"/>
+										value="{path:'userDetailModel>/RtwEmpDate', type:'sap.ui.model.type.Date', formatOptions: { source: { pattern: 'dd/MM/yyyy'  }, pattern: 'MMM dd,yyyy' }}"/>
 									<Label text="{i18n>WizardreturntoWorkFormLabel_question2}"/>
 									<Select id="InputReturToWorkOue2" selectedKey="{userDetailModel>/Duties}">
 										<core:Item text="" key=""/>
@@ -240,7 +240,7 @@
 									<Textarea id="InputReturToWorkOue4" value="{userDetailModel>/NrtwIdp}"/>
 									<Label text="{i18n>WizardreturntoWorkFormLabel_ClaimFormSubmissionDate}"/>
 									<DatePicker id="InputReturToWorkClaimFormSubmissionDate" maxDate="{userDetailModel>/MaxDate}" initialFocusedDateValue="{userDetailModel>/MaxDate}"
-										value="{path:'userDetailModel>/EmpClmfrmDate', type:'sap.ui.model.type.Date', formatOptions: { source: { pattern: 'yyyy-MM-ddTHH:mm:ss.msZ' }, pattern: 'MMM dd,yyyy' }}"/>
+										value="{path:'userDetailModel>/EmpClmfrmDate', type:'sap.ui.model.type.Date', formatOptions: { source: { pattern: 'dd/MM/yyyy' }, pattern: 'MMM dd,yyyy' }}"/>
 									<Label text="{i18n>WizardreturntoWorkFormLabel_question5}"/>
 									<Select id="InputReturToWorkOue5" selectedKey="{userDetailModel>/EmpClmForm}">
 										<core:Item text="" key=""/>
@@ -249,7 +249,7 @@
 									</Select>
 									<Label text="{i18n>WizardreturntoWorkFormLabel_MedicalCertificateSubmissionDate}"/>
 									<DatePicker id="InputReturToWorkMedicalCertificateSubmissionDate" maxDate="{userDetailModel>/MaxDate}" initialFocusedDateValue="{userDetailModel>/MaxDate}"
-										value="{path:'userDetailModel>/EmpMcertDate', type:'sap.ui.model.type.Date', formatOptions: { source: { pattern: 'yyyy-MM-ddTHH:mm:ss.msZ' }, pattern: 'MMM dd,yyyy' }}"/>
+										value="{path:'userDetailModel>/EmpMcertDate', type:'sap.ui.model.type.Date', formatOptions: { source: { pattern: 'dd/MM/yyyy' }, pattern: 'MMM dd,yyyy' }}"/>
 								</form:content>
 							</form:SimpleForm>
 						</WizardStep>
