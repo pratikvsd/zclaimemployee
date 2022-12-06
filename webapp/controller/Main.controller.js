@@ -104,9 +104,7 @@ sap.ui.define([
 		}, // To open the initial injury Table dialog.
 
 		onCreateIncidentPress: function(oEvent) {
-			//var urlString = document.location.href.split("/");
-			//var host = urlString[2];
-			//window.open("https://" + host + "/sap/bc/ui5_ui5/ui2/ushell/shells/abap/FioriLaunchpad.html#CNet-MyIncidents", "_blank");
+		
 			var oCrossAppNavigator = sap.ushell.Container.getService("CrossApplicationNavigation");
 			oCrossAppNavigator.isIntentSupported(["CNet-MyIncidents"])
 				.done(function(aResponses) {
@@ -158,7 +156,6 @@ sap.ui.define([
 				penColor: 'rgb(0, 0, 0)'
 			});
 
-			//this.onSign();
 			if (oEvent.getSource().getId() === "contAsDraftBtn") {
 
 				if (this.MultipleDraftDialog) {
@@ -171,10 +168,6 @@ sap.ui.define([
 					this.getView().getModel().read("/SaveDraftDetailsSet(Userid='" + this.userName + "',Draftid='" + this.DraftId + "')", {
 						success: function(oData, oResponse) {
 							if (oData !== undefined || oData !== null) {
-								/*oData.IDate = new Date(oData.IDate);
-								oData.Rdate = new Date(oData.Rdate);
-								oData.Sdate = new Date(oData.Sdate);
-								oData.Crdate = new Date(oData.Crdate);*/
 								oData.MaxDate = new Date();
 								that.Casno = oData.Casno;
 								oData.Signature = "data:image/bmp;base64," + oData.Signature;
@@ -244,10 +237,6 @@ sap.ui.define([
 					this.getView().getModel().read("/SaveDraftDetailsSet(Userid='" + this.userName + "',Draftid='" + this.DraftId + "')", {
 						success: function(oData, oResponse) {
 							if (oData !== undefined || oData !== null) {
-								/*oData.IDate = new Date(oData.IDate);
-								oData.Rdate = new Date(oData.Rdate);
-								oData.Sdate = new Date(oData.Sdate);
-								oData.Crdate = new Date(oData.Crdate);*/
 								oData.MaxDate = new Date();
 								that.Casno = oData.Casno;
 								oData.Signature = "data:image/bmp;base64," + oData.Signature;
@@ -317,6 +306,8 @@ sap.ui.define([
 								"',Draftid='',Userid='" + that.userName + "')/$value";
 						}
 						AttachmentModel.setData(oData.results);
+						sap.ui.getCore().byId("UploadCollection").setNumberOfAttachmentsText(that.getView().getModel("i18n").getResourceBundle().getText("WizardAttachmentsListTitle")+"(" + oData.results.length +
+							")");
 						sap.ui.getCore().byId("UploadCollection").setModel(AttachmentModel, "AttachmentModel");
 
 					},
@@ -561,8 +552,7 @@ sap.ui.define([
 		handleWizardCancel: function(oEvent) {
 			if (oEvent.getSource().getParent().getId() === "confidentialPopupDialog") {
 				oEvent.getSource().getParent().close();
-			}
-			else if (this.WizardTitle === "StartClaim") {
+			} else if (this.WizardTitle === "StartClaim") {
 				this.claimWizardDialog.close();
 				this.InputFieldsClear();
 				sap.ui.getCore().byId("claimWizardNextBtn").setVisible(true);
@@ -578,12 +568,11 @@ sap.ui.define([
 				this.PrivacyStatementDialog.close();
 				this.WizardTitle = "InjuryTab";
 			}
-			
-			if (this.DraftDialog || this.MultipleDraftDialog){
-				if(this.DraftDialog){
+
+			if (this.DraftDialog || this.MultipleDraftDialog) {
+				if (this.DraftDialog) {
 					this.DraftDialog.close();
-				}
-				else if(this.MultipleDraftDialog){
+				} else if (this.MultipleDraftDialog) {
 					this.MultipleDraftDialog.close();
 				}
 			}
@@ -597,7 +586,9 @@ sap.ui.define([
 			var selectedRow = oiEvent.getSource().getModel().getProperty(path);
 			this.getView().getModel("userDetailModel").getData().BodypartDes = selectedRow.BodypartDes;
 			this.getView().getModel("userDetailModel").getData().InjDesc = selectedRow.InjurytypeDes;
-			this.getView().getModel("userDetailModel").getData().IDate = new Date(selectedRow.Idate).toLocaleString('fr-BE',{hour12:false});
+			this.getView().getModel("userDetailModel").getData().IDate = new Date(selectedRow.Idate).toLocaleString('fr-BE', {
+				hour12: false
+			});
 			oInjuryDetailModel.setData(selectedRow);
 			this.getView().setModel(oInjuryDetailModel, "oInjuryDetailModel");
 			this.getView().getModel("userDetailModel").refresh();
@@ -649,7 +640,7 @@ sap.ui.define([
 			}
 			oUploadCollection.getModel("AttachmentModel").refresh();
 			var aItems = oUploadCollection.getItems();
-			sap.ui.getCore().byId("UploadCollection").setNumberOfAttachmentsText("Employee Attachments(" + aItems.length + ")");
+			sap.ui.getCore().byId("UploadCollection").setNumberOfAttachmentsText(this.getView().getModel("i18n").getResourceBundle().getText("WizardAttachmentsListTitle")+"(" + aItems.length + ")");
 		}, // For file upload process.
 
 		onBeforeUploadStarts: function(oEvent) {
@@ -692,7 +683,7 @@ sap.ui.define([
 			}
 			sap.ui.getCore().byId("UploadCollection").getModel("AttachmentModel").setData(oData);
 			var Items = sap.ui.getCore().byId("UploadCollection").getItems();
-			sap.ui.getCore().byId("UploadCollection").setNumberOfAttachmentsText("Employee Attachments(" + Items.length + ")");
+			sap.ui.getCore().byId("UploadCollection").setNumberOfAttachmentsText(this.getView().getModel("i18n").getResourceBundle().getText("WizardAttachmentsListTitle")+"(" + Items.length + ")");
 		}, // To delete the files from the attchment list.
 
 		onPressSaveButton: function(oEvent) {
@@ -773,32 +764,60 @@ sap.ui.define([
 			this.signString = str.replace("data:image/bmp;base64,", "");
 
 			if (InputInjuryDateTime.getValue() !== "") {
-				var finDate = new Date(InputInjuryDateTime.getValue()).toLocaleString('fr-BE',{hour12:false});
+				var finDate = new Date(InputInjuryDateTime.getValue()).toLocaleString('fr-BE', {
+					hour12: false
+				});
 			}
 			if (InputWhenNoticeInjury.getValue() !== "") {
-				var crDate = new Date(InputWhenNoticeInjury.getValue()).toLocaleString('fr-BE',{hour12:false});
+				var crDate = new Date(InputWhenNoticeInjury.getValue()).toLocaleString('fr-BE', {
+					hour12: false
+				});
 			}
 			if (InputStoppedWorkDateTIme.getValue() !== "") {
-				var sDate = new Date(InputStoppedWorkDateTIme.getValue()).toLocaleString('fr-BE',{hour12:false});
+				var sDate = new Date(InputStoppedWorkDateTIme.getValue()).toLocaleString('fr-BE', {
+					hour12: false
+				});
 			}
 			if (InputInjuryReportDateTime.getValue() !== "") {
-				var rDate = new Date(InputInjuryReportDateTime.getValue()).toLocaleString('fr-BE',{hour12:false});
+				var rDate = new Date(InputInjuryReportDateTime.getValue()).toLocaleString('fr-BE', {
+					hour12: false
+				});
 			}
 			if (InputDeclarationDate.getValue() !== "") {
-				var dDate = new Date(InputDeclarationDate.getValue()).toLocaleDateString("fr-BE",{year:"numeric", month:"2-digit", day:"2-digit"});
+				var dDate = new Date(InputDeclarationDate.getValue()).toLocaleDateString("fr-BE", {
+					year: "numeric",
+					month: "2-digit",
+					day: "2-digit"
+				});
 			}
 			if (InputEmpStartWorkingDate.getValue() !== "") {
-				var startDate = new Date(InputEmpStartWorkingDate.getValue()).toLocaleDateString("fr-BE",{year:"numeric", month:"2-digit", day:"2-digit"});
+				var startDate = new Date(InputEmpStartWorkingDate.getValue()).toLocaleDateString("fr-BE", {
+					year: "numeric",
+					month: "2-digit",
+					day: "2-digit"
+				});
 			}
 			if (InputReturToWorkDate.getValue() !== "") {
-				var returnToWorkDate = new Date(InputReturToWorkDate.getValue()).toLocaleDateString("fr-BE",{year:"numeric", month:"2-digit", day:"2-digit"});
+				var returnToWorkDate = new Date(InputReturToWorkDate.getValue()).toLocaleDateString("fr-BE", {
+					year: "numeric",
+					month: "2-digit",
+					day: "2-digit"
+				});
 			}
 			if (InputReturToWorkClaimFormSubmissionDate.getValue() !== "") {
-				var EmpClmfrmDate = new Date(InputReturToWorkClaimFormSubmissionDate.getValue()).toLocaleDateString("fr-BE",{year:"numeric", month:"2-digit", day:"2-digit"});
+				var EmpClmfrmDate = new Date(InputReturToWorkClaimFormSubmissionDate.getValue()).toLocaleDateString("fr-BE", {
+					year: "numeric",
+					month: "2-digit",
+					day: "2-digit"
+				});
 			}
 			if (InputReturToWorkMedicalCertificateSubmissionDate.getValue() !== "" ||
 				InputReturToWorkMedicalCertificateSubmissionDate.getDateValue() !== null) {
-				var EmpMcertDate = new Date(InputReturToWorkMedicalCertificateSubmissionDate.getValue()).toLocaleDateString("fr-BE",{year:"numeric", month:"2-digit", day:"2-digit"});
+				var EmpMcertDate = new Date(InputReturToWorkMedicalCertificateSubmissionDate.getValue()).toLocaleDateString("fr-BE", {
+					year: "numeric",
+					month: "2-digit",
+					day: "2-digit"
+				});
 			}
 			if (oEvent.getSource().getId() === "claimDraftBtn") {
 
@@ -1368,7 +1387,8 @@ sap.ui.define([
 			sap.ui.getCore().byId("InputReturToWorkMedicalCertificateSubmissionDate").setValue("");
 			sap.ui.getCore().byId("UploadCollection").destroyItems();
 			var Items = sap.ui.getCore().byId("UploadCollection").getItems();
-			sap.ui.getCore().byId("UploadCollection").setNumberOfAttachmentsText("Employee Attachments(" + Items.length + ")");
+			sap.ui.getCore().byId("UploadCollection").setNumberOfAttachmentsText(this.getView().getModel("i18n").getResourceBundle().getText("WizardAttachmentsListTitle")+"(" + Items.length + ")");
+			this.attachmentsId = [];
 		}
 
 	});

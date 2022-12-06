@@ -46,8 +46,8 @@
 									<Input id="InputEmail" type="Text" value="{userDetailModel>/Email}"/>
 									<Label text="{i18n>WizardPersonalDetailFormLabel_question1}"/>
 									<Select id="InputPersnlDetlQue1" selectedKey="{userDetailModel>/Agree}">
-										<core:Item key="I do not agree" text="I do not agree"/>
-										<core:Item key="I agree" text="I agree"/>
+										<core:Item key="{i18n>I do not agree}" text="{i18n>I do not agree}"/>
+										<core:Item key="{i18n>I agree}" text="{i18n>I agree}"/>
 									</Select>
 									<Label text="{i18n>WizardPersonalDetailFormLabel_question2}"/>
 									<Input id="InputPersnlDetlQue2" type="Text" value="{userDetailModel>/Language}"/>
@@ -101,12 +101,12 @@
 									<Input id="InputEmployerResponsible" type="Text" value="{userDetailModel>/Name1}"/>
 									<Label text="{i18n>WizardInjuryDetailsFormLabel_ActivityonTimeofInjury}"/>
 									<Select id="InputActivityOnTimeOfInjury" selectedKey="{userDetailModel>/Activitywheninjureddesc}">
-										<core:Item text="While working at your usual workplace" key="While working at your usual workplace"/>
-										<core:Item text="While working away with your usual workplace" key="While working away with your usual workplace"/>
-										<core:Item text="During your meal break or authorised recess at work" key="During your meal break or authorised recess at work"/>
-										<core:Item text="While away from work during a recess" key="While away from work during a recess"/>
-										<core:Item text="Traveling to or from work" key="Traveling to or from work"/>
-										<core:Item text="A motor vehicle accident while you were working" key="A motor vehicle accident while you were working"/>
+										<core:Item text="{i18n>ActivityOnTimeOfInjury1}" key="{i18n>ActivityOnTimeOfInjury1}"/>
+										<core:Item text="{i18n>ActivityOnTimeOfInjury2}" key="{i18n>ActivityOnTimeOfInjury2}"/>
+										<core:Item text="{i18n>ActivityOnTimeOfInjury3}" key="{i18n>ActivityOnTimeOfInjury3}"/>
+										<core:Item text="{i18n>ActivityOnTimeOfInjury4}" key="{i18n>ActivityOnTimeOfInjury4}"/>
+										<core:Item text="{i18n>ActivityOnTimeOfInjury5}" key="{i18n>ActivityOnTimeOfInjury5}"/>
+										<core:Item text="{i18n>ActivityOnTimeOfInjury6}" key="{i18n>ActivityOnTimeOfInjury6}"/>
 									</Select>
 									<Label text="{i18n>WizardInjuryDetailsFormLabel_AccidentReportingStation}"/>
 									<Input id="InputInjuryPoliceStationReported" type="Text" value="{userDetailModel>/InjPsName}"/>
@@ -158,42 +158,42 @@
 									<core:Title text="{i18n>WizardEmployementDetailsSecTitle_PleaseSelectAny}" level="H5"/>
 									<Label text="{i18n>WizardEmployementDetailsFormLabel_ADirectorofMyEmployersCompany}"/>
 									<Select id="InputEmpDirectorofMyEmployersComp" selectedKey="{userDetailModel>/Directorcheck}">
-										<core:Item text="No" key="No"/>
-										<core:Item text="Yes"  key="Yes"/>
+										<core:Item text="{i18n>no}" key="{i18n>no}"/>
+										<core:Item text="{i18n>yes}"  key="{i18n>yes}"/>
 									</Select>
 									<Label text="{i18n>WizardEmployementDetailsFormLabel_APartnerofMyEmployerCompany}"/>
 									<Select id="InputEmpPartnerinMyEmployersComp" selectedKey="{userDetailModel>/Partnercheck}">
-										<core:Item text="No"  key="No"/>
-										<core:Item text="Yes" key="Yes"/>
+										<core:Item text="{i18n>no}"  key="{i18n>no}"/>
+										<core:Item text="{i18n>yes}" key="{i18n>yes}"/>
 									</Select>
 									<Label text="{i18n>WizardEmployementDetailsFormLabel_ASoleTrader}"/>
 									<Select id="InputEmpSoleTrader" selectedKey="{userDetailModel>/Soletradercheck}">
-										<core:Item text="No"  key="No"/>
-										<core:Item text="Yes" key="Yes"/>
+										<core:Item text="{i18n>no}"  key="{i18n>no}"/>
+										<core:Item text="{i18n>yes}" key="{i18n>yes}"/>
 									</Select>
 									<Label text="{i18n>WizardEmployementDetailsFormLabel_ARelativeofMyEmployer}"/>
 									<Select id="InputEmpRelativeofMyEmployer" selectedKey="{userDetailModel>/Relativecheck}">
-										<core:Item text="No"  key="No"/>
-										<core:Item text="Yes" key="Yes"/>
+										<core:Item text="{i18n>no}"  key="{i18n>no}"/>
+										<core:Item text="{i18n>yes}" key="{i18n>yes}"/>
 									</Select>
 									<Label text="{i18n>WizardEmployementDetailsFormLabel_question1}"/>
 									<Textarea id="InputEmpOtherEmployment" value="{userDetailModel>/OtherEmployement}"/>
 									<Label required="true" text="{i18n>WizardEmployementDetailsFormLabel_FollowingAppiesToYou}"/>
 									<Select id="InputEmpAppliesToYou" selectedKey="{userDetailModel>/Reasontoapply}" change="checkInputValidation" valueStateText="{i18n>FollowingAppiesToYouErrorMessage}">
 										<core:Item text="" key=""/>
-										<core:Item text="Full-time" key="Full-time"/>
-										<core:Item text="Part-time" key="Part-time"/>
-										<core:Item text="Student" key="Student"/>
-										<core:Item text="Apprentice" key="Apprentice"/>
-										<core:Item text="Volunteer" key="Volunteer"/>
-										<core:Item text="Jockey" key="Jockey"/>
-										<core:Item text="Contractor" key="Contractor"/>
-										<core:Item text="Parmanent" key="Parmanent"/>
-										<core:Item text="Temporary" key="Temporary"/>
-										<core:Item text="Contract" key="Contract"/>
-										<core:Item text="Trainee" key="Trainee"/>
-										<core:Item text="Seasonal" key="Seasonal"/>
-										<core:Item text="Agency Worker" key="Agency Worker"/>
+										<core:Item text="{i18n>AppliesToYouItem1}" key="{i18n>AppliesToYouItem1}"/>
+										<core:Item text="{i18n>AppliesToYouItem2}" key="{i18n>AppliesToYouItem2}"/>
+										<core:Item text="{i18n>AppliesToYouItem3}" key="{i18n>AppliesToYouItem3}"/>
+										<core:Item text="{i18n>AppliesToYouItem4}" key="{i18n>AppliesToYouItem4}"/>
+										<core:Item text="{i18n>AppliesToYouItem5}" key="{i18n>AppliesToYouItem5}"/>
+										<core:Item text="{i18n>AppliesToYouItem6}" key="{i18n>AppliesToYouItem6}"/>
+										<core:Item text="{i18n>AppliesToYouItem7}" key="{i18n>AppliesToYouItem7}"/>
+										<core:Item text="{i18n>AppliesToYouItem8}" key="{i18n>AppliesToYouItem8}"/>
+										<core:Item text="{i18n>AppliesToYouItem9}" key="{i18n>AppliesToYouItem9}"/>
+										<core:Item text="{i18n>AppliesToYouItem10}" key="{i18n>AppliesToYouItem10}"/>
+										<core:Item text="{i18n>AppliesToYouItem11}" key="{i18n>AppliesToYouItem11}"/>
+										<core:Item text="{i18n>AppliesToYouItem12}" key="{i18n>AppliesToYouItem12}"/>
+										<core:Item text="{i18n>AppliesToYouItem13}" key="{i18n>AppliesToYouItem13}"/>
 									</Select>
 								</form:content>
 							</form:SimpleForm>
@@ -231,8 +231,8 @@
 									<Label text="{i18n>WizardreturntoWorkFormLabel_question2}"/>
 									<Select id="InputReturToWorkOue2" selectedKey="{userDetailModel>/Duties}">
 										<core:Item text="" key=""/>
-										<core:Item text="Full" key="Full"/>
-										<core:Item text="Suitable/Modified" key="Suitable/Modified"/>
+										<core:Item text="{i18n>Full}" key="{i18n>Full}"/>
+										<core:Item text="{i18n>Suitable/Modified}" key="{i18n>Suitable/Modified}"/>
 									</Select>
 									<Label text="{i18n>WizardreturntoWorkFormLabel_question3}"/>
 									<Textarea id="InputReturToWorkOue3" value="{userDetailModel>/RtwNempDetails}"/>
@@ -244,8 +244,8 @@
 									<Label text="{i18n>WizardreturntoWorkFormLabel_question5}"/>
 									<Select id="InputReturToWorkOue5" selectedKey="{userDetailModel>/EmpClmForm}">
 										<core:Item text="" key=""/>
-										<core:Item text="Hand Delivery" key="Hand Delivery"/>
-										<core:Item text="By Post" key="By Post"/>
+										<core:Item text="{i18n>Hand Delivery}" key="{i18n>Hand Delivery}"/>
+										<core:Item text="{i18n>By Post}" key="{i18n>By Post}"/>
 									</Select>
 									<Label text="{i18n>WizardreturntoWorkFormLabel_MedicalCertificateSubmissionDate}"/>
 									<DatePicker id="InputReturToWorkMedicalCertificateSubmissionDate" maxDate="{userDetailModel>/MaxDate}" initialFocusedDateValue="{userDetailModel>/MaxDate}"
@@ -279,7 +279,7 @@
 							<UploadCollection id="UploadCollection" multiple="false" change="onChange" fileDeleted="deleteAttachmentListItems"
 								typeMissmatch="onTypeMissmatch" uploadComplete="onUploadComplete" beforeUploadStarts="onBeforeUploadStarts"
 								uploadTerminated="onUploadTerminated" items="{AttachmentModel>/}"
-								numberOfAttachmentsText="{i18n>WizardAttachmentsListTitle}" uploadEnabled="true">
+								numberOfAttachmentsText="{i18n>WizardAttachmentsListTitle}(0)" uploadEnabled="true">
 								<items>
 									<UploadCollectionItem id="uploadCollectionTable" documentId="{AttachmentModel>ArcDocId}" fileName="{AttachmentModel>Filename}" 
 										url="{AttachmentModel>url}" visibleEdit="false"  enableDelete="true" visibleDelete="true">
